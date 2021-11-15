@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="windows-1250"?>
+<dat:dataPack id="Ex005" ico="12345678" application="Pohoda export setup" version="2.0" note="Žádost o seznamy" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd" xmlns:lst="http://www.stormware.cz/schema/version_2/list.xsd">
+	<dat:dataPackItem id="SE001" version="2.0">
+		<lst:listAccountingSingleEntryRequest version="1.1"/>
+	</dat:dataPackItem>
+</dat:dataPack>

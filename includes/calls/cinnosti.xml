@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack id="Ex003" ico="12345678" application="Pohoda export setup" version="2.0" note="Export cinnosti"
+  xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd" 
+  xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd"
+  xmlns:lAcv="http://www.stormware.cz/schema/version_2/list_activity.xsd"
+  xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd" >
+		
+<dat:dataPackItem id="Actk01" version="2.0">
+  <!-- export cinnosti -->
+  <lAcv:listActivityRequest version="2.0" activityVersion="2.0">
+    <lAcv:requestActivity></lAcv:requestActivity>
+    </lAcv:listActivityRequest>
+	</dat:dataPackItem>
+</dat:dataPack>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack id="Za001" ico="12345678" application="Pohoda export setup" version="2.0" note="Export bankovních účtů"  
+xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd"  
+xmlns:bka="http://www.stormware.cz/schema/version_2/bankAccount.xsd" 
+xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd" 
+xmlns:lst="http://www.stormware.cz/schema/version_2/list.xsd"  
+xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+  <dat:dataPackItem id="a55" version="2.0">
+  <!-- export bankovích účtů -->
+    <lst:listBankAccountRequest version="2.0" bankAccountVersion="2.0">
+      <lst:requestBankAccount>
+       
+      </lst:requestBankAccount>
+    </lst:listBankAccountRequest>
+  </dat:dataPackItem>
+</dat:dataPack>

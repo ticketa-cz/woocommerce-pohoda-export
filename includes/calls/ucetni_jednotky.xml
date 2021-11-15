@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack version="2.0" id="00004" ico="" application="Pohoda export setup" note="seznam ucetnich jednotek" 
+			xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd" 
+			xmlns:acu="http://www.stormware.cz/schema/version_2/accountingunit.xsd" 
+			xmlns:lst="http://www.stormware.cz/schema/version_2/list.xsd">
+	<dat:dataPackItem version="2.0" id="001">
+		<acu:listAccountingUnitRequest version="1.6"/>
+	</dat:dataPackItem>
+</dat:dataPack>

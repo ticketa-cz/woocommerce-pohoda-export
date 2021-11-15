@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack id="Pro001" ico="12345678" key="514b93fe-0eee-4048-b94d-ac3f11c1bfbc" application="Pohoda export setup" version="2.0" note="Export provozoven"  
+xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd"
+xmlns:est="http://www.stormware.cz/schema/version_2/establishment.xsd"
+xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd" 
+xmlns:lst="http://www.stormware.cz/schema/version_2/list.xsd"  
+xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+  <dat:dataPackItem id="a55" version="2.0">
+  <!-- export provozoven -->
+    <lst:listEstablishmentRequest version="2.0" establishmentVersion="2.0">
+      <lst:requestEstablishment></lst:requestEstablishment>
+    </lst:listEstablishmentRequest>
+  </dat:dataPackItem>
+</dat:dataPack>

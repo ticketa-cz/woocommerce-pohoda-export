@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd" xmlns:lAdb="http://www.stormware.cz/schema/version_2/list_addBook.xsd" xmlns:lst="http://www.stormware.cz/schema/version_2/list.xsd" xmlns:lStk="http://www.stormware.cz/schema/version_2/list_stock.xsd" xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd" id="7" ico="12345678" application="xml" note="formy_úhrad" version="2.0">
+    <dat:dataPackItem id="7" version="2.0">
+        <lst:listPaymentRequest version="2.0" paymentVersion="2.0">
+            <lst:requestPayment>
+                <ftr:filter>
+                </ftr:filter>
+            </lst:requestPayment>
+        </lst:listPaymentRequest>
+    </dat:dataPackItem>
+</dat:dataPack>

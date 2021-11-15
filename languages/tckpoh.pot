@@ -1,0 +1,1064 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Ticketa Pohoda export\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-15 16:03+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.5.0; wp-5.3.6\n"
+"X-Domain: tckpoh"
+
+#: includes/submit-error.php:53
+msgid " -- value produced: "
+msgstr ""
+
+#: includes/submit-error.php:176
+msgid " from unexported."
+msgstr ""
+
+#: includes/setup-ajax-functions.php:461
+msgid " is sending you their error log."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:151
+msgid ""
+" orders are now in waiting list for export. Will be exported as soon as you "
+"turn the plugin ON or save the settings."
+msgstr ""
+
+#: includes/submit-error.php:152
+msgid " to unexported."
+msgstr ""
+
+#: includes/submit-error.php:50
+msgid " | value requested: "
+msgstr ""
+
+#: includes/setup-tab.php:368
+msgid "0%"
+msgstr ""
+
+#: includes/setup-tab.php:367
+msgid "10%"
+msgstr ""
+
+#: includes/setup-tab.php:366
+msgid "15%"
+msgstr ""
+
+#: includes/setup-tab.php:365
+msgid "21%"
+msgstr ""
+
+#: includes/setup-tab.php:246
+msgid "Account ID"
+msgstr ""
+
+#: includes/setup-tab.php:232
+msgid "Account number"
+msgstr ""
+
+#: includes/setup-tab.php:101
+msgid "Accounting key"
+msgstr ""
+
+#: includes/setup-tab.php:836
+msgid "Action log"
+msgstr ""
+
+#: includes/setup-ajax-functions.php:523
+msgid "Action log erased"
+msgstr ""
+
+#: includes/setup-tab.php:853
+msgid "Actions"
+msgstr ""
+
+#: includes/setup-tab.php:526
+msgid "Activity selection"
+msgstr ""
+
+#: includes/setup-tab.php:806
+msgid "Add QR code to invoice?"
+msgstr ""
+
+#: includes/submit-error.php:154
+msgid "Added to unexported"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:77
+#: includes/document-types/pdf-invoice/pdf-invoice.php:94
+msgid "ADDRESS"
+msgstr ""
+
+#: includes/setup-tab.php:189
+msgid "Address city"
+msgstr ""
+
+#: includes/setup-tab.php:196
+msgid "Address post code"
+msgstr ""
+
+#: includes/setup-tab.php:175
+msgid "Address street"
+msgstr ""
+
+#: includes/setup-tab.php:182
+msgid "Address street number"
+msgstr ""
+
+#: includes/setup-tab.php:557
+msgid "After each order"
+msgstr ""
+
+#: includes/setup-tab.php:674
+msgid "And assign it to a payment type from Pohoda."
+msgstr ""
+
+#: includes/setup-tab.php:568
+msgid "At which status to export invoice?"
+msgstr ""
+
+#: includes/setup-tab.php:785
+msgid "At which status to send the PDF invoice?"
+msgstr ""
+
+#: includes/setup-tab.php:775
+msgid "Automatically send invoice on a preset order status?"
+msgstr ""
+
+#: includes/setup-tab.php:765
+msgid ""
+"Automatically send invoice on new order when bank transfer payment method "
+"used?"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:80
+msgid "BANK ACCOUNT"
+msgstr ""
+
+#: includes/setup-tab.php:239
+msgid "Bank code"
+msgstr ""
+
+#: includes/setup-tab.php:695
+msgid "Bank transfer"
+msgstr ""
+
+#: includes/setup-tab.php:114
+msgid "Billing info"
+msgstr ""
+
+#: includes/setup-tab.php:657
+msgid "Card"
+msgstr ""
+
+#: includes/setup-tab.php:678
+msgid "Cash in shop"
+msgstr ""
+
+#: includes/setup-tab.php:712
+msgid "Cash on delivery"
+msgstr ""
+
+#: includes/setup-tab.php:500
+msgid "Center selection"
+msgstr ""
+
+#: includes/setup-tab.php:571
+msgid ""
+"Change this only if you are using a different status for payment. Usually "
+"the order goes to Processing status when a payment is made. If a different "
+"payment method is chosen, than the invoice is made when you change the "
+"status to Processing manually."
+msgstr ""
+
+#: includes/scheduled-actions.php:167
+msgid "Checked unexported orders."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:154
+msgid "Checking unexported orders"
+msgstr ""
+
+#: includes/setup-tab.php:662
+msgid "Choose a payment type from those turned on in Woocommerce."
+msgstr ""
+
+#: includes/setup-tab.php:224
+msgid "Choose account"
+msgstr ""
+
+#: includes/setup-tab.php:92
+msgid "Choose accounting"
+msgstr ""
+
+#: includes/setup-tab.php:519
+msgid "Choose from Pohoda activities"
+msgstr ""
+
+#: includes/setup-tab.php:493
+msgid "Choose from Pohoda centers"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:122 includes/setup-tab.php:96
+#: includes/setup-tab.php:227 includes/setup-tab.php:297
+#: includes/setup-tab.php:398
+msgid "Choose one..."
+msgstr ""
+
+#: includes/setup-tab.php:394
+msgid "Classification type"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:91
+msgid "CLIENT"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:74
+msgid "COMPANY"
+msgstr ""
+
+#: includes/setup-tab.php:133
+msgid "Company name"
+msgstr ""
+
+#: includes/setup-tab.php:141
+msgid "Company title"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:123
+msgid "Connect and load accountings"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:139
+msgid "Connecting to mServer"
+msgstr ""
+
+#: includes/setup-ajax-functions.php:29
+msgid "Connecting to mServer from settings page ..."
+msgstr ""
+
+#: includes/setup-tab.php:386
+msgid "Converter API key"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:188
+msgid "Could not send error log because of an error."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:189
+msgid "Could not switch the plugin because of an error."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:191 includes/setup-ajax-functions.php:486
+msgid "Creating the XML file."
+msgstr ""
+
+#: includes/setup-tab.php:441 includes/setup-tab.php:474
+#: includes/setup-tab.php:495 includes/setup-tab.php:521
+msgid "Custom"
+msgstr ""
+
+#: includes/setup-tab.php:534
+msgid "Custom activity text"
+msgstr ""
+
+#: includes/setup-tab.php:508
+msgid "Custom center text"
+msgstr ""
+
+#: includes/setup-tab.php:288 includes/setup-tab.php:334
+msgid "Custom date"
+msgstr ""
+
+#: includes/setup-tab.php:275
+msgid "Custom field value"
+msgstr ""
+
+#: includes/setup-tab.php:481
+msgid "Custom heading text"
+msgstr ""
+
+#: includes/setup-tab.php:126
+msgid "Custom info"
+msgstr ""
+
+#: includes/setup-tab.php:446
+msgid "Custom specific symbol"
+msgstr ""
+
+#: includes/setup-tab.php:461
+msgid "Customer DIC field"
+msgstr ""
+
+#: includes/setup-tab.php:454
+msgid "Customer ICO field"
+msgstr ""
+
+#: includes/setup-tab.php:558
+msgid "Daily"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:64
+msgid "DATE"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:65
+msgid "DATE DUE"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:66
+msgid "DATE TAX"
+msgstr ""
+
+#: includes/setup-tab.php:599
+msgid "Day of month"
+msgstr ""
+
+#: includes/setup-tab.php:584
+msgid "Day of week"
+msgstr ""
+
+#: includes/setup-tab.php:168
+#: includes/document-types/pdf-invoice/pdf-invoice.php:29
+#: includes/document-types/pdf-invoice/pdf-invoice.php:82
+msgid "DIC"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:152
+msgid "Did not find any unexported orders or an error happened."
+msgstr ""
+
+#: includes/setup-tab.php:720
+msgid "Dobírkou"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:57
+msgid "DOCUMENT INFO"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:59
+msgid "DOCUMENT NUMBER"
+msgstr ""
+
+#: includes/setup-tab.php:614
+msgid "Dont send to EET from Pohoda"
+msgstr ""
+
+#: includes/setup-tab.php:74
+msgid "e.g. http://46.234.119.70:4444/xml"
+msgstr ""
+
+#: includes/setup-tab.php:616
+msgid "EET doesnt apply to my products"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:79
+#: includes/document-types/pdf-invoice/pdf-invoice.php:95
+msgid "EMAIL"
+msgstr ""
+
+#: includes/setup-tab.php:210
+msgid "Email"
+msgstr ""
+
+#: includes/setup-tab.php:755
+msgid "Enable PDF invoices"
+msgstr ""
+
+#: includes/setup-tab.php:464
+msgid "Enter the custom field name under which the DIC number is saved."
+msgstr ""
+
+#: includes/setup-tab.php:456
+msgid "Enter the custom field name under which the ICO number is saved."
+msgstr ""
+
+#: includes/setup-tab.php:278
+msgid ""
+"Enter the custom field name under which the invoice number is saved by the "
+"plugin."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:184
+msgid "Erase action log"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:131
+msgid "Erase all invoice numbers"
+msgstr ""
+
+#: includes/setup-ajax-functions.php:373
+msgid "Erased invoice numbers attached to all the orders."
+msgstr ""
+
+#: includes/setup-ajax-functions.php:447
+msgid "Erased the export queue."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:186
+msgid "Erasing action log"
+msgstr ""
+
+#. Description of the plugin
+msgid "Export faktur z Woocommerce do účetního systému Pohoda"
+msgstr ""
+
+#: includes/setup-tab.php:623
+msgid "Export orders?"
+msgstr ""
+
+#: includes/setup-tab.php:547
+msgid "Export setting"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:148
+msgid "Export XML file"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:150
+msgid "Find unexported orders"
+msgstr ""
+
+#: includes/setup-tab.php:148
+msgid "First name"
+msgstr ""
+
+#: includes/setup-tab.php:476
+msgid "First product category name"
+msgstr ""
+
+#: includes/setup-tab.php:475
+msgid "First product name"
+msgstr ""
+
+#: includes/setup-tab.php:553
+msgid "Frequency of invoice export"
+msgstr ""
+
+#: includes/setup-tab.php:592
+msgid "Friday"
+msgstr ""
+
+#: includes/create-invoice.php:514
+msgid "Got communication error"
+msgstr ""
+
+#: includes/setup-ajax-functions.php:62 includes/setup-ajax-functions.php:137
+msgid "Got communication error: "
+msgstr ""
+
+#: includes/create-invoice.php:493
+msgid "Got import minor error"
+msgstr ""
+
+#: includes/create-invoice.php:507
+msgid "Got package error"
+msgstr ""
+
+#: includes/create-invoice.php:500
+msgid "Got validation error"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:164
+msgid "GRAND TOTAL"
+msgstr ""
+
+#: includes/setup-tab.php:686
+msgid "Hotově"
+msgstr ""
+
+#: includes/setup-tab.php:407
+msgid "How many days is the payment due date from the order date?"
+msgstr ""
+
+#: includes/setup-tab.php:416
+msgid "How many days is the taxable supply date from the order date?"
+msgstr ""
+
+#: includes/setup-tab.php:315
+msgid "How many digits should the core number have?"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://www.ticketa.cz/"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://www.ticketa.cz/woocommerce-pohoda-export-plugin/"
+msgstr ""
+
+#: includes/setup-tab.php:615
+msgid "I will send to EET externally"
+msgstr ""
+
+#: includes/setup-tab.php:816
+msgid "IBAN"
+msgstr ""
+
+#: includes/setup-tab.php:162
+#: includes/document-types/pdf-invoice/pdf-invoice.php:26
+#: includes/document-types/pdf-invoice/pdf-invoice.php:81
+msgid "ICO"
+msgstr ""
+
+#: includes/setup-tab.php:388
+msgid ""
+"If using different currency than CZK, you have to use converter API. Get "
+"your key here: https://rapidapi.com/fyhao/api/currency-exchange"
+msgstr ""
+
+#: includes/setup-tab.php:306 includes/setup-tab.php:343
+msgid ""
+"If you have selected \"Custom date\", set the format using Y, M and D "
+"symbols. For example YYMM, or YYYYMMDD..."
+msgstr ""
+
+#: includes/setup-tab.php:817
+msgid "If you want to use QR code, you must specify your IBAN code."
+msgstr ""
+
+#: includes/setup-tab.php:730
+msgid "Insert the WooCommerce shortcut of your own payment method."
+msgstr ""
+
+#: includes/create-invoice.php:357
+msgid "Invoice - tax document #"
+msgstr ""
+
+#: includes/setup-tab.php:516
+msgid "Invoice activity type"
+msgstr ""
+
+#: includes/setup-tab.php:490
+msgid "Invoice center type"
+msgstr ""
+
+#: includes/setup-tab.php:640
+msgid "Invoice core number"
+msgstr ""
+
+#: includes/setup-tab.php:354
+msgid "Invoice data"
+msgstr ""
+
+#: includes/setup-tab.php:470
+msgid "Invoice heading text"
+msgstr ""
+
+#: includes/setup-tab.php:428 includes/setup-tab.php:440
+msgid "Invoice inner number"
+msgstr ""
+
+#: includes/setup-tab.php:427 includes/setup-tab.php:439
+#: includes/setup-tab.php:639
+msgid "Invoice number"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:126
+msgid "Invoice number example: "
+msgstr ""
+
+#: includes/setup-tab.php:259
+msgid "Invoice numbering"
+msgstr ""
+
+#: includes/setup-tab.php:302
+msgid "Invoice prefix"
+msgstr ""
+
+#: includes/setup-tab.php:340
+msgid "Invoice suffix"
+msgstr ""
+
+#: includes/setup-tab.php:602
+msgid "Last day"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:155
+msgid "Last invoice number: "
+msgstr ""
+
+#: includes/setup-tab.php:155
+msgid "Last name"
+msgstr ""
+
+#: includes/setup-ajax-functions.php:83
+msgid "Loading billing info on settings page ..."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:140
+msgid "Loading Pohoda defaults"
+msgstr ""
+
+#: includes/setup-tab.php:320
+msgid "Main numbering starting at"
+msgstr ""
+
+#: includes/setup-tab.php:561
+msgid "Manually"
+msgstr ""
+
+#: includes/setup-tab.php:588
+msgid "Monday"
+msgstr ""
+
+#: includes/setup-tab.php:560
+msgid "Monthly"
+msgstr ""
+
+#: includes/setup-tab.php:71
+msgid "mServer address"
+msgstr ""
+
+#: includes/setup-tab.php:78
+msgid "mServer login name"
+msgstr ""
+
+#: includes/setup-tab.php:85
+msgid "mServer password"
+msgstr ""
+
+#: includes/setup-tab.php:65
+msgid "mServer setting"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:76
+#: includes/document-types/pdf-invoice/pdf-invoice.php:93
+msgid "NAME"
+msgstr ""
+
+#: includes/create-invoice.php:131
+msgid "New eshop order #"
+msgstr ""
+
+#: includes/setup-tab.php:270 includes/setup-tab.php:628
+#: includes/setup-tab.php:760 includes/setup-tab.php:770
+#: includes/setup-tab.php:780 includes/setup-tab.php:811
+msgid "No"
+msgstr ""
+
+#: includes/setup-tab.php:332
+msgid "None"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:128
+msgid ""
+"Note, that if the system finds a duplicate invoice number associated with a "
+"woocommerce order, it will delete it and use it with the new order. So "
+"beware not to use same numbering twice or not to start with the same number."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:137
+msgid ""
+"Note, you have to associate each payment type with a payment gateway enabled "
+"in woocommerce shown within the dropdowns. Unassociated payment types will "
+"be overriden by the default in Pohoda."
+msgstr ""
+
+#: includes/setup-tab.php:824
+msgid "Notice at the bottom of invoice:"
+msgstr ""
+
+#: includes/setup-tab.php:311
+msgid "Number of digits of main numbering"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:62
+msgid "ORDER NUMBER"
+msgstr ""
+
+#: includes/setup-tab.php:638
+msgid "Order number"
+msgstr ""
+
+#: includes/setup-tab.php:633
+msgid "Order number type"
+msgstr ""
+
+#: includes/setup-tab.php:562
+msgid "Order only"
+msgstr ""
+
+#: includes/setup-tab.php:728
+msgid "Own payment method"
+msgstr ""
+
+#: includes/setup-tab.php:289 includes/setup-tab.php:335
+msgid "Own text"
+msgstr ""
+
+#: includes/setup-tab.php:403
+msgid "Payment due date from order date"
+msgstr ""
+
+#: includes/setup-tab.php:651
+msgid "Payment methods"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:67
+msgid "PAYMENT TYPE"
+msgstr ""
+
+#: includes/setup-tab.php:749
+msgid "PDF"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:256
+msgid "PDF invoice"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:78
+#: includes/document-types/pdf-invoice/pdf-invoice.php:96
+msgid "PHONE"
+msgstr ""
+
+#: includes/setup-tab.php:203
+msgid "Phone"
+msgstr ""
+
+#: includes/setup-tab.php:667
+msgid "Plat.kartou"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:104
+msgid "PLATBA"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:356 woocommerce-pohoda-export.php:367
+#, php-format
+msgid ""
+"Please help us improve %2$s! If you opt-in, some data about your usage of "
+"%2$s will be sent to %5$s. If you skip this, that's okay! %2$s will still "
+"work just fine."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:181
+msgid "Plugin switch"
+msgstr ""
+
+#: includes/setup-tab.php:124
+msgid "Pohoda default"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:337
+msgid "Pohoda Export"
+msgstr ""
+
+#: includes/submit-error.php:17
+msgid "Pohoda export error, could not connect to mserver. Note: "
+msgstr ""
+
+#: includes/submit-error.php:176
+msgid "Pohoda export error, could not remove order #"
+msgstr ""
+
+#: includes/submit-error.php:152
+msgid "Pohoda export error, could not save order #"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:338
+msgid "Pohoda Export PDF"
+msgstr ""
+
+#: includes/setup-tab.php:18
+msgid "Pohoda Export Settings"
+msgstr ""
+
+#: includes/setup-tab.php:294
+msgid "Pohoda predefined prefix"
+msgstr ""
+
+#: includes/setup-tab.php:287
+msgid "Pohoda prefix"
+msgstr ""
+
+#: includes/create-invoice.php:484
+msgid "Pohoda response: "
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:126
+msgid "PRICE TOTAL"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:123
+msgid "PRICE WITHOUT VAT"
+msgstr ""
+
+#: includes/setup-tab.php:703
+msgid "Příkazem"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:122
+msgid "QUANTITY"
+msgstr ""
+
+#: includes/setup-tab.php:360
+msgid "Rate of VAT"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:185
+msgid "Reload action log"
+msgstr ""
+
+#: includes/submit-error.php:178
+msgid "Removed from unexported"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:130
+msgid "Reset export queue"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:129
+msgid "Reset number"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:135
+msgid "Reseting"
+msgstr ""
+
+#: includes/setup-tab.php:593
+msgid "Saturday"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:124
+msgid "Save settings"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:125
+msgid "Saving your settings"
+msgstr ""
+
+#: includes/setup-ajax-functions.php:318
+msgid "Searching for all unexported orders of this year."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:183
+msgid "Send error log to support"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:187
+msgid "Sending error log to support..."
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:121
+msgid "SERVICE"
+msgstr ""
+
+#: includes/setup-tab.php:606
+msgid "Should Pohoda send invoice to EET after import?"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:61
+msgid "SPECIFIC SYMBOL"
+msgstr ""
+
+#: includes/setup-tab.php:434
+msgid "Specific symbol"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:156
+msgid "SUBTOTAL"
+msgstr ""
+
+#: includes/setup-tab.php:594
+msgid "Sunday"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:182
+msgid "Switching the plugin..."
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:160
+msgid "TAX"
+msgstr ""
+
+#: includes/setup-tab.php:412
+msgid "Taxable supply date from order date"
+msgstr ""
+
+#: includes/setup-tab.php:789
+msgid ""
+"The PDF invoice will be sent to the customer automatically when the order "
+"status is changed to this one."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:136
+msgid "The queue was erased."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:192
+msgid "The XML file could not be created because of an error."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:153
+msgid ""
+"This action will find all orders made from the beginning of this year and "
+"add it to the waiting list for export to Pohoda. Only orders with Processing "
+"or Completed status will be added. \\n If you want to specify a date range, "
+"fill the input with dates exactly in this format YYYY-MM-DD==YYYY-MM-DD"
+msgstr ""
+
+#: includes/setup-tab.php:136
+msgid "This billing info must be filled in Pohoda."
+msgstr ""
+
+#: includes/setup-tab.php:610
+msgid "This only applies to payments made by card."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:149
+msgid ""
+"This will export the waiting list into an XML file which you can download. "
+"You have to empty the waiting list later."
+msgstr ""
+
+#: includes/setup-tab.php:591
+msgid "Thursday"
+msgstr ""
+
+#. Author of the plugin
+msgid "Ticketa"
+msgstr ""
+
+#: includes/setup-tab.php:576
+msgid "Time to export invoices"
+msgstr ""
+
+#: includes/create-invoice.php:44
+msgid "Tried to create invoice for order #"
+msgstr ""
+
+#: includes/create-invoice.php:45
+msgid "Tried to create order #"
+msgstr ""
+
+#: includes/setup-ajax-functions.php:444
+msgid "Tried, but unable to erase the export queue."
+msgstr ""
+
+#: includes/setup-tab.php:589
+msgid "Tuesday"
+msgstr ""
+
+#: includes/scheduled-actions.php:92
+msgid "Turned actions off."
+msgstr ""
+
+#: includes/scheduled-actions.php:42
+msgid "Turned actions on."
+msgstr ""
+
+#: includes/setup-tab.php:283
+msgid "Type of prefix"
+msgstr ""
+
+#: includes/setup-tab.php:328
+msgid "Type of suffix"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:138
+msgid ""
+"Unable to connect to mserver. Check your login info and make sure mServer is "
+"running."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:127
+msgid "Unable to save options..."
+msgstr ""
+
+#: includes/setup-tab.php:265
+msgid "Use numbering from a different plugin?"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:60
+msgid "VARIABLE SYMBOL"
+msgstr ""
+
+#: includes/setup-tab.php:422
+msgid "Variable symbol"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:125
+msgid "VAT"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:124
+msgid "VAT %"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:133
+msgid ""
+"Warning! This will erase all orders saved in the export queue. You can add "
+"them again later by checking last year orders."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:132
+msgid ""
+"Warning! This will reset the number of the last invoice. Continue only if "
+"you are changing the invoice numbering. Otherwise it will create duplicate "
+"invoice numbers and these invoices will not be imported."
+msgstr ""
+
+#: woocommerce-pohoda-export.php:134
+msgid ""
+"Warning!! This will erase all invoice numbers from all orders of this year! "
+"If you would check for unexported orders later, all those orders would then "
+"appear in the export waiting list."
+msgstr ""
+
+#: includes/setup-tab.php:484
+msgid "We are billing you for goods..."
+msgstr ""
+
+#: includes/setup-tab.php:217
+msgid "Website"
+msgstr ""
+
+#: includes/setup-tab.php:590
+msgid "Wednesday"
+msgstr ""
+
+#: includes/setup-tab.php:559
+msgid "Weekly"
+msgstr ""
+
+#: includes/setup-tab.php:120
+msgid "Which billing info to use?"
+msgstr ""
+
+#: includes/setup-tab.php:125
+msgid "Woocommerce default"
+msgstr ""
+
+#: includes/setup-tab.php:333 includes/setup-tab.php:426
+#: includes/setup-tab.php:438
+msgid "Woocommerce Order number"
+msgstr ""
+
+#. Name of the plugin
+msgid "Woocommerce Pohoda Export"
+msgstr ""
+
+#: includes/setup-tab.php:269 includes/setup-tab.php:627
+#: includes/setup-tab.php:759 includes/setup-tab.php:769
+#: includes/setup-tab.php:779 includes/setup-tab.php:810
+msgid "Yes"
+msgstr ""
+
+#: includes/setup-tab.php:613
+msgid "Yes, send to EET from Pohoda"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:142
+msgid "You have to choose an accounting."
+msgstr ""

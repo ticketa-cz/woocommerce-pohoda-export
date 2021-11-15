@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack id="Ex003" ico="12345678" application="Pohoda export setup" version="2.0" note="Export stredisek"
+  xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd" 
+  xmlns:ftr="http://www.stormware.cz/schema/version_2/filter.xsd"
+  xmlns:cen="http://www.stormware.cz/schema/version_2/centre.xsd"
+  xmlns:lCen="http://www.stormware.cz/schema/version_2/list_centre.xsd"
+  xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd" >
+<dat:dataPackItem id="stre01" version="2.0">
+  <!-- export stredisek -->
+  <lCen:listCentreRequest version="2.0" centreVersion="2.0">
+    <lCen:requestCentre></lCen:requestCentre>
+  </lCen:listCentreRequest>
+	</dat:dataPackItem>
+</dat:dataPack>
