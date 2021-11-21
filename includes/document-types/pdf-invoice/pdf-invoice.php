@@ -35,22 +35,11 @@ $date_format = date('d.m. Y', strtotime($order_date));
 $date_tax_format = date('d.m. Y', strtotime($order_date. ' + '. $date_tax .' days'));
 $date_due_format = date('d.m. Y', strtotime($order_date. ' + '. $date_due .' days'));
 
-// QR CODE //
-
-$iban = get_option( 'wc_settings_pohoda_export_pdf_iban');
-$add_qr = get_option( 'wc_settings_pohoda_export_pdf_qrcode' );
-if ( $iban && $add_qr == "yes" ) {
-    $qr_link = 'SPD*1.0*ACC:' . $iban . '*AM:' . number_format( $total, 2 ) . '*CC:' . $order_currency . '*X-VS:' . $variable_symbol;
-    $qr_code = '<barcode code="'.$qr_link.'" size="1" type="QR" error="M" class="barcode" />';
-} else {
-    $qr_code = '';
-}
-
 // HTML //
 
-$html  = '<head><link rel="stylesheet" href="'. TICKETAPOH_PATH . 'includes/document-types/pdf-invoice/style.css"><title>' . $document_title . '</title></head><body>
+$html  = '<body>
             <header class="clearfix">
-                <h1>' . $document_title . $invoice_number . '</h1>
+                <h1 style="background: url('. TICKETAPOH_PATH . 'includes/document-types/pdf-invoice/dimension.png)">' . $document_title . $invoice_number . '</h1>
 
                 <div id="info">
                     <table>
@@ -99,12 +88,7 @@ $html  = '<head><link rel="stylesheet" href="'. TICKETAPOH_PATH . 'includes/docu
                     </table>
                 </div>
 
-                <div id="qrcode">
-                    <table>
-                        <tr><td>' . __( 'PLATBA', 'tckpoh' ) . '</td></tr>
-                        <tr><td>' . $qr_code . '</td></tr>
-                    </table>
-                </div>';
+                <div id="qrcode">' . $qr_code . '</div>';
 
 if ( file_exists( $company_logo ) && $company_logo == 'tedhoradsivypneme' ) {
     $html .=   '<div id="logo">

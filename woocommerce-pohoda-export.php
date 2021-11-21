@@ -375,4 +375,30 @@ function tckpoh_fs_custom_connect_message( $message, $user_first_name, $plugin_t
 tckpoh_fs()->add_filter('connect_message_on_update', 'tckpoh_fs_custom_connect_message_on_update', 10, 6);
 tckpoh_fs()->add_filter('connect_message', 'tckpoh_fs_custom_connect_message', 10, 6);
 
+
+//// plugin update checker ////
+
+function tckpoh_upgrader_process_complete( $upgrader_object, $options ) {
+    $tckpoh_updated = false;
+
+    if ( isset( $options['plugins'] ) && is_array( $options['plugins'] ) ) {
+        foreach ( $options['plugins'] as $index => $plugin ) {
+            if ( 'woocommerce-pohoda-export/woocommerce-pohoda-export.php' === $plugin ) {
+                $tckpoh_updated = true;
+                break;
+            }
+        }
+    }
+
+    if ( ! $tckpoh_updated ) {
+        return;
+    }
+	$tckpoh_data = get_plugin_data( 'woocommerce-pohoda-export/woocommerce-pohoda-export.php' );
+
+	tckpoh_logs( __( 'WooCommerce Pohoda Export updated to version ', 'tckpoh' ) . $tckpoh_data['Version'] );
+    
+}
+add_action( 'upgrader_process_complete', 'tckpoh_upgrader_process_complete', 10, 2 );
+
+
 ?>

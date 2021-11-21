@@ -333,17 +333,8 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 
 			// setup MPDF //
 
-			require_once TICKETAPOH_PATH . '/includes/mpdf8/vendor/autoload.php';
-
-			$mpdf_config_class = new \Mpdf\Config\ConfigVariables();
-			$defaultConfig = $mpdf_config_class->getDefaults();
-			$fontDirs = $defaultConfig['fontDir'];
-
-			$mpdf_font_config_class = new \Mpdf\Config\FontVariables();
-			$defaultFontConfig = $mpdf_font_config_class->getDefaults();
-
-			$fontData = $defaultFontConfig['fontdata'];
-			$mpdf = new \Mpdf\Mpdf();
+			require_once TICKETAPOH_PATH . '/includes/mpdf/mpdf.php';
+			$mpdf = new mPDF();
 			$mpdf->autoLangToFont = true;
 
 			// create document directory //
@@ -355,6 +346,27 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 				wp_mkdir_p( $dir );
 			}
 
+			// QR CODE //
+
+			$iban = get_option( 'wc_settings_pohoda_export_pdf_iban');
+			$add_qr = get_option( 'wc_settings_pohoda_export_pdf_qrcode' );
+			if ( $iban && $add_qr == "yes" ) {
+
+				$qr_link = 'SPD*1.0*ACC:' . $iban . '*AM:' . number_format( $total, 2 ) . '*CC:' . $order_currency . '*X-VS:' . $variable_symbol;
+
+				require_once TICKETAPOH_PATH . '/includes/mpdf/qrcode/src/QrCode.php';
+				require_once TICKETAPOH_PATH . '/includes/mpdf/qrcode/src/Output/Html.php';
+				require_once TICKETAPOH_PATH . '/includes/mpdf/qrcode/src/Output/Mpdf.php';
+
+				$codeit = new Mpdf\QrCode\QrCode($qr_link);
+				$code_output = new Mpdf\QrCode\Output\Html();
+				$qr_code = $code_output->output($codeit);
+
+				//$qr_code = '<barcode code="'.$qr_link.'" size="1" type="QR" error="M" class="barcode" />';
+			} else {
+				$qr_code = '';
+			}
+
 			// setup the template //
 
 			$document_title = __( 'Invoice - tax document #', 'tckpoh' );
@@ -363,7 +375,10 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			}
 			$mpdf->SetTitle( $document_title . $invoice_number );
 
-			require_once TICKETAPOH_PATH . 'includes/document-types/pdf-invoice/pdf-invoice.php';            
+			require_once TICKETAPOH_PATH . 'includes/document-types/pdf-invoice/pdf-invoice.php';  
+			
+			$mpdf_css = file_get_contents( TICKETAPOH_PATH . 'includes/document-types/pdf-invoice/style.css' );
+			$mpdf->WriteHTML( $mpdf_css, 1 );
 
 			//// create the pdf ////
 			

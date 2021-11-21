@@ -55,7 +55,6 @@ h1 {
   font-weight: normal;
   text-align: center;
   margin: 0 0 20px 0;
-  background: url(dimension.png);
 }
 
 #client, #company {
@@ -102,6 +101,15 @@ h1 {
 }
 #client div, #qrcode div, #company div, #info div {
   white-space: nowrap;        
+}
+
+#qrcode {
+  width: 100px;
+  height: 80px;
+}
+#qrcode table {
+  padding: 2px;
+  border: 1px solid #C1CED9;
 }
 
 #prices .service, #prices .item_name {
