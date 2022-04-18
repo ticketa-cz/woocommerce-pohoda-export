@@ -44,6 +44,7 @@ jQuery(document).ready( function ($) {
 	var last_invoice_number = "<div class='navod'><span id='last_invoice_number'>" + tckpoh_lang.last_invoice_number + "</span><span id='reset_core_number'>" + tckpoh_lang.reset_core_number + "</span></div>";
 	var erase_invoice_numbers = "<div id='reset_core_number_erase' class='button-primary woocommerce-save-button'>" + tckpoh_lang.reset_core_number_erase + "</div>";
 	var reset_queue = "<div id='reset_queue' class='button-primary woocommerce-save-button'>" + tckpoh_lang.reset_queue + "</div>";
+	var billing_info_note = "<div id='reset_numbering' class='navod'>" + tckpoh_lang.billing_info_note + "</div>";
 	var reset_numbering = "<div id='reset_numbering' class='navod'>" + tckpoh_lang.reset_numbering + "</div>";
 	var example_numbering = "<div id='example_numbering' class='navod'></div>";
 	var info_payments = "<div id='info_payments' class='navod'>" + tckpoh_lang.info_payments + "</div>";
@@ -51,6 +52,7 @@ jQuery(document).ready( function ($) {
 	
 	section_mserver.append( mserver_connect );
 	section_mserver.appendTo( "#section_mserver" );
+	heading_billing.after( billing_info_note );
 	heading_numbering.after( reset_numbering );
 	section_numbering.append( example_numbering );
 	section_numbering.appendTo( "#section_numbering" );
@@ -142,10 +144,7 @@ jQuery(document).ready( function ($) {
 	
 	
 	// minor setting //
-	
-	$( "#wc_settings_pohoda_export_billing_dic" ).addClass('befilled');
-	$( "#wc_settings_pohoda_export_billing_website" ).addClass('befilled');
-	
+		
 	$( "#wc_settings_pohoda_export_invoice_classification_type").addClass("obligatorytofill");
 
 	$("#wc_settings_pohoda_export_invoice_plugin_numbering").addClass("separated_field");

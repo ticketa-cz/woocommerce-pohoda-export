@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function submit_export_error( $order_id, $response_state, $response, $document_type = 'invoice' ) {
 	
 	// add order to unexported waiting list //
-	add_to_unexported( $order_id, 'today', $document_type );
+	add_to_unexported( $order_id, $document_type );
 	
 	if ( $response_state == 'not-connected' ) {
 		
@@ -112,23 +112,11 @@ function send_error_to_admin( $error_log, $recepient ) {
 
 ///// add unexported order to waiting list ////
 
-function add_to_unexported( $order_id, $date_from, $document_type = 'invoice' ) {
+function add_to_unexported( $order_id, $document_type = 'invoice' ) {
 	
 	// create invoice date //
-	
-	if ( $date_from == 'modified' ) {
-		
-		$order = wc_get_order( $order_id );
-		$date_modified = $order->get_date_modified()->format('Y-m-d');
-		update_post_meta( $order_id, 'pohoda_invoice_date', $date_modified );
-		
-	} else {
-		
-		$invoice_date = get_post_meta( $order_id, 'pohoda_invoice_date', true );
-		if ( empty( $invoice_date ) ) {
-			update_post_meta( $order_id, 'pohoda_invoice_date', date('Y-m-d') );
-		}
-	}
+
+	create_invoice_date( $order_id );
 	
 	// create invoice number //
 	

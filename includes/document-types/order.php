@@ -27,12 +27,24 @@ $xml->writeAttribute('version', '2.0');
             // start partnerIdentity //
                 $xml->startElementNS('typ', 'address', null);
                     foreach ($customer_info as $info_item => $info_data) {
-                        $xml->writeElementNS('typ', $info_item, null, $info_data);
+                        if ($info_item == 'country') {
+                            $xml->startElementNS('typ', 'country', null);
+                                $xml->writeElementNS('typ', 'ids', null, $info_data);
+                            $xml->endElement();
+                        } else {
+                            $xml->writeElementNS('typ', $info_item, null, $info_data);
+                        }
                     }
                 $xml->endElement();
                 $xml->startElementNS('typ', 'shipToAddress', null);
                     foreach ($customer_shipping as $shipto_item => $shipto_data) {
-                        $xml->writeElementNS('typ', $shipto_item, null, $shipto_data);
+                        if ($shipto_item == 'country') {
+                            $xml->startElementNS('typ', 'country', null);
+                                $xml->writeElementNS('typ', 'ids', null, $shipto_data);
+                            $xml->endElement();
+                        } else {
+                            $xml->writeElementNS('typ', $shipto_item, null, $shipto_data);
+                        }
                     }
                 $xml->endElement();
             // end partnerIdentity //
@@ -83,9 +95,11 @@ $xml->writeAttribute('version', '2.0');
                     $xml->writeElementNS('ord', 'delivered', null, 0);
                     $xml->writeElementNS('ord', 'payVAT', null, 'false');
                     $xml->writeElementNS('ord', 'rateVAT', null, $item_prices['item_vat_rate'] );
+                    $xml->writeElementNS('ord', 'discountPercentage', null, $item_prices['item_discount'] );
+
             
                     $xml->startElementNS('ord', $currency_format, null);
-                        $xml->writeElementNS('typ', 'unitPrice', null, number_format( $item_prices['item_unit_without_vat'], 2, '.', '' ) );
+                        $xml->writeElementNS('typ', 'unitPrice', null, number_format( $item_prices['item_unit_with_vat'], 2, '.', '' ) );
                         $xml->writeElementNS('typ', 'price', null, number_format( $item_prices['item_total_without_vat'], 2, '.', '' ) );
                         $xml->writeElementNS('typ', 'priceVAT', null, number_format( $item_prices['item_total_vat'], 2, '.', '' ) );
                         $xml->writeElementNS('typ', 'priceSum', null, number_format( $item_prices['item_total'], 2, '.', '' ) );

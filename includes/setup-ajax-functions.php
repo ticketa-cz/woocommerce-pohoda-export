@@ -4,6 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+
 //// load the xml file ////
 
 function load_my_xml( $xml_name, $ico ) {
@@ -18,6 +19,8 @@ function load_my_xml( $xml_name, $ico ) {
 	
 }
 
+
+
 //// connect to mserver and get accountings ////
 
 function pohoda_mserver_connect() {
@@ -30,9 +33,10 @@ function pohoda_mserver_connect() {
 	
 	$data_in = load_my_xml( "ucetni_jednotky", '' );	
 	$answer = make_the_call( $data_in, $host, $login, $pass );
-	$xml = simplexml_load_string($answer);
 		
-	if ( $xml ) {
+	if ( substr($answer, 0, 5) == "<?xml" ) {
+
+		$xml = simplexml_load_string( $answer );
 	
 		$ns = $xml->getDocNamespaces(); 
 		$response = $xml->children($ns['rsp']);
@@ -69,6 +73,7 @@ function pohoda_mserver_connect() {
 	
 }
 add_action('wp_ajax_pohoda_mserver_connect', 'pohoda_mserver_connect');
+
 
 
 //// load accounting billing info ////
@@ -144,6 +149,7 @@ function pohoda_load_billing_info() {
 	
 }
 add_action('wp_ajax_pohoda_load_billing_info', 'pohoda_load_billing_info');
+
 
 
 //// get minor data function ////
@@ -267,6 +273,7 @@ function get_minor_data($type, $ico, $host, $login, $pass) {
 }
 
 
+
 //// save settings ////
 
 function pohoda_save_options() {
@@ -325,7 +332,7 @@ function pohoda_check_this_year() {
 			
 			if ( !$exported_invoice_number ) {
 								
-				add_to_unexported( $order_id, 'modified' );
+				add_to_unexported( $order_id );
 				$i++;
 				
 			}
@@ -361,7 +368,7 @@ function pohoda_reset_core_number() {
 	
 	if ( $_POST['whattodo'] == 'and_erase_invoice_numbers' ) {
 				
-		$this_years_orders = get_this_years_orders( 'all' );
+		$this_years_orders = get_this_years_orders( 'all', 'all' );
 		
 		foreach( $this_years_orders as $order_id ) {
 			
@@ -390,6 +397,7 @@ function pohoda_reset_core_number() {
 add_action('wp_ajax_pohoda_reset_core_number', 'pohoda_reset_core_number');
 
 
+
 //// get this years orders ////
 
 function get_this_years_orders( $status, $dates_chosen = null ) {
@@ -399,6 +407,11 @@ function get_this_years_orders( $status, $dates_chosen = null ) {
 		$initial_date = date('Y-m-d', strtotime('first day of january this year'));
 		$final_date = date('Y-m-d', strtotime('last day of December this year'));
 
+	} else if ( $dates_chosen == 'all' ) {
+
+		$initial_date = date('Y-m-d', strtotime('first day of january 2000'));
+		$final_date = date('Y-m-d', strtotime('last day of December this year'));
+
 	} else {
 
 		$dates = explode( "==", $dates_chosen );
@@ -406,30 +419,35 @@ function get_this_years_orders( $status, $dates_chosen = null ) {
 		$final_date = date( 'Y-m-d', strtotime($dates[1]) );
 
 	}
-	
+
 	$order_args = array(
-		'limit' => -1,
-		'type' => 'shop_order',
-		'date_created' => $initial_date .'...'. $final_date,
+		'posts_per_page' => -1,
+		'fields' => 'ids',
+		'post_type' => 'shop_order',
+		'post_status' => 'any',
 		'orderby' => 'ID',
-    	'order' => 'ASC',
-		'return' => 'ids',
+		'order' => 'ASC',
+		'date_query' => array(
+			array(
+				'after' 	=> $initial_date,
+				'before'    => $final_date,
+				'inclusive' => true,
+			)
+		)
 	);
+
 	if ( $status == 'selected' ) {
 
 		$status_set = get_option('wc_settings_pohoda_export_invoice_export_status');
 		if ( $status_set == 'wc-processing' ) {
-			$order_args['status'] = array( 'wc-completed','wc-processing' );
+			$order_args['post_status'] = array( 'wc-completed','wc-processing' );
 		} else {
-			$order_args['status'] = array( 'wc-completed' );
+			$order_args['post_status'] = array( 'wc-completed' );
 		}
-
-		
 	}
 	
-	$this_years_orders = wc_get_orders( $order_args );
-		
-	return $this_years_orders;
+	$found_orders = get_posts( $order_args );	
+	return $found_orders;
 }
 
 
@@ -454,6 +472,7 @@ function pohoda_reset_queue() {
 add_action('wp_ajax_pohoda_reset_queue', 'pohoda_reset_queue');
 
 
+
 //// odeslat error log na podporu ////
 
 function pohoda_send_log_to_support() {	
@@ -472,6 +491,7 @@ function pohoda_send_log_to_support() {
 	
 }
 add_action('wp_ajax_pohoda_send_log_to_support', 'pohoda_send_log_to_support');
+
 
 
 //// vytvorit XML soubor z cele fronty ////
@@ -513,6 +533,7 @@ function pohoda_export_xml_file() {
 	
 }
 add_action('wp_ajax_pohoda_export_xml_file', 'pohoda_export_xml_file');
+
 
 
 //// vymazat protokol chyb ////

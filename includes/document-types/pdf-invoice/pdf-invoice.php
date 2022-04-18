@@ -104,6 +104,7 @@ $html .=   '</header>
                     <tr>
                         <th class="service">' . __( 'SERVICE', 'tckpoh' ) . '</th>
                         <th>' . __( 'QUANTITY', 'tckpoh' ) . '</th>
+                        <th>' . __( 'DISCOUNT', 'tckpoh' ) . '</th>
                         <th>' . __( 'PRICE WITHOUT VAT', 'tckpoh' ) . '</th>
                         <th>' . __( 'VAT %', 'tckpoh' ) . '</th>
                         <th>' . __( 'VAT', 'tckpoh' ) . '</th>
@@ -112,7 +113,7 @@ $html .=   '</header>
                 </thead>
                 <tbody>';
 
-$currency_symbol = ' ' . get_woocommerce_currency_symbol();
+$currency_symbol = ' ' . get_woocommerce_currency_symbol($order_currency);
 
 foreach ( $items_array as $item_id => $item ) {
 
@@ -125,27 +126,33 @@ foreach ( $items_array as $item_id => $item ) {
         }
         $invoice_prices[$price_key] = $item_price;
     }
+    if ( $invoice_prices['item_discount'] > 0 ) {
+        $item_discount = round( $invoice_prices['item_discount'], 0 ) . '%';
+    } else {
+        $item_discount = '';
+    }
 
     $html .=        '<tr>
                         <td class="item_name">'. $item['name'] .'</td>
                         <td class="item_quantity">'. $item['item_quantity'] . '</td>
+                        <td class="item_discount">'. $item_discount . '</td>
                         <td class="price_without_vat">'. $invoice_prices['item_total_without_vat'] . $currency_symbol . '</td>
-                        <td class="price_vat_percent">'. number_format( $invoice_prices['item_vat_percentage'], 0 ) . '%</td>
+                        <td class="price_vat_percent">'. number_format( $invoice_prices['tax_rate'], 0 ) . '%</td>
                         <td class="price_vat">'. $invoice_prices['item_total_vat'] . $currency_symbol . '</td>
                         <td class="price_total">'. $invoice_prices['item_total'] . $currency_symbol . '</td>
                     </tr>';
 }
                 
     $html .=        '<tr>
-                        <td colspan="4" class="prices_total subtotal">' . __( 'SUBTOTAL', 'tckpoh' ) . '</td>
+                        <td colspan="5" class="prices_total subtotal">' . __( 'SUBTOTAL', 'tckpoh' ) . '</td>
                         <td colspan="2" class="subtotal"><strong>' . number_format( $total_without_vat, 2 ) . $currency_symbol .  '</strong></td>
                     </tr>
                     <tr>
-                        <td colspan="4" class="prices_total">' . __( 'TAX', 'tckpoh' ) . '</td>
+                        <td colspan="5" class="prices_total">' . __( 'TAX', 'tckpoh' ) . '</td>
                         <td colspan="2"><strong>' . number_format( $total_vat, 2 ) . $currency_symbol . '</strong></td>
                     </tr>
                     <tr>
-                        <td colspan="4" class="prices_total">' . __( 'GRAND TOTAL', 'tckpoh' ) . '</td>
+                        <td colspan="5" class="prices_total">' . __( 'GRAND TOTAL', 'tckpoh' ) . '</td>
                         <td colspan="2"><strong>' . number_format( $total, 2 ) . $currency_symbol .  '</strong></td>
                     </tr>
                 </tbody>

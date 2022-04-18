@@ -4,7 +4,7 @@
 * Plugin Name: Woocommerce Pohoda Export
 * Plugin URI: https://www.ticketa.cz/woocommerce-pohoda-export-plugin/
 * Description: Export faktur z Woocommerce do účetního systému Pohoda
-* Version: 2.0
+* Version: 2.1
 * Author: Ticketa
 * Author URI: https://www.ticketa.cz/
 * Developer: Ticketa
@@ -125,6 +125,7 @@ function tckpoh_styles_and_scripts($hook) {
 			'saving_options' => __( 'Saving your settings', 'tckpoh' ),
 			'numbering_example' => __( 'Invoice number example: ', 'tckpoh' ),
 			'could_not_save' => __( 'Unable to save options...', 'tckpoh' ),
+			'billing_info_note' => __( 'You dont need to fill this info, it will be obtained from Pohoda. Fill it only if you plan on using the plugin without mServer connection.', 'tckpoh' ),
 			'reset_numbering' => __( 'Note, that if the system finds a duplicate invoice number associated with a woocommerce order, it will delete it and use it with the new order. So beware not to use same numbering twice or not to start with the same number.', 'tckpoh' ),
 			'reset_core_number' => __( 'Reset number', 'tckpoh' ),
 			'reset_queue' => __( 'Reset export queue', 'tckpoh' ),
@@ -222,6 +223,7 @@ function woo_version_check() {
 }
 
 
+
 /// export logging ////
 
 function tckpoh_logs( $message ) {
@@ -237,6 +239,7 @@ function tckpoh_logs( $message ) {
     fwrite( $logfile, "\n" . $dt->format('d.m Y h:i:s') . " :: " . $message ); 
     fclose( $logfile );
 }
+
 
 
 //// add pdf export to order table ////
@@ -281,6 +284,7 @@ function custom_orders_list_column_content( $column, $post_id ) {
 add_action( 'manage_shop_order_posts_custom_column' , 'custom_orders_list_column_content', 20, 2 );
 
 
+
 //// attach pdf to order email ////
  
 function tckpoh_attach_pdf_to_emails( $attachments, $email_id, $order, $email ) {
@@ -303,6 +307,7 @@ function tckpoh_attach_pdf_to_emails( $attachments, $email_id, $order, $email ) 
 	switch ( $status_set ) {
 		case 'wc-processing':	$automatic_status = 'customer_processing_order';	break;
 		case 'wc-on-hold':		$automatic_status = 'customer_on_hold_order';		break;
+		case 'wc-completed':	$automatic_status = 'customer_completed_order';		break;
 	}
 
 	// if new bank transfer order // or customer invoice // or automatic sending at status //
@@ -321,6 +326,7 @@ function tckpoh_attach_pdf_to_emails( $attachments, $email_id, $order, $email ) 
 add_filter( 'woocommerce_email_attachments', 'tckpoh_attach_pdf_to_emails', 10, 4 );
 
 
+
 //// create pdf from order list ////
 
 function tckpoh_create_pdf_invoice() {
@@ -328,6 +334,7 @@ function tckpoh_create_pdf_invoice() {
 	$order_id = $_GET['order_id'];
 	create_invoice( $order_id, 'pdf_to_screen', NULL, 'pdf' );
 }
+
 
 
 //// add menu item ////
@@ -374,6 +381,7 @@ function tckpoh_fs_custom_connect_message( $message, $user_first_name, $plugin_t
 }
 tckpoh_fs()->add_filter('connect_message_on_update', 'tckpoh_fs_custom_connect_message_on_update', 10, 6);
 tckpoh_fs()->add_filter('connect_message', 'tckpoh_fs_custom_connect_message', 10, 6);
+
 
 
 //// plugin update checker ////

@@ -127,7 +127,7 @@ function create_invoice_or_add_to_unexported( $order_id, $old_status, $new_statu
 		
 	} else {
 		
-		add_to_unexported( $order_id, 'today' );
+		add_to_unexported( $order_id );
 		
 	}
 		

@@ -16,11 +16,5 @@ https://www.ticketa.cz/woocommerce-pohoda-export-plugin/wpe-manual/
 
 == Changelog ==
 
-- nová funkce vytváření a odesílání PDF faktur
-- nová záložka pro zobrazení protokolu událostí
-- tlačítko pro vymazání protokolu událostí
-- přidaná možnost exportu pouze objednávek
-- opraveno nastavení plánovaných akcí pro export objednávek
-- opraven výpočet cen při zapnutých daních v případě že je cena včetně daně
-- opraven výstup daňových tříd v XML při použití více než jedné daňové třídy
-- vytvořeno menu pluginu
+- celkově opravené výpočty cen a slev
+- opravené znaménko cizí měny v pdf fakturách

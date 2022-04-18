@@ -51,7 +51,7 @@ class WC_Pohoda_Export_Tab {
 		$all_statuses = wc_get_order_statuses();
 		$limited_statuses = array();
 		foreach ( $all_statuses as $status_key => $status ) {
-			if ( in_array( $status_key, array( 'wc-processing', 'wc-on-hold' ) ) ) {
+			if ( in_array( $status_key, array( 'wc-processing', 'wc-on-hold', 'wc-completed' ) ) ) {
 				$limited_statuses[$status_key] = $status;
 			}
 		}
@@ -100,7 +100,6 @@ class WC_Pohoda_Export_Tab {
 			'accounting_key' => array(
 				'name' => __( 'Accounting key', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_accounting_key'
 			),
@@ -113,55 +112,34 @@ class WC_Pohoda_Export_Tab {
 			'billing_info' => array(
 				'name'     => __( 'Billing info', 'tckpoh' ),
 				'type'     => 'title',
-				'desc'     => '',
 				'id'       => 'wc_settings_pohoda_export_billing_info'
-			),	
-			'billing_use_type' => array(
-				'name' => __( 'Which billing info to use?', 'tckpoh' ),
-				'type' => 'radio',
-				'class' => 'billingusetype',
-				'options' => array(
-					'pohoda' => __( 'Pohoda default', 'tckpoh' ),
-					'woo' => __( 'Woocommerce default', 'tckpoh' ),
-					'custom' => __( 'Custom info', 'tckpoh' ),
-				),
-				'desc' => __( '', 'tckpoh' ),
-				'id'   => 'wc_settings_pohoda_export_billing_use_type',
-				'default' => 'pohoda'
-			),	
+			),
 			'billing_company' => array(
 				'name' => __( 'Company name', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
-				'desc' => __( 'This billing info must be filled in Pohoda.', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_company',
-				'desc_tip' => true,
 			),
 			'billing_company_title' => array(
 				'name' => __( 'Company title', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_company_title'
 			),
 			'billing_surname' => array(
 				'name' => __( 'First name', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_surname'
 			),
 			'billing_name' => array(
 				'name' => __( 'Last name', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_name'
 			),
 			'billing_ico' => array(
 				'name' => __( 'ICO', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'id'   => 'wc_settings_pohoda_export_billing_ico',
 			),
 			'billing_dic' => array(
@@ -174,42 +152,36 @@ class WC_Pohoda_Export_Tab {
 			'billing_address_street' => array(
 				'name' => __( 'Address street', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_address_street'
 			),
 			'billing_address_street_number' => array(
 				'name' => __( 'Address street number', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_address_street_number'
 			),
 			'billing_address_city' => array(
 				'name' => __( 'Address city', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_address_city'
 			),
 			'billing_address_code' => array(
 				'name' => __( 'Address post code', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_address_code'
 			),
 			'billing_phone' => array(
 				'name' => __( 'Phone', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_phone'
 			),
 			'billing_email' => array(
 				'name' => __( 'Email', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_email'
 			),
@@ -231,21 +203,18 @@ class WC_Pohoda_Export_Tab {
 			'billing_account_number' => array(
 				'name' => __( 'Account number', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_account_number'
 			),
 			'billing_account_bank_id' => array(
 				'name' => __( 'Bank code', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_account_bank_id'
 			),
 			'billing_account_id' => array(
 				'name' => __( 'Account ID', 'tckpoh' ),
 				'type' => 'text',
-				'class' => 'befilled',
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_billing_account_id'
 			),
@@ -398,6 +367,20 @@ class WC_Pohoda_Export_Tab {
 					'' => __( 'Choose one...', 'tckpoh' ),
 				),
 				'id'   => 'wc_settings_pohoda_export_invoice_classification_type',
+			),
+			'invoice_data_date_type' => array(
+				'name' => __( 'Date type', 'tckpoh' ),
+				'type' => 'select',
+				'default' => 'created',
+				'options' => array(
+					'created' => __( 'Order date', 'tckpoh' ),
+					'modified' => __( 'Order last modified date', 'tckpoh' ),
+					'paid' => __( 'Order paid date', 'tckpoh' ),
+					'completed' => __( 'Order completed date', 'tckpoh' ),
+				),
+				'desc' => __( 'If there is no order paid or completed date, order creation date will be used.', 'tckpoh' ),
+				'id'   => 'wc_settings_pohoda_export_invoice_data_date_type',
+				'desc_tip' =>  true,
 			),
 			'invoice_data_payment_due' => array(
 				'name' => __( 'Payment due date from order date', 'tckpoh' ),

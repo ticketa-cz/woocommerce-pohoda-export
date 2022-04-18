@@ -31,7 +31,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 
 	}
 
-	// quit if exporting only orders //
+	// quit if is not order and exporting only orders //
 
 	$frequency = get_option('wc_settings_pohoda_export_invoice_export_type');
 	if ( $frequency == 'order_only' && $document_type != 'order' ) {
@@ -52,14 +52,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 
 		// date //
 		
-		$invoice_date = get_post_meta( $order_id, 'pohoda_invoice_date', true );
-		
-		if ( !$invoice_date ) {
-			update_post_meta( $order_id, 'pohoda_invoice_date', date('Y-m-d') );
-			$order_date = date('Y-m-d');
-		} else {
-			$order_date = $invoice_date;
-		}
+		$order_date = create_invoice_date( $order_id );
 			 
 		$date_tax		= intval(get_option('wc_settings_pohoda_export_invoice_data_payment_supply'));
 		$date_due		= intval(get_option('wc_settings_pohoda_export_invoice_data_payment_due'));
@@ -159,6 +152,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			'city' 		=> $order->get_billing_city(),
 			'street' 	=> $billing_address,
 			'zip'		=> $order->get_billing_postcode(),
+			'country'	=> $order->get_billing_country(),
 			'ico'		=> $customer_ico,
 			'dic'		=> $customer_dic,
 			'phone'		=> $order->get_billing_phone(),
@@ -170,6 +164,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			'city'		=> $order->get_shipping_city(),
 			'street'	=> $shipping_address,
 			'zip'		=> $order->get_shipping_postcode(),
+			'country'	=> $order->get_shipping_country(),
 		);
 		$billing_info = array(
 			'company'	=> get_option('wc_settings_pohoda_export_billing_company'),
@@ -261,11 +256,11 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			$item_values['item_total'] = $item->get_total();
 				$quantity = $item->get_quantity();
 				if ( empty($quantity) || $quantity == NULL || $quantity == '' ) { $quantity = 1; } 
-			$item_values['item_quantity'] = number_format( $quantity, 0, '.', '' );
+			$item_values['item_quantity'] = number_format( $quantity, 2, '.', '' );
 
 			// get item prices //
 
-			$item_prices = get_item_prices( $item, $item_values['item_total'], $item_values['item_quantity'], $plugin_set_coeficient, $plugin_set_vat_rate );
+			$item_prices = get_item_prices( $item, $item_values['item_total'], $item_values['item_quantity'], $plugin_set_coeficient, $plugin_set_vat_rate, $order );
 			$item_values['item_prices'] = $item_prices;
 
 			// add to vat rates //
@@ -303,8 +298,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			}
 		}
 		
-		$order_price_round = round( $order->get_total(), 2 ); //Celkova suma zaokrouhleni.
-			
+		$order_price_round = round( $order->get_total(), 2 ); //Celkova suma zaokrouhleni.	
 		
 		// payment type & liquidation && EET //
 		
@@ -326,6 +320,8 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 				}
 			}
 		}
+
+		
 
 		/////////////////////////////			create PDF			//////////////////////////////////
 
@@ -538,94 +534,200 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 }
 
 
+
+
 //// get item prices ////
 
-function get_item_prices( $item, $item_total, $item_quantity, $coeficient, $item_vat_rate ) {
+function get_item_prices( $item, $item_total, $item_quantity, $coeficient, $item_vat_rate, $order ) {	
 
 	$return = array();
+	$discount_percentage = 0;
+	$rate = 1;
+
+	// tax rate //
+
+	$tax_obj = new WC_Tax();
+	// Get the tax data from customer location and product tax class
+	$tax_rates_data = $tax_obj->find_rates( array(
+		'country'   => $order->get_shipping_country() ? $order->get_shipping_country() : $order->get_billing_country(),
+		'state'     => $order->get_shipping_state() ? $order->get_shipping_state() : $order->get_billing_state(),
+		'city'      => $order->get_shipping_city() ? $order->get_shipping_city() : $order->get_billing_city(),
+		'postcode'  => $order->get_shipping_city() ? $order->get_shipping_city() : $order->get_billing_city(),
+		'tax_class' => $item->get_tax_class()
+	) );
+	if( ! empty( $tax_rates_data ) ) {
+		$tax_rate = reset( $tax_rates_data )['rate'];
+	} else {
+		$tax_rate = 0;
+	}
+
+
+	// actual price //
+
+	if ( $item->is_type('fee') || $item->is_type('shipping') ) {
+		$item_total_tax = $item->get_total_tax();
+		$item_actual_price = ( $item_total + $item_total_tax ) / $item_quantity;
+	} else {
+		$item_total_tax = ( $item_total / 100 ) * $tax_rate;
+		$item_actual_price = ( round($item_total,2) + round($item_total_tax,2) ) / $item_quantity;
+	}
+	$item_unit_tax = $item_total_tax / $item_quantity;
+	$item_unit_price = $item_total / $item_quantity;
+
+
+	// regular price //
+
+	if ( $item->is_type('line_item') ) {
+		
+		if ( $item->get_variation_id() > 0 ) {
+			$variation_id = $item->get_variation_id();
+			$product_variation = new WC_Product_Variation( $variation_id );
+            $item_saved_price = $product_variation->get_price();
+			//error_log('order #' . $item->get_order_id() . ' - order item #' . $item->get_id() . ' - item variation: ' . $variation_id . ' / price: ' . $item_saved_price );
+		} else {
+			$item_product = $item->get_product();
+			if ( $item_product ) { 
+				$item_saved_price = $item_product->get_regular_price();
+			}
+			
+			//error_log('order #' . $item->get_order_id() . ' - order item #' . $item->get_id()  . ' - no variation / price: ' . $item_saved_price );
+		}
+	}
+
+	if ( wc_prices_include_tax() || !wc_tax_enabled() ) {
+
+		if ( $item->is_type('fee') || $item->is_type('shipping') ) {
+			$item_saved_price = $item_actual_price;
+			//error_log('order #' . $item->get_order_id() . ' - order item #' . $item->get_id()  . ' - shipping or fee / price: ' . $item_saved_price );
+		}
+		if ( !$item_saved_price ) {
+			$item_saved_price = $item_actual_price;
+		}
+		$item_regular_price = $item_saved_price;
+		$item_regular_tax = $item_regular_price - ( ( $item_regular_price / ( 100 + $tax_rate ) ) * 100 ); // >> happens to be non numeric
+		$item_regular_notax = $item_regular_price - $item_regular_tax; // >> happens to be non numeric
+
+	} else {
+
+		if ( $item->is_type('fee') || $item->is_type('shipping') ) {
+			$item_saved_price = $item_unit_price;
+		}
+		if ( !$item_saved_price ) {
+			$item_saved_price = $item_actual_price;
+		}
+		$item_regular_notax = $item_saved_price;
+		$item_regular_tax = ( $item_regular_notax * ( 1 + ( $tax_rate / 100 ) ) ) - $item_regular_notax ;
+		$item_regular_price = $item_regular_notax + $item_regular_tax;
+	}
+
+	// if regular was not CZK //
+
+	$currency = $order->get_currency();
+
+	if ( $currency !== 'CZK' ) {
+		$multicurrency_info = get_post_meta( $item->get_order_id(), 'wmc_order_info', true );
+		if ( $multicurrency_info ) {
+			$rate = $multicurrency_info[$currency]['rate'];
+		} else {
+			$rate = get_conversion_rate( 'CZK', $currency, 1 );
+		}
+
+		$item_regular_notax = $item_regular_notax * $rate;
+		$item_regular_tax = $item_regular_tax * $rate;
+		$item_regular_price = $item_regular_price * $rate;
+	}
+
+	// sleva //
+
+	//error_log( $item_actual_price );
+	//error_log( $item_regular_price );
+
+	if ( round( $item_regular_price ) !== round( $item_actual_price ) && round( $item_regular_price ) > round( $item_actual_price ) ) {
+		
+		$one_percent = floatval( $item_regular_notax / 100 );
+		$price_percent = floatval( $item_unit_price / $one_percent ); // >> happens to be 0
+		$discount_percentage = floatval( 100 - $price_percent );
+	} 
+	
+	//error_log('tax rate: ' . $tax_rate . '% --- item_regular_price: ' . $item_regular_price . ' // item_regular_notax: ' . $item_regular_notax . ' // item_regular_tax: ' . $item_regular_tax );
+	//error_log('total : ' . $item_total . ' --- total tax : ' . $item_total_tax . ' /// regular : '.  $item_regular_price . ' --- actual : ' .  $item_actual_price . ' /// discount: ' . $discount_percentage );
+	
+
+	
+	//////// +++++++ COUPONS ++++++++ ////////
+
+
+	//// VYPOCTY ////
 
 	// pokud jsou dane povolene ve Woo //
 
 	if ( wc_tax_enabled() ) {
 
-		$item_total_tax = $item->get_total_tax();
-
 		// tax rate //
 
-		$tax_percentage = intval( $item_total_tax / ( $item_total / 100 ) );
-
-		switch( true ) {
-			case ( 19 < $tax_percentage && $tax_percentage < 23 ):		$item_vat_rate = "high";	$item_vat_percentage = 21;	break;
-			case ( 13 < $tax_percentage && $tax_percentage < 17 ):		$item_vat_rate = "low";		$item_vat_percentage = 15; 	break;
-			case ( 8 < $tax_percentage && $tax_percentage < 12 ):		$item_vat_rate = "third";	$item_vat_percentage = 10; 	break;
-			case ( $tax_percentage < 1 ):								$item_vat_rate = "none";	$item_vat_percentage = 0;	break;
+		switch( $tax_rate ) {
+			case 21:	$item_vat_rate = "high";	break;
+			case 15:	$item_vat_rate = "low";		break;
+			case 10:	$item_vat_rate = "third";	break;
+			case 0:		$item_vat_rate = "none";	break;
 		}
 
-		// if prices include taxes //
+		// total //
 
-		if ( wc_prices_include_tax() ) {			
+		$return['item_total_vat'] = floatval( $item_total_tax );
+		$return['item_total_without_vat'] = floatval( $item_total );
+		$return['item_total'] = floatval( $item_total + $item_total_tax );
 
-			$return['item_unit_vat'] = floatval( $item_total_tax / $item_quantity );
-			$return['item_unit_price'] = floatval( ( $item_total + $item_total_tax ) / $item_quantity );
-			$return['item_unit_without_vat'] = floatval( $return['item_unit_price'] - $return['item_unit_vat'] );
+		// unit //
 
-			// opravene ceny kvuli zaokrouhleni dane >> zatim to vypada ze se zaokrouhluji obe cena i dan jen u produktu, ne shipping a fees //
-
-			if ( $item->is_type('fee') || $item->is_type('shipping') ) {
-
-				$fee_item_total = floatval ( $item_total_tax + $item_total );
-				$return['item_total_vat'] = floatval( ($fee_item_total / ( 100 + $item_vat_percentage ) ) * $item_vat_percentage );
-				$return['item_total_without_vat'] = floatval( $fee_item_total - $return['item_total_vat'] );
-			
-			} else {
-
-				$return['item_total_vat'] = floatval( ($item_total / 100) * (100 + $item_vat_percentage) - $item_total );
-				$return['item_total_without_vat'] = floatval( $item_total );
-			}
-			$return['item_total'] = floatval( $return['item_total_without_vat'] + $return['item_total_vat'] );
-
-			
-
+		$return['item_unit_vat'] = floatval( $item_unit_tax );
+		$return['item_unit_price'] = floatval( $item_unit_price );
+		if ( $discount_percentage > 0 ) {
+			$return['item_unit_with_vat'] = floatval( $item_regular_price );
 		} else {
-
-		// if taxes are added to the prices //
-
-			$return['item_unit_vat'] = floatval( $item_total_tax / $item_quantity );
-			$return['item_unit_price'] = floatval( ( $item_total + $item_total_tax ) / $item_quantity );
-			$return['item_unit_without_vat'] = floatval( $item_total / $item_quantity );
-
-			$return['item_total_without_vat'] = floatval( $item_total );
-			$return['item_total_vat'] = floatval( $item_total_tax );
-			$return['item_total'] = floatval( $return['item_total_without_vat'] + $return['item_total_vat'] );
-
+			$return['item_unit_with_vat'] = floatval( $item_actual_price );
 		}
 
 	// pokud nejsou povolene ve Woo, pocitat je z nastaveni pluginu //
 
 	} else {
 
-		$return['item_unit_price'] = floatval( $item_total / $item_quantity );
-		$return['item_unit_without_vat'] = floatval( $return['item_unit_price'] / $coeficient );
-		$return['item_unit_vat'] = floatval( $return['item_unit_price'] - $return['item_unit_without_vat'] );
-
-		$return['item_total_without_vat'] = floatval( $item_total / $coeficient );
-		$return['item_total_vat'] = floatval( $item_total - $return['item_total_without_vat'] );
-		$return['item_total'] = floatval( $return['item_total_without_vat'] + $return['item_total_vat'] );
-
 		switch( $item_vat_rate ) {
-			case "high":	$item_vat_percentage = 21;	break;
-			case "low": 	$item_vat_percentage = 15; 	break;
-			case "third":	$item_vat_percentage = 10; 	break;
-			case "none":	$item_vat_percentage = 0;	break;
+			case "high":	$tax_rate = 21;		break;
+			case "low": 	$tax_rate = 15; 	break;
+			case "third":	$tax_rate = 10; 	break;
+			case "none":	$tax_rate = 0;		break;
 		}
+
+		// total //
+
+		$item_total_with_vat = floatval( $item_actual_price * $item_quantity );
+		$item_total_without_vat = floatval( $item_total_with_vat / $coeficient );
+		$return['item_total_without_vat'] = floatval( $item_total_without_vat );
+		$return['item_total_vat'] = floatval( $item_total_with_vat - $item_total_without_vat );
+		$return['item_total'] = floatval( $item_total_with_vat );
+
+		// unit //
+
+		$return['item_unit_price'] = floatval( $item_unit_price );
+		if ( $discount_percentage > 0 ) {
+			$return['item_unit_with_vat'] = floatval( $item_regular_price );
+		} else {
+			$return['item_unit_with_vat'] = floatval( $item_actual_price );
+		}
+		$item_unit_without_vat = floatval( $item_unit_price / $coeficient );
+		$return['item_unit_vat'] = floatval( $item_unit_price - $item_unit_without_vat );
 
 	}
 
 	$return['item_vat_rate'] = $item_vat_rate;
-	$return['item_vat_percentage'] = $item_vat_percentage;
+	$return['tax_rate'] = $tax_rate;
+	$return['item_discount'] = $discount_percentage;
 
 	return $return;
 }
+
+
 
 
 //// create invoice numbering ////
@@ -693,6 +795,45 @@ function create_invoice_number( $order_id ) {
 		
 	}
 }
+
+
+
+//// create invoice date function ////
+
+function create_invoice_date( $order_id ) {
+
+	// try to get saved date //
+
+	$invoice_date = get_post_meta( $order_id, 'pohoda_invoice_date', true );
+
+	if ( !$invoice_date ) {
+	
+		$order = wc_get_order( $order_id );
+
+		// get date type //
+		$invoice_date_type = get_option('wc_settings_pohoda_export_invoice_data_date_type');
+		if ( !$invoice_date_type ) { $invoice_date_type = 'created'; }
+
+		// get order date by type //
+		switch ( $invoice_date_type ) {
+			case "modified":	$invoice_order_date = $order->get_date_modified();	break;
+			case "completed":	$invoice_order_date = $order->get_date_completed(); break;
+			case "paid":		$invoice_order_date = $order->get_date_paid();		break;
+			case "created":		$invoice_order_date = $order->get_date_created();	break;
+		}
+		if ( !$invoice_order_date ) {
+			$invoice_order_date = $order->get_date_created();
+		}
+
+		$invoice_date = date('Y-m-d', strtotime( $invoice_order_date ) );
+		update_post_meta( $order_id, 'pohoda_invoice_date', $invoice_date );
+
+	}
+
+	return $invoice_date;
+
+}
+
 
 
 //// create date format function ////
