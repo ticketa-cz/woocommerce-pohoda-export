@@ -37,10 +37,12 @@ jQuery(document).ready( function ($) {
 	var save_options = "<div id='save_options' class='button-primary woocommerce-save-button'>" + tckpoh_lang.save_options + "</div>";
 	var check_this_year = "<div id='check_this_year' class='button-primary woocommerce-save-button'>" + tckpoh_lang.check_this_year + "</div>";
 	var export_xml = "<div id='export_xml' class='button-primary woocommerce-save-button'>" + tckpoh_lang.export_xml + "</div>";
-	var action_log_content = "<div id='action_log_content'></div>";
+
+	var action_log_content = "<div id='action_log_content'></div><div id='export_queue_content'></div>";
 	var send_log_to_support = "<div id='send_log_to_support' class='button-primary woocommerce-save-button'>" + tckpoh_lang.send_log_to_support + "</div>";
 	var erase_action_log = "<div id='erase_action_log' class='button-primary woocommerce-save-button'>" + tckpoh_lang.erase_action_log + "</div>";
 	var reload_action_log = "<div id='reload_action_log' class='button-primary woocommerce-save-button'>" + tckpoh_lang.reload_action_log + "</div>";
+
 	var last_invoice_number = "<div class='navod'><span id='last_invoice_number'>" + tckpoh_lang.last_invoice_number + "</span><span id='reset_core_number'>" + tckpoh_lang.reset_core_number + "</span></div>";
 	var erase_invoice_numbers = "<div id='reset_core_number_erase' class='button-primary woocommerce-save-button'>" + tckpoh_lang.reset_core_number_erase + "</div>";
 	var reset_queue = "<div id='reset_queue' class='button-primary woocommerce-save-button'>" + tckpoh_lang.reset_queue + "</div>";
@@ -49,6 +51,8 @@ jQuery(document).ready( function ($) {
 	var example_numbering = "<div id='example_numbering' class='navod'></div>";
 	var info_payments = "<div id='info_payments' class='navod'>" + tckpoh_lang.info_payments + "</div>";
 	var plugin_switch = "<div id='plugin_switch_div' class='setting_section'><input id='plugin_switch' type='checkbox' value='" + tckpoh_lang.plugin_switch + "' /><p>" + tckpoh_lang.plugin_switch_note + "</p></div>";
+	var logo_upload = "<div id='logo_upload' class='button-primary woocommerce-save-button'>" + tckpoh_lang.logo_upload + "</div><img id='logo_upload_preview' />";
+
 	
 	section_mserver.append( mserver_connect );
 	section_mserver.appendTo( "#section_mserver" );
@@ -63,9 +67,9 @@ jQuery(document).ready( function ($) {
 	section_log.appendTo( "#section_log" );
 	heading_payments.after( info_payments );
 	section_payments.appendTo( "#section_payments" );
-	section_log.append( action_log_content + erase_action_log + reload_action_log + send_log_to_support );
+	section_log.append( action_log_content + erase_action_log + reload_action_log + send_log_to_support + reset_queue );
 	section_actions.appendTo( "#section_actions" );
-	heading_actions.after( "<div id='actions_div'>" + check_this_year + export_xml + erase_invoice_numbers + reset_queue + "</div>" );
+	heading_actions.after( "<div id='actions_div'>" + check_this_year + export_xml + erase_invoice_numbers + "</div>" );
 	$( ".submit" ).append( save_options );
 	$( ".submit" ).before( plugin_switch );
 	$('#plugin_switch').lc_switch();
@@ -75,6 +79,13 @@ jQuery(document).ready( function ($) {
 		$('#plugin_switch').lcs_off();
 	}
 	$("#wc_settings_pohoda_export_invoice_number_start").after(last_invoice_number);
+
+	$("#wc_settings_pohoda_export_pdf_logo").after( logo_upload );
+	if ( tckpoh_lang.logo_upload_url.length > 1 ) {
+		$("#logo_upload_preview").prop("src", tckpoh_lang.logo_upload_url);
+	}
+
+	heading_log.append('<span id="export_queue_heading">' + tckpoh_lang.export_queue + '</span>');
 		
 	//section_mserver.hide();
 	section_numbering.hide();
@@ -139,8 +150,37 @@ jQuery(document).ready( function ($) {
 	$("#reload_action_log").on("click", function() {
 		load_action_log();
 	});
-	
+
 	load_action_log();
+
+
+	// load export queue content //
+
+	function load_export_queue() {
+		$.ajax({
+			type: 'POST',
+			url: ajaxurl,
+			dataType: 'json',
+			data: {
+				'action': 'load_export_queue',
+			},
+			beforeSend: function() {
+				$("#export_queue_content").empty();
+			},
+			complete : function () {
+			},
+			success : function (data) {
+				$.each(data, function(index, obj) {
+					$("#export_queue_content").append('<a href="' + tckpoh_lang.admin_url + 'post.php?post=' + index + '&action=edit">' + index + ' - ' + obj.date + '</a> - ' + obj.name + '<br/>');
+				});
+			}
+		});
+	}
+	$("#reload_export_queue").on("click", function() {
+		load_export_queue();
+	});
+	
+	load_export_queue();
 	
 	
 	// minor setting //
@@ -629,36 +669,37 @@ jQuery(document).ready( function ($) {
 	
 	function pohoda_check_this_year() {
 		
-		let dates_chosen = prompt(tckpoh_lang.will_check_this_year, "");
-		if ( dates_chosen !== null ) {
-		
-			$.ajax({
-				  type: 'POST',
-				  url: ajaxurl,
-				  dataType: 'json',
-				  data: {
-					  'action': 'pohoda_check_this_year',
-					  'dates_chosen': dates_chosen
-				  },
-				  beforeSend: function() {
-					  openloader(tckpoh_lang.checking_orders);
-				  },
-				  complete: function(){
-					  closeloader();
-				  },
-				  success: function( data ) {
-					  					  
-					  if (data.error === 'bezproblemu') {
-						  alert(data.order_count + ' ' + tckpoh_lang.check_this_year_ok);
-					  } else {
-						  alert(tckpoh_lang.check_this_year_error);
-					  }
-				  },
-				  error : function (data) {
-					  alert(tckpoh_lang.check_this_year_error);
-				  }
-			});
-		}
+		var dates_chosen = prompt(tckpoh_lang.will_check_this_year, "");
+		var currency_chosen = prompt(tckpoh_lang.choose_currency, "");
+				
+		$.ajax({
+			type: 'POST',
+			url: ajaxurl,
+			dataType: 'json',
+			data: {
+				'action': 'pohoda_check_this_year',
+				'dates_chosen': dates_chosen,
+				'currency_chosen': currency_chosen.toUpperCase()
+			},
+			beforeSend: function() {
+				openloader(tckpoh_lang.checking_orders);
+			},
+			complete: function(){
+				closeloader();
+			},
+			success: function( data ) {
+									
+					if (data.error === 'bezproblemu') {
+						load_export_queue();
+						alert(data.order_count + ' ' + tckpoh_lang.check_this_year_ok);
+					} else {
+						alert(tckpoh_lang.check_this_year_error);
+					}
+			},
+			error : function (data) {
+					alert(tckpoh_lang.check_this_year_error);
+			}
+		});
 	}
 	$("#check_this_year").on("click", function(){
 		pohoda_check_this_year();
@@ -760,6 +801,7 @@ jQuery(document).ready( function ($) {
 				  
 					if ( data === 'bezproblemu' ) {
 						alert(tckpoh_lang.queue_was_erased);
+						$("#export_queue_content").empty();
 					}
 				  
 			  }
@@ -806,6 +848,7 @@ jQuery(document).ready( function ($) {
 		}
 	});
 
+
 	//// vymazat protokol chyb ////
 	
 	function pohoda_erase_action_log() {
@@ -834,4 +877,223 @@ jQuery(document).ready( function ($) {
 
 	window.removeEventListener('beforeunload', onbeforeunload);
 			
+});
+
+
+
+
+//// PDF LOGO UPLOAD AND CROP ////
+
+jQuery(document).ready(function($) {
+
+	function img_upload_crop_options(attachment, controller) {
+	
+		var control = controller.get( 'control' );
+		
+		var flexWidth = !! parseInt( control.params.flex_width, 10 );
+		var flexHeight = !! parseInt( control.params.flex_height, 10 );
+		
+		var realWidth = attachment.get( 'width' );
+		var realHeight = attachment.get( 'height' );
+		
+		var xInit = parseInt(control.params.width, 10);
+		var yInit = parseInt(control.params.height, 10);
+		
+		var ratio = xInit / yInit;
+		
+		controller.set( ! control.mustBeCropped( flexWidth, flexHeight, xInit, yInit, realWidth, realHeight ) );
+		
+		var xImg = xInit;
+		var yImg = yInit;
+		
+		if ( realWidth / realHeight > ratio ) {
+			yInit = realHeight;
+			xInit = yInit * ratio;
+		} else {
+			xInit = realWidth;
+			yInit = xInit / ratio;
+		}        
+		
+		var x1 = ( realWidth - xInit ) / 2;
+		var y1 = ( realHeight - yInit ) / 2;        
+		
+		var imgSelectOptions = {
+			handles: true,
+			keys: true,
+			instance: true,
+			persistent: true,
+			imageWidth: realWidth,
+			imageHeight: realHeight,
+			minWidth: xImg > xInit ? xInit : xImg,
+			minHeight: yImg > yInit ? yInit : yImg,            
+			x1: x1,
+			y1: y1,
+			x2: xInit + x1,
+			y2: yInit + y1
+		};
+		
+		return imgSelectOptions;
+	}  
+	
+	function img_upload_setImageFromURL(url, attachmentId, width, height) {
+
+		var choice, data = {};
+		data.url = url;
+		data.thumbnail_url = url;
+		data.timestamp = _.now();
+		
+		if (attachmentId) {
+			data.attachment_id = attachmentId;
+		}
+		
+		if (width) {
+			data.width = width;
+		}
+		
+		if (height) {
+			data.height = height;
+		}
+		
+		$("#wc_settings_pohoda_export_pdf_logo").val( url );
+		$("#logo_upload_preview").prop("src", url);        
+	
+	}
+	
+	function img_upload_setImageFromAttachment(attachment) {
+		
+		$("#wc_settings_pohoda_export_pdf_logo").val( attachment.url );
+		$("#logo_upload_preview").prop("src", attachment.url);  
+		           
+	}
+	
+	var mediaUploader;
+	
+	$("#logo_upload").on("click", function(e) {
+	
+		e.preventDefault(); 
+		
+		/* We need to setup a Crop control that contains a few parameters
+		   and a method to indicate if the CropController can skip cropping the image.
+		   In this example I am just creating a control on the fly with the expected properties.
+		   However, the controls used by WordPress Admin are api.CroppedImageControl and api.SiteIconControl
+		*/
+		
+		var cropControl = {
+		   id: "control-id",
+		   params : {
+			 flex_width : false,  // set to true if the width of the cropped image can be different to the width defined here
+			 flex_height : false, // set to true if the height of the cropped image can be different to the height defined here
+			 width : 250,  // set the desired width of the destination image here
+			 height : 250, // set the desired height of the destination image here
+		   }
+		};
+		
+		cropControl.mustBeCropped = function(flexW, flexH, dstW, dstH, imgW, imgH) {
+		
+		// If the width and height are both flexible
+		// then the user does not need to crop the image.
+		
+		if ( true === flexW && true === flexH ) {
+			return false;
+		}
+		
+		// If the width is flexible and the cropped image height matches the current image height, 
+		// then the user does not need to crop the image.
+		if ( true === flexW && dstH === imgH ) {
+			return false;
+		}
+		
+		// If the height is flexible and the cropped image width matches the current image width, 
+		// then the user does not need to crop the image.        
+		if ( true === flexH && dstW === imgW ) {
+			return false;
+		}
+		
+		// If the cropped image width matches the current image width, 
+		// and the cropped image height matches the current image height
+		// then the user does not need to crop the image.               
+		if ( dstW === imgW && dstH === imgH ) {
+			return false;
+		}
+		
+		// If the destination width is equal to or greater than the cropped image width
+		// then the user does not need to crop the image...
+		if ( imgW <= dstW ) {
+			return false;
+		}
+		
+		return true;        
+	
+	};      
+	
+	/* NOTE: Need to set this up every time instead of reusing if already there
+			 as the toolbar button does not get reset when doing the following:
+	
+			mediaUploader.setState('library');
+			mediaUploader.open();
+	
+	*/       
+	
+	mediaUploader = wp.media({
+		button: {
+			text: tckpoh_lang.vybrataoriznout, // l10n.selectAndCrop,
+			close: false
+		},
+		states: [
+			new wp.media.controller.Library({
+				title:     tckpoh_lang.vybrataoriznout, // l10n.chooseImage,
+				library:   wp.media.query({ type: 'image' }),
+				multiple:  false,
+				date:      false,
+				priority:  20,
+				suggestedWidth: 250,
+				suggestedHeight: 250
+			}),
+			new wp.media.controller.CustomizeImageCropper({ 
+				imgSelectOptions: img_upload_crop_options,
+				control: cropControl
+			})
+		]
+	});
+	
+	mediaUploader.on('cropped', function(croppedImage) {
+	
+		var url = croppedImage.url,
+			attachmentId = croppedImage.attachment_id,
+			w = croppedImage.width,
+			h = croppedImage.height;
+	
+			img_upload_setImageFromURL(url, attachmentId, w, h);            
+	
+	});
+	
+	mediaUploader.on('skippedcrop', function(selection) {
+	
+		var url = selection.get('url'),
+			w = selection.get('width'),
+			h = selection.get('height');
+	
+			img_upload_setImageFromURL(url, selection.id, w, h);            
+	
+	});        
+	
+	mediaUploader.on("select", function() {
+	
+		var attachment = mediaUploader.state().get( 'selection' ).first().toJSON();
+	
+		if (     cropControl.params.width  === attachment.width 
+			&&   cropControl.params.height === attachment.height 
+			&& ! cropControl.params.flex_width 
+			&& ! cropControl.params.flex_height ) {
+				img_upload_setImageFromAttachment( attachment );
+			mediaUploader.close();
+		} else {
+			mediaUploader.setState( 'cropper' );
+		}
+	
+	});
+	
+	mediaUploader.open();
+	
+	});
 });

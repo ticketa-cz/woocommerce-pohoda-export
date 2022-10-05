@@ -16,5 +16,5 @@ https://www.ticketa.cz/woocommerce-pohoda-export-plugin/wpe-manual/
 
 == Changelog ==
 
-- celkově opravené výpočty cen a slev
-- opravené znaménko cizí měny v pdf fakturách
+- opravena chyba v zaseknutém exportu xml souboru
+- přidané okno s frontou pro export

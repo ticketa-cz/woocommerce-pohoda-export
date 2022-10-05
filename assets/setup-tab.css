@@ -76,8 +76,15 @@
 	display: inline-block;
     margin-left: 20px;
 }
-#check_this_year, #send_log_to_support, #export_xml, #reset_core_number_erase, #reset_queue, #erase_action_log, #reload_action_log {
+#check_this_year, #export_xml, #reset_core_number_erase, #reset_queue {
     float: right;
+    margin-top: 7px;
+	margin-left: 10px;
+	background: #7bbdc4;
+	border-color: #5f9797;
+}
+#send_log_to_support, #erase_action_log, #reload_action_log {
+    float: left;
     margin-top: 7px;
 	margin-left: 10px;
 	background: #7bbdc4;
@@ -112,8 +119,7 @@
 #wc_settings_pohoda_export_action_log_window {
 	display: none;
 }
-#action_log_content {
-	width: 100%;
+#action_log_content, #export_queue_content {
 	height: 300px;
 	overflow-y: scroll;
 	border: 1px solid #ddd;
@@ -121,9 +127,20 @@
 	margin-bottom: 20px;
 	box-sizing: border-box;
 	white-space: pre-line;
+	float: left;
 }
-#action_log_content .numbers {
+#action_log_content .numbers, #export_queue_content {
 	font-weight: 800;
+}
+#action_log_content {
+	width: 69%;
+	margin-right: 1%;
+}
+#export_queue_content {
+	width: 30%;
+}
+#export_queue_content a {
+	text-decoration: none;
 }
 
 /* LC SWITCH */
@@ -225,4 +242,15 @@
 	opacity: 0.65;
 	filter: alpha(opacity=65);	
 	cursor: default;
+}
+
+#logo_upload_preview {
+	width: 200px;
+	height: 250px;
+	display: block;
+	margin-top: 20px;
+}
+
+#export_queue_heading {
+	float: right;
 }

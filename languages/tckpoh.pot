@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ticketa Pohoda export\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-10 11:36+0000\n"
+"POT-Creation-Date: 2022-10-02 21:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid " from unexported."
 msgstr ""
 
-#: includes/setup-ajax-functions.php:480
+#: includes/setup-ajax-functions.php:493
 msgid " is sending you their error log."
 msgstr ""
 
@@ -70,23 +70,23 @@ msgstr ""
 msgid "Accounting key"
 msgstr ""
 
-#: includes/setup-tab.php:819
+#: includes/setup-tab.php:842
 msgid "Action log"
 msgstr ""
 
-#: includes/setup-ajax-functions.php:544
+#: includes/setup-ajax-functions.php:557
 msgid "Action log erased"
 msgstr ""
 
-#: includes/setup-tab.php:836
+#: includes/setup-tab.php:859
 msgid "Actions"
 msgstr ""
 
-#: includes/setup-tab.php:509
+#: includes/setup-tab.php:525
 msgid "Activity selection"
 msgstr ""
 
-#: includes/setup-tab.php:789
+#: includes/setup-tab.php:812
 msgid "Add QR code to invoice?"
 msgstr ""
 
@@ -94,8 +94,8 @@ msgstr ""
 msgid "Added to unexported"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:66
-#: includes/document-types/pdf-invoice/pdf-invoice.php:83
+#: includes/document-types/pdf-invoice/pdf-invoice.php:88
+#: includes/document-types/pdf-invoice/pdf-invoice.php:105
 msgid "ADDRESS"
 msgstr ""
 
@@ -115,33 +115,33 @@ msgstr ""
 msgid "Address street number"
 msgstr ""
 
-#: includes/setup-tab.php:540
+#: includes/setup-tab.php:556
 msgid "After each order"
 msgstr ""
 
-#: includes/setup-tab.php:657
+#: includes/setup-tab.php:673
 msgid "And assign it to a payment type from Pohoda."
 msgstr ""
 
-#: includes/setup-tab.php:551
+#: includes/setup-tab.php:567
 msgid "At which status to export invoice?"
 msgstr ""
 
-#: includes/setup-tab.php:768
+#: includes/setup-tab.php:784
 msgid "At which status to send the PDF invoice?"
 msgstr ""
 
-#: includes/setup-tab.php:758
+#: includes/setup-tab.php:774
 msgid "Automatically send invoice on a preset order status?"
 msgstr ""
 
-#: includes/setup-tab.php:748
+#: includes/setup-tab.php:764
 msgid ""
 "Automatically send invoice on new order when bank transfer payment method "
 "used?"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:69
+#: includes/document-types/pdf-invoice/pdf-invoice.php:91
 msgid "BANK ACCOUNT"
 msgstr ""
 
@@ -149,7 +149,7 @@ msgstr ""
 msgid "Bank code"
 msgstr ""
 
-#: includes/setup-tab.php:678
+#: includes/setup-tab.php:694
 msgid "Bank transfer"
 msgstr ""
 
@@ -157,23 +157,23 @@ msgstr ""
 msgid "Billing info"
 msgstr ""
 
-#: includes/setup-tab.php:640
+#: includes/setup-tab.php:656
 msgid "Card"
 msgstr ""
 
-#: includes/setup-tab.php:661
+#: includes/setup-tab.php:677
 msgid "Cash in shop"
 msgstr ""
 
-#: includes/setup-tab.php:695
+#: includes/setup-tab.php:711
 msgid "Cash on delivery"
 msgstr ""
 
-#: includes/setup-tab.php:483
+#: includes/setup-tab.php:499
 msgid "Center selection"
 msgstr ""
 
-#: includes/setup-tab.php:554
+#: includes/setup-tab.php:570
 msgid ""
 "Change this only if you are using a different status for payment. Usually "
 "the order goes to Processing status when a payment is made. If a different "
@@ -189,7 +189,11 @@ msgstr ""
 msgid "Checking unexported orders"
 msgstr ""
 
-#: includes/setup-tab.php:645
+#: woocommerce-pohoda-export.php:195
+msgid "Choose"
+msgstr ""
+
+#: includes/setup-tab.php:661
 msgid "Choose a payment type from those turned on in Woocommerce."
 msgstr ""
 
@@ -201,29 +205,33 @@ msgstr ""
 msgid "Choose accounting"
 msgstr ""
 
-#: includes/setup-tab.php:502
+#: woocommerce-pohoda-export.php:197
+msgid "Choose and crop"
+msgstr ""
+
+#: includes/setup-tab.php:518
 msgid "Choose from Pohoda activities"
 msgstr ""
 
-#: includes/setup-tab.php:476
+#: includes/setup-tab.php:492
 msgid "Choose from Pohoda centers"
 msgstr ""
 
 #: woocommerce-pohoda-export.php:122 includes/setup-tab.php:96
 #: includes/setup-tab.php:199 includes/setup-tab.php:266
-#: includes/setup-tab.php:367
+#: includes/setup-tab.php:383
 msgid "Choose one..."
 msgstr ""
 
-#: includes/setup-tab.php:363
+#: includes/setup-tab.php:379
 msgid "Classification type"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:80
+#: includes/document-types/pdf-invoice/pdf-invoice.php:102
 msgid "CLIENT"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:63
+#: includes/document-types/pdf-invoice/pdf-invoice.php:85
 msgid "COMPANY"
 msgstr ""
 
@@ -247,32 +255,32 @@ msgstr ""
 msgid "Connecting to mServer from settings page ..."
 msgstr ""
 
-#: includes/setup-tab.php:355
+#: includes/setup-tab.php:371
 msgid "Converter API key"
 msgstr ""
 
-#: woocommerce-pohoda-export.php:189
+#: woocommerce-pohoda-export.php:190
 msgid "Could not send error log because of an error."
 msgstr ""
 
-#: woocommerce-pohoda-export.php:190
+#: woocommerce-pohoda-export.php:191
 msgid "Could not switch the plugin because of an error."
 msgstr ""
 
-#: woocommerce-pohoda-export.php:192 includes/setup-ajax-functions.php:506
+#: woocommerce-pohoda-export.php:193 includes/setup-ajax-functions.php:519
 msgid "Creating the XML file."
 msgstr ""
 
-#: includes/setup-tab.php:424 includes/setup-tab.php:457
-#: includes/setup-tab.php:478 includes/setup-tab.php:504
+#: includes/setup-tab.php:440 includes/setup-tab.php:473
+#: includes/setup-tab.php:494 includes/setup-tab.php:520
 msgid "Custom"
 msgstr ""
 
-#: includes/setup-tab.php:517
+#: includes/setup-tab.php:533
 msgid "Custom activity text"
 msgstr ""
 
-#: includes/setup-tab.php:491
+#: includes/setup-tab.php:507
 msgid "Custom center text"
 msgstr ""
 
@@ -284,53 +292,53 @@ msgstr ""
 msgid "Custom field value"
 msgstr ""
 
-#: includes/setup-tab.php:464
+#: includes/setup-tab.php:480
 msgid "Custom heading text"
 msgstr ""
 
-#: includes/setup-tab.php:429
+#: includes/setup-tab.php:445
 msgid "Custom specific symbol"
 msgstr ""
 
-#: includes/setup-tab.php:444
+#: includes/setup-tab.php:460
 msgid "Customer DIC field"
 msgstr ""
 
-#: includes/setup-tab.php:437
+#: includes/setup-tab.php:453
 msgid "Customer ICO field"
 msgstr ""
 
-#: includes/setup-tab.php:541
+#: includes/setup-tab.php:557
 msgid "Daily"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:53
+#: includes/document-types/pdf-invoice/pdf-invoice.php:75
 msgid "DATE"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:54
+#: includes/document-types/pdf-invoice/pdf-invoice.php:76
 msgid "DATE DUE"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:55
+#: includes/document-types/pdf-invoice/pdf-invoice.php:77
 msgid "DATE TAX"
 msgstr ""
 
-#: includes/setup-tab.php:372
+#: includes/setup-tab.php:388
 msgid "Date type"
 msgstr ""
 
-#: includes/setup-tab.php:582
+#: includes/setup-tab.php:598
 msgid "Day of month"
 msgstr ""
 
-#: includes/setup-tab.php:567
+#: includes/setup-tab.php:583
 msgid "Day of week"
 msgstr ""
 
 #: includes/setup-tab.php:146
 #: includes/document-types/pdf-invoice/pdf-invoice.php:29
-#: includes/document-types/pdf-invoice/pdf-invoice.php:71
+#: includes/document-types/pdf-invoice/pdf-invoice.php:93
 msgid "DIC"
 msgstr ""
 
@@ -338,36 +346,44 @@ msgstr ""
 msgid "Did not find any unexported orders or an error happened."
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:107
+#: includes/document-types/pdf-invoice/pdf-invoice.php:123
 msgid "DISCOUNT"
 msgstr ""
 
-#: includes/setup-tab.php:703
+#: includes/setup-tab.php:719
 msgid "Dobírkou"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:46
+#: includes/document-types/pdf-invoice/pdf-invoice.php:68
 msgid "DOCUMENT INFO"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:48
+#: includes/document-types/pdf-invoice/pdf-invoice.php:70
 msgid "DOCUMENT NUMBER"
 msgstr ""
 
-#: includes/setup-tab.php:597
+#: includes/setup-tab.php:613
 msgid "Dont send to EET from Pohoda"
+msgstr ""
+
+#: includes/setup-tab.php:352
+msgid "Down to one"
+msgstr ""
+
+#: includes/setup-tab.php:353
+msgid "Down to tenth"
 msgstr ""
 
 #: includes/setup-tab.php:74
 msgid "e.g. http://46.234.119.70:4444/xml"
 msgstr ""
 
-#: includes/setup-tab.php:599
+#: includes/setup-tab.php:615
 msgid "EET doesnt apply to my products"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:68
-#: includes/document-types/pdf-invoice/pdf-invoice.php:84
+#: includes/document-types/pdf-invoice/pdf-invoice.php:90
+#: includes/document-types/pdf-invoice/pdf-invoice.php:106
 msgid "EMAIL"
 msgstr ""
 
@@ -375,15 +391,15 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: includes/setup-tab.php:738
+#: includes/setup-tab.php:754
 msgid "Enable PDF invoices"
 msgstr ""
 
-#: includes/setup-tab.php:447
+#: includes/setup-tab.php:463
 msgid "Enter the custom field name under which the DIC number is saved."
 msgstr ""
 
-#: includes/setup-tab.php:439
+#: includes/setup-tab.php:455
 msgid "Enter the custom field name under which the ICO number is saved."
 msgstr ""
 
@@ -401,11 +417,11 @@ msgstr ""
 msgid "Erase all invoice numbers"
 msgstr ""
 
-#: includes/setup-ajax-functions.php:380
+#: includes/setup-ajax-functions.php:393
 msgid "Erased invoice numbers attached to all the orders."
 msgstr ""
 
-#: includes/setup-ajax-functions.php:465
+#: includes/setup-ajax-functions.php:478
 msgid "Erased the export queue."
 msgstr ""
 
@@ -417,16 +433,26 @@ msgstr ""
 msgid "Export faktur z Woocommerce do účetního systému Pohoda"
 msgstr ""
 
-#: includes/setup-tab.php:606
+#: includes/setup-tab.php:622
 msgid "Export orders?"
 msgstr ""
 
-#: includes/setup-tab.php:530
+#: woocommerce-pohoda-export.php:189
+msgid "Export queue"
+msgstr ""
+
+#: includes/setup-tab.php:546
 msgid "Export setting"
 msgstr ""
 
 #: woocommerce-pohoda-export.php:149
 msgid "Export XML file"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:198
+msgid ""
+"Filter by currency: enter the currency international code. Or leave blank to "
+"search all currencies."
 msgstr ""
 
 #: woocommerce-pohoda-export.php:151
@@ -437,23 +463,23 @@ msgstr ""
 msgid "First name"
 msgstr ""
 
-#: includes/setup-tab.php:459
+#: includes/setup-tab.php:475
 msgid "First product category name"
 msgstr ""
 
-#: includes/setup-tab.php:458
+#: includes/setup-tab.php:474
 msgid "First product name"
 msgstr ""
 
-#: includes/setup-tab.php:536
+#: includes/setup-tab.php:552
 msgid "Frequency of invoice export"
 msgstr ""
 
-#: includes/setup-tab.php:575
+#: includes/setup-tab.php:591
 msgid "Friday"
 msgstr ""
 
-#: includes/create-invoice.php:535
+#: includes/create-invoice.php:534
 msgid "Got communication error"
 msgstr ""
 
@@ -461,31 +487,35 @@ msgstr ""
 msgid "Got communication error: "
 msgstr ""
 
-#: includes/create-invoice.php:514
+#: includes/create-invoice.php:513
 msgid "Got import minor error"
 msgstr ""
 
-#: includes/create-invoice.php:528
+#: includes/create-invoice.php:527
 msgid "Got package error"
 msgstr ""
 
-#: includes/create-invoice.php:521
+#: includes/create-invoice.php:520
 msgid "Got validation error"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:155
+#: includes/document-types/pdf-invoice/pdf-invoice.php:171
 msgid "GRAND TOTAL"
 msgstr ""
 
-#: includes/setup-tab.php:669
+#: includes/setup-tab.php:800
+msgid "Header background"
+msgstr ""
+
+#: includes/setup-tab.php:685
 msgid "Hotově"
 msgstr ""
 
-#: includes/setup-tab.php:390
+#: includes/setup-tab.php:406
 msgid "How many days is the payment due date from the order date?"
 msgstr ""
 
-#: includes/setup-tab.php:399
+#: includes/setup-tab.php:415
 msgid "How many days is the taxable supply date from the order date?"
 msgstr ""
 
@@ -501,27 +531,27 @@ msgstr ""
 msgid "https://www.ticketa.cz/woocommerce-pohoda-export-plugin/"
 msgstr ""
 
-#: includes/setup-tab.php:598
+#: includes/setup-tab.php:614
 msgid "I will send to EET externally"
 msgstr ""
 
-#: includes/setup-tab.php:799
+#: includes/setup-tab.php:822
 msgid "IBAN"
 msgstr ""
 
 #: includes/setup-tab.php:141
 #: includes/document-types/pdf-invoice/pdf-invoice.php:26
-#: includes/document-types/pdf-invoice/pdf-invoice.php:70
+#: includes/document-types/pdf-invoice/pdf-invoice.php:92
 msgid "ICO"
 msgstr ""
 
-#: includes/setup-tab.php:381
+#: includes/setup-tab.php:397
 msgid ""
 "If there is no order paid or completed date, order creation date will be "
 "used."
 msgstr ""
 
-#: includes/setup-tab.php:357
+#: includes/setup-tab.php:373
 msgid ""
 "If using different currency than CZK, you have to use converter API. Get "
 "your key here: https://rapidapi.com/fyhao/api/currency-exchange"
@@ -533,27 +563,31 @@ msgid ""
 "symbols. For example YYMM, or YYYYMMDD..."
 msgstr ""
 
-#: includes/setup-tab.php:800
+#: includes/setup-tab.php:823
 msgid "If you want to use QR code, you must specify your IBAN code."
 msgstr ""
 
-#: includes/setup-tab.php:713
+#: includes/setup-tab.php:795
+msgid "Insert the link to the uploaded file."
+msgstr ""
+
+#: includes/setup-tab.php:729
 msgid "Insert the WooCommerce shortcut of your own payment method."
 msgstr ""
 
-#: includes/create-invoice.php:375
+#: includes/create-invoice.php:377
 msgid "Invoice - tax document #"
 msgstr ""
 
-#: includes/setup-tab.php:499
+#: includes/setup-tab.php:515
 msgid "Invoice activity type"
 msgstr ""
 
-#: includes/setup-tab.php:473
+#: includes/setup-tab.php:489
 msgid "Invoice center type"
 msgstr ""
 
-#: includes/setup-tab.php:623
+#: includes/setup-tab.php:639
 msgid "Invoice core number"
 msgstr ""
 
@@ -561,16 +595,20 @@ msgstr ""
 msgid "Invoice data"
 msgstr ""
 
-#: includes/setup-tab.php:453
+#: includes/setup-tab.php:469
 msgid "Invoice heading text"
 msgstr ""
 
-#: includes/setup-tab.php:411 includes/setup-tab.php:423
+#: includes/setup-tab.php:427 includes/setup-tab.php:439
 msgid "Invoice inner number"
 msgstr ""
 
-#: includes/setup-tab.php:410 includes/setup-tab.php:422
-#: includes/setup-tab.php:622
+#: includes/setup-tab.php:793
+msgid "Invoice logo"
+msgstr ""
+
+#: includes/setup-tab.php:426 includes/setup-tab.php:438
+#: includes/setup-tab.php:638
 msgid "Invoice number"
 msgstr ""
 
@@ -590,7 +628,7 @@ msgstr ""
 msgid "Invoice suffix"
 msgstr ""
 
-#: includes/setup-tab.php:585
+#: includes/setup-tab.php:601
 msgid "Last day"
 msgstr ""
 
@@ -614,15 +652,27 @@ msgstr ""
 msgid "Main numbering starting at"
 msgstr ""
 
-#: includes/setup-tab.php:544
+#: includes/setup-tab.php:560
 msgid "Manually"
 msgstr ""
 
-#: includes/setup-tab.php:571
+#: includes/setup-tab.php:349
+msgid "Math to half"
+msgstr ""
+
+#: includes/setup-tab.php:347
+msgid "Math to one"
+msgstr ""
+
+#: includes/setup-tab.php:348
+msgid "Math to tenth"
+msgstr ""
+
+#: includes/setup-tab.php:587
 msgid "Monday"
 msgstr ""
 
-#: includes/setup-tab.php:543
+#: includes/setup-tab.php:559
 msgid "Monthly"
 msgstr ""
 
@@ -642,22 +692,23 @@ msgstr ""
 msgid "mServer setting"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:65
-#: includes/document-types/pdf-invoice/pdf-invoice.php:82
+#: includes/document-types/pdf-invoice/pdf-invoice.php:87
+#: includes/document-types/pdf-invoice/pdf-invoice.php:104
 msgid "NAME"
 msgstr ""
 
-#: includes/create-invoice.php:124
+#: includes/create-invoice.php:130
 msgid "New eshop order #"
 msgstr ""
 
-#: includes/setup-tab.php:239 includes/setup-tab.php:611
-#: includes/setup-tab.php:743 includes/setup-tab.php:753
-#: includes/setup-tab.php:763 includes/setup-tab.php:794
+#: includes/setup-tab.php:239 includes/setup-tab.php:627
+#: includes/setup-tab.php:759 includes/setup-tab.php:769
+#: includes/setup-tab.php:779 includes/setup-tab.php:805
+#: includes/setup-tab.php:817
 msgid "No"
 msgstr ""
 
-#: includes/setup-tab.php:301
+#: includes/setup-tab.php:301 includes/setup-tab.php:346
 msgid "None"
 msgstr ""
 
@@ -675,7 +726,7 @@ msgid ""
 "be overriden by the default in Pohoda."
 msgstr ""
 
-#: includes/setup-tab.php:807
+#: includes/setup-tab.php:830
 msgid "Notice at the bottom of invoice:"
 msgstr ""
 
@@ -683,39 +734,39 @@ msgstr ""
 msgid "Number of digits of main numbering"
 msgstr ""
 
-#: includes/setup-tab.php:379
+#: includes/setup-tab.php:395
 msgid "Order completed date"
 msgstr ""
 
-#: includes/setup-tab.php:376
+#: includes/setup-tab.php:392
 msgid "Order date"
 msgstr ""
 
-#: includes/setup-tab.php:377
+#: includes/setup-tab.php:393
 msgid "Order last modified date"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:51
+#: includes/document-types/pdf-invoice/pdf-invoice.php:73
 msgid "ORDER NUMBER"
 msgstr ""
 
-#: includes/setup-tab.php:621
+#: includes/setup-tab.php:637
 msgid "Order number"
 msgstr ""
 
-#: includes/setup-tab.php:616
+#: includes/setup-tab.php:632
 msgid "Order number type"
 msgstr ""
 
-#: includes/setup-tab.php:545
+#: includes/setup-tab.php:561
 msgid "Order only"
 msgstr ""
 
-#: includes/setup-tab.php:378
+#: includes/setup-tab.php:394
 msgid "Order paid date"
 msgstr ""
 
-#: includes/setup-tab.php:711
+#: includes/setup-tab.php:727
 msgid "Own payment method"
 msgstr ""
 
@@ -723,28 +774,28 @@ msgstr ""
 msgid "Own text"
 msgstr ""
 
-#: includes/setup-tab.php:386
+#: includes/setup-tab.php:402
 msgid "Payment due date from order date"
 msgstr ""
 
-#: includes/setup-tab.php:634
+#: includes/setup-tab.php:650
 msgid "Payment methods"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:56
+#: includes/document-types/pdf-invoice/pdf-invoice.php:78
 msgid "PAYMENT TYPE"
 msgstr ""
 
-#: includes/setup-tab.php:732
+#: includes/setup-tab.php:748
 msgid "PDF"
 msgstr ""
 
-#: woocommerce-pohoda-export.php:257
+#: woocommerce-pohoda-export.php:265
 msgid "PDF invoice"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:67
-#: includes/document-types/pdf-invoice/pdf-invoice.php:85
+#: includes/document-types/pdf-invoice/pdf-invoice.php:89
+#: includes/document-types/pdf-invoice/pdf-invoice.php:107
 msgid "PHONE"
 msgstr ""
 
@@ -752,11 +803,11 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: includes/setup-tab.php:650
+#: includes/setup-tab.php:666
 msgid "Plat.kartou"
 msgstr ""
 
-#: woocommerce-pohoda-export.php:358 woocommerce-pohoda-export.php:369
+#: woocommerce-pohoda-export.php:373 woocommerce-pohoda-export.php:384
 #, php-format
 msgid ""
 "Please help us improve %2$s! If you opt-in, some data about your usage of "
@@ -768,7 +819,7 @@ msgstr ""
 msgid "Plugin switch"
 msgstr ""
 
-#: woocommerce-pohoda-export.php:339
+#: woocommerce-pohoda-export.php:354
 msgid "Pohoda Export"
 msgstr ""
 
@@ -784,7 +835,7 @@ msgstr ""
 msgid "Pohoda export error, could not save order #"
 msgstr ""
 
-#: woocommerce-pohoda-export.php:340
+#: woocommerce-pohoda-export.php:355
 msgid "Pohoda Export PDF"
 msgstr ""
 
@@ -800,23 +851,23 @@ msgstr ""
 msgid "Pohoda prefix"
 msgstr ""
 
-#: includes/create-invoice.php:505
+#: includes/create-invoice.php:504
 msgid "Pohoda response: "
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:111
+#: includes/document-types/pdf-invoice/pdf-invoice.php:127
 msgid "PRICE TOTAL"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:108
+#: includes/document-types/pdf-invoice/pdf-invoice.php:124
 msgid "PRICE WITHOUT VAT"
 msgstr ""
 
-#: includes/setup-tab.php:686
+#: includes/setup-tab.php:702
 msgid "Příkazem"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:106
+#: includes/document-types/pdf-invoice/pdf-invoice.php:122
 msgid "QUANTITY"
 msgstr ""
 
@@ -844,7 +895,11 @@ msgstr ""
 msgid "Reseting"
 msgstr ""
 
-#: includes/setup-tab.php:576
+#: includes/setup-tab.php:342
+msgid "Rounding"
+msgstr ""
+
+#: includes/setup-tab.php:592
 msgid "Saturday"
 msgstr ""
 
@@ -856,7 +911,7 @@ msgstr ""
 msgid "Saving your settings"
 msgstr ""
 
-#: includes/setup-ajax-functions.php:325
+#: includes/setup-ajax-functions.php:334
 msgid "Searching for all unexported orders of this year."
 msgstr ""
 
@@ -868,27 +923,31 @@ msgstr ""
 msgid "Sending error log to support..."
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:105
+#: includes/document-types/pdf-invoice/pdf-invoice.php:121
 msgid "SERVICE"
 msgstr ""
 
-#: includes/setup-tab.php:589
+#: includes/setup-tab.php:605
 msgid "Should Pohoda send invoice to EET after import?"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:50
+#: includes/setup-tab.php:807
+msgid "Should the header background be used?"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:72
 msgid "SPECIFIC SYMBOL"
 msgstr ""
 
-#: includes/setup-tab.php:417
+#: includes/setup-tab.php:433
 msgid "Specific symbol"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:147
+#: includes/document-types/pdf-invoice/pdf-invoice.php:163
 msgid "SUBTOTAL"
 msgstr ""
 
-#: includes/setup-tab.php:577
+#: includes/setup-tab.php:593
 msgid "Sunday"
 msgstr ""
 
@@ -896,15 +955,15 @@ msgstr ""
 msgid "Switching the plugin..."
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:151
+#: includes/document-types/pdf-invoice/pdf-invoice.php:167
 msgid "TAX"
 msgstr ""
 
-#: includes/setup-tab.php:395
+#: includes/setup-tab.php:411
 msgid "Taxable supply date from order date"
 msgstr ""
 
-#: includes/setup-tab.php:772
+#: includes/setup-tab.php:788
 msgid ""
 "The PDF invoice will be sent to the customer automatically when the order "
 "status is changed to this one."
@@ -914,7 +973,7 @@ msgstr ""
 msgid "The queue was erased."
 msgstr ""
 
-#: woocommerce-pohoda-export.php:193
+#: woocommerce-pohoda-export.php:194
 msgid "The XML file could not be created because of an error."
 msgstr ""
 
@@ -926,7 +985,7 @@ msgid ""
 "fill the input with dates exactly in this format YYYY-MM-DD==YYYY-MM-DD"
 msgstr ""
 
-#: includes/setup-tab.php:593
+#: includes/setup-tab.php:609
 msgid "This only applies to payments made by card."
 msgstr ""
 
@@ -936,7 +995,7 @@ msgid ""
 "You have to empty the waiting list later."
 msgstr ""
 
-#: includes/setup-tab.php:574
+#: includes/setup-tab.php:590
 msgid "Thursday"
 msgstr ""
 
@@ -944,23 +1003,23 @@ msgstr ""
 msgid "Ticketa"
 msgstr ""
 
-#: includes/setup-tab.php:559
+#: includes/setup-tab.php:575
 msgid "Time to export invoices"
 msgstr ""
 
-#: includes/create-invoice.php:44
+#: includes/create-invoice.php:50
 msgid "Tried to create invoice for order #"
 msgstr ""
 
-#: includes/create-invoice.php:45
+#: includes/create-invoice.php:51
 msgid "Tried to create order #"
 msgstr ""
 
-#: includes/setup-ajax-functions.php:462
+#: includes/setup-ajax-functions.php:475
 msgid "Tried, but unable to erase the export queue."
 msgstr ""
 
-#: includes/setup-tab.php:572
+#: includes/setup-tab.php:588
 msgid "Tuesday"
 msgstr ""
 
@@ -990,23 +1049,31 @@ msgstr ""
 msgid "Unable to save options..."
 msgstr ""
 
+#: includes/setup-tab.php:350
+msgid "Up to one"
+msgstr ""
+
+#: includes/setup-tab.php:351
+msgid "Up to tenth"
+msgstr ""
+
 #: includes/setup-tab.php:234
 msgid "Use numbering from a different plugin?"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:49
+#: includes/document-types/pdf-invoice/pdf-invoice.php:71
 msgid "VARIABLE SYMBOL"
 msgstr ""
 
-#: includes/setup-tab.php:405
+#: includes/setup-tab.php:421
 msgid "Variable symbol"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:110
+#: includes/document-types/pdf-invoice/pdf-invoice.php:126
 msgid "VAT"
 msgstr ""
 
-#: includes/document-types/pdf-invoice/pdf-invoice.php:109
+#: includes/document-types/pdf-invoice/pdf-invoice.php:125
 msgid "VAT %"
 msgstr ""
 
@@ -1030,7 +1097,7 @@ msgid ""
 "appear in the export waiting list."
 msgstr ""
 
-#: includes/setup-tab.php:467
+#: includes/setup-tab.php:483
 msgid "We are billing you for goods..."
 msgstr ""
 
@@ -1038,16 +1105,16 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: includes/setup-tab.php:573
+#: includes/setup-tab.php:589
 msgid "Wednesday"
 msgstr ""
 
-#: includes/setup-tab.php:542
+#: includes/setup-tab.php:558
 msgid "Weekly"
 msgstr ""
 
-#: includes/setup-tab.php:302 includes/setup-tab.php:409
-#: includes/setup-tab.php:421
+#: includes/setup-tab.php:302 includes/setup-tab.php:425
+#: includes/setup-tab.php:437
 msgid "Woocommerce Order number"
 msgstr ""
 
@@ -1055,17 +1122,18 @@ msgstr ""
 msgid "Woocommerce Pohoda Export"
 msgstr ""
 
-#: woocommerce-pohoda-export.php:400
+#: woocommerce-pohoda-export.php:416
 msgid "WooCommerce Pohoda Export updated to version "
 msgstr ""
 
-#: includes/setup-tab.php:238 includes/setup-tab.php:610
-#: includes/setup-tab.php:742 includes/setup-tab.php:752
-#: includes/setup-tab.php:762 includes/setup-tab.php:793
+#: includes/setup-tab.php:238 includes/setup-tab.php:626
+#: includes/setup-tab.php:758 includes/setup-tab.php:768
+#: includes/setup-tab.php:778 includes/setup-tab.php:804
+#: includes/setup-tab.php:816
 msgid "Yes"
 msgstr ""
 
-#: includes/setup-tab.php:596
+#: includes/setup-tab.php:612
 msgid "Yes, send to EET from Pohoda"
 msgstr ""
 

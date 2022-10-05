@@ -338,6 +338,22 @@ class WC_Pohoda_Export_Tab {
 				),
 				'id'   => 'wc_settings_pohoda_export_invoice_data_vat_rate',
 			),
+			'invoice_data_rounding' => array(
+				'name' => __( 'Rounding', 'tckpoh' ),
+				'type' => 'select',
+				'default' => 'math2one',
+				'options' => array(
+					'none' => __( 'None', 'tckpoh' ),
+					'math2one' => __( 'Math to one', 'tckpoh' ),
+					'math2tenth' => __( 'Math to tenth', 'tckpoh' ),
+					'math2half' => __( 'Math to half', 'tckpoh' ),
+					'up2one' => __( 'Up to one', 'tckpoh' ),
+					'up2tenth' => __( 'Up to tenth', 'tckpoh' ),
+					'down2one' => __( 'Down to one', 'tckpoh' ),
+					'down2tenth' => __( 'Down to tenth', 'tckpoh' ),
+				),
+				'id'   => 'wc_settings_pohoda_export_invoice_data_rounding',
+			),
 			/*
 			'invoice_foreign_currency' => array(
 				'name' => __( 'CZK as main currency', 'tckpoh' ),
@@ -773,18 +789,25 @@ class WC_Pohoda_Export_Tab {
 				'id'   => 'wc_settings_pohoda_export_pdf_status',
 				'desc_tip' =>  true,
 			),
-			/*
 			'export_pdf_logo' => array(
-				'name' => __( 'Insert website logo to invoice?', 'tckpoh' ),
+				'name' => __( 'Invoice logo', 'tckpoh' ),
+				'type' => 'text',
+				'desc' => __( 'Insert the link to the uploaded file.', 'tckpoh' ),
+				'desc_tip' =>  true,
+				'id'   => 'wc_settings_pohoda_export_pdf_logo',
+			),
+			'export_pdf_background' => array(
+				'name' => __( 'Header background', 'tckpoh' ),
 				'type' => 'radio',
-				'class' => 'befilled',
-				'default' => 'no',
+				'default' => 'yes',
 				'options' => array(
 					'yes' => __( 'Yes', 'tckpoh' ),
 					'no' => __( 'No', 'tckpoh' ),
 				),
-				'id'   => 'wc_settings_pohoda_export_pdf_logo',
-			),*/
+				'desc' => __( 'Should the header background be used?', 'tckpoh' ),
+				'desc_tip' =>  true,
+				'id'   => 'wc_settings_pohoda_export_pdf_background',
+			),
 			'export_pdf_qrcode' => array(
 				'name' => __( 'Add QR code to invoice?', 'tckpoh' ),
 				'type' => 'radio',

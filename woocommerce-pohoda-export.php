@@ -4,7 +4,7 @@
 * Plugin Name: Woocommerce Pohoda Export
 * Plugin URI: https://www.ticketa.cz/woocommerce-pohoda-export-plugin/
 * Description: Export faktur z Woocommerce do účetního systému Pohoda
-* Version: 2.1
+* Version: 2.1.4
 * Author: Ticketa
 * Author URI: https://www.ticketa.cz/
 * Developer: Ticketa
@@ -186,11 +186,17 @@ function tckpoh_styles_and_scripts($hook) {
 			'reload_action_log' => __( 'Reload action log', 'tckpoh' ),
 			'erasing_action_log' => __( 'Erasing action log', 'tckpoh' ),
 			'sending_log_to_support' => __( 'Sending error log to support...', 'tckpoh' ),
+			'export_queue' => __( 'Export queue', 'tckpoh' ),
 			'could_not_send' => __( 'Could not send error log because of an error.', 'tckpoh' ),
 			'could_not_switch' => __( 'Could not switch the plugin because of an error.', 'tckpoh' ),
 			'billing_website' => site_url(),
 			'exporting_xml' => __( 'Creating the XML file.', 'tckpoh' ),
 			'xml_could_not_be_created' => __( 'The XML file could not be created because of an error.', 'tckpoh' ),
+			'logo_upload' => __( 'Choose', 'tckpoh' ),
+			'logo_upload_url' => get_option('wc_settings_pohoda_export_pdf_logo'),
+			'vybrataoriznout' => __( 'Choose and crop', 'tckpoh' ),
+			'choose_currency' => __( 'Filter by currency: enter the currency international code. Or leave blank to search all currencies.', 'tckpoh' ),
+			'admin_url' => admin_url(),
 		));
 		
 		$lastmodtimecss = filemtime(TICKETAPOH_PATH . 'assets/setup-tab.css');
@@ -334,6 +340,10 @@ function tckpoh_create_pdf_invoice() {
 	$order_id = $_GET['order_id'];
 	create_invoice( $order_id, 'pdf_to_screen', NULL, 'pdf' );
 }
+
+
+//// save currency rate at new order ////
+/// add_action( 'woocommerce_new_order', 'add_order_currency_info' );
 
 
 

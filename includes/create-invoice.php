@@ -31,6 +31,20 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 
 	}
 
+	//// check if order still exists ////
+		
+	if ( is_null( get_post( $order_id ) )){
+
+		remove_from_unexported( $order_id, $document_type );
+		if ( $export_type == 'to_xml_first' || $export_type == "to_xml" ) {
+			return $xml;
+		} else if ( $export_type == 'to_mserver' || $export_type == 'to_xml_last' || $export_type == 'to_xml_first_and_last' ) {
+			goto xml_ending;
+		} else {
+			return;
+		}
+	}
+
 	// quit if is not order and exporting only orders //
 
 	$frequency = get_option('wc_settings_pohoda_export_invoice_export_type');
@@ -298,7 +312,10 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			}
 		}
 		
-		$order_price_round = round( $order->get_total(), 2 ); //Celkova suma zaokrouhleni.	
+		$order_price_round = round( $order->get_total(), 2 ); //Celkova suma zaokrouhleni.
+		
+		$rounding = get_option('wc_settings_pohoda_export_invoice_data_rounding');
+		if ( empty( $rounding ) ) { $rounding == 'math2one'; }
 		
 		// payment type & liquidation && EET //
 		
@@ -366,9 +383,6 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			// setup the template //
 
 			$document_title = __( 'Invoice - tax document #', 'tckpoh' );
-			if ( get_option('wc_settings_pohoda_export_attach_logo') == 'yes' ) {
-				$company_logo = wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ) );
-			}
 			$mpdf->SetTitle( $document_title . $invoice_number );
 
 			require_once TICKETAPOH_PATH . 'includes/document-types/pdf-invoice/pdf-invoice.php';  
@@ -428,6 +442,8 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			
 	// end dataPack if single invoice //
 	if ( $export_type == 'to_mserver' || $export_type == 'to_xml_last' || $export_type == 'to_xml_first_and_last' ) {
+
+		xml_ending:
 
 		$xml->endElement();
 		$xml->endDocument();
@@ -536,7 +552,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 
 
 
-//// get item prices ////
+//// get item prices === price counting ////
 
 function get_item_prices( $item, $item_total, $item_quantity, $coeficient, $item_vat_rate, $order ) {	
 
@@ -589,7 +605,6 @@ function get_item_prices( $item, $item_total, $item_quantity, $coeficient, $item
 			if ( $item_product ) { 
 				$item_saved_price = $item_product->get_regular_price();
 			}
-			
 			//error_log('order #' . $item->get_order_id() . ' - order item #' . $item->get_id()  . ' - no variation / price: ' . $item_saved_price );
 		}
 	}
@@ -638,9 +653,6 @@ function get_item_prices( $item, $item_total, $item_quantity, $coeficient, $item
 	}
 
 	// sleva //
-
-	//error_log( $item_actual_price );
-	//error_log( $item_regular_price );
 
 	if ( round( $item_regular_price ) !== round( $item_actual_price ) && round( $item_regular_price ) > round( $item_actual_price ) ) {
 		
@@ -725,6 +737,7 @@ function get_item_prices( $item, $item_total, $item_quantity, $coeficient, $item
 	$return['item_discount'] = $discount_percentage;
 
 	return $return;
+
 }
 
 

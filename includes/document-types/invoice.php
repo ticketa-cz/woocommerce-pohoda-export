@@ -121,7 +121,7 @@ $xml->writeAttribute('version', '2.0');
                             
         $xml->startElementNS('inv', 'invoiceSummary', null);
         // start invoiceSummary //
-                $xml->writeElementNS('inv', 'roundingDocument', null, 'math2one');								
+                $xml->writeElementNS('inv', 'roundingDocument', null, $rounding );								
                 $xml->startElementNS('inv', $currency_format, null);
 
                     if ( $currency_format == 'foreignCurrency' ) {

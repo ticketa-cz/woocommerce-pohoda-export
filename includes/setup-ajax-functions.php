@@ -318,6 +318,8 @@ add_action('wp_ajax_pohoda_save_options', 'pohoda_save_options');
 function pohoda_check_this_year() {
 	
 	$dates_chosen = $_POST['dates_chosen'];
+	$currency_chosen = $_POST['currency_chosen'];
+
 	$this_years_orders = get_this_years_orders( 'selected', $dates_chosen );
 		
 	if ( $this_years_orders ) {
@@ -329,11 +331,27 @@ function pohoda_check_this_year() {
 		foreach( $this_years_orders as $order_id ) {
 			
 			$exported_invoice_number = get_post_meta( $order_id, 'pohoda_invoice_number', true );
+
+			if ( isset($currency_chosen) && $currency_chosen != '' ) {
+
+				$check_currency = true;
+				$order = wc_get_order( $order_id );
+				$order_currency = $order->get_currency();
+
+			} else {
+				$check_currency = false;
+			}
 			
 			if ( !$exported_invoice_number ) {
-								
-				add_to_unexported( $order_id );
-				$i++;
+
+				error_log('chosen: ' . $currency_chosen . ' - order: ' . $order_currency);
+
+				if ( ( $check_currency == true && $currency_chosen == $order_currency ) || $check_currency == false ) {
+					
+					add_to_unexported( $order_id );
+					$i++;
+
+				}
 				
 			}
 			
@@ -513,12 +531,19 @@ function pohoda_export_xml_file() {
 
 		foreach( $unexported_order_array as $unexported_export_order_id ) {
 
+			// pokud je jen jedna //
 			if ( $export_number == $order_count && $export_number == 1 ) {
 				$xml_file = create_invoice( $unexported_export_order_id, 'to_xml_first_and_last' );
+
+			// prvni v rade //
 			} else if ( $export_number == 1 ) {
 				$xml_output = create_invoice( $unexported_export_order_id, 'to_xml_first' );
+
+			// posledni v rade //
 			} else if ( $export_number == $order_count ) {
 				$xml_file = create_invoice( $unexported_export_order_id, 'to_xml_last', $xml_output );
+
+			// vsechny mezi tim //
 			} else {
 				$xml_output = create_invoice( $unexported_export_order_id, 'to_xml', $xml_output );
 			}
@@ -546,3 +571,36 @@ function erase_action_log() {
 	
 }
 add_action('wp_ajax_erase_action_log', 'erase_action_log');
+
+
+//// nahrat frontu pro export ////
+
+function load_export_queue() {
+	
+	$export_queue = get_option('wc_settings_pohoda_export_failed_order_exports');
+	$export_array = explode( ',', $export_queue );
+	$queue_array = array();
+
+	if ( $export_queue ) {
+
+		foreach ( $export_array as $key => $value ) {
+			$order_date = get_the_date( 'Y-m-d', $value );
+			$queue_array[$value] = $order_date;
+		}
+
+		asort( $queue_array );
+
+		foreach ( $queue_array as $key => $value ) {
+			$order = wc_get_order( $key );
+			$queue_array[$key] = array(
+				'date' => date( 'd.m.Y', strtotime( $value ) ),
+				'name' => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
+			);
+		}
+	}
+
+	echo json_encode( $queue_array );
+	wp_die();
+	
+}
+add_action('wp_ajax_load_export_queue', 'load_export_queue');

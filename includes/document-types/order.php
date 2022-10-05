@@ -88,7 +88,7 @@ $xml->writeAttribute('version', '2.0');
                     if ( empty($quantity) || $quantity == NULL || $quantity == '' ) { $quantity = 1; } 
                     $item_quantity = number_format( $quantity, 0, '.', '' );
 
-                    $item_prices = get_item_prices( $item, $item_total, $item_quantity, $coeficient, $vat_rate );									
+                    $item_prices = get_item_prices( $item, $item_total, $item_quantity, $coeficient, $vat_rate, $order );									
                     
                     $xml->writeElementNS('ord', 'text', null, $item_name);
                     $xml->writeElementNS('ord', 'quantity', null, $item_quantity);
@@ -114,7 +114,7 @@ $xml->writeAttribute('version', '2.0');
                             
         $xml->startElementNS('ord', 'orderSummary', null);
         // start orderSummary //
-                $xml->writeElementNS('ord', 'roundingDocument', null, 'math2one');								
+                $xml->writeElementNS('ord', 'roundingDocument', null, $rounding );								
                 $xml->startElementNS('ord', $currency_format, null);
 
                     if ( $currency_format == 'foreignCurrency' ) {

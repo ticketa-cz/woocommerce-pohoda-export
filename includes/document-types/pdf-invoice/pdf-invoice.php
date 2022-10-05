@@ -35,11 +35,33 @@ $date_format = date('d.m. Y', strtotime($order_date));
 $date_tax_format = date('d.m. Y', strtotime($order_date. ' + '. $date_tax .' days'));
 $date_due_format = date('d.m. Y', strtotime($order_date. ' + '. $date_due .' days'));
 
+// logo and background //
+
+$company_logo = get_option('wc_settings_pohoda_export_pdf_logo');
+function UR_exists( $url ) {
+    $headers = get_headers( $url );
+    return stripos( $headers[0],"200 OK" ) ? true : false;
+}
+if ( UR_exists( $company_logo ) ) {
+    $logo   =   '<div id="logo">
+                    <img src="' . $company_logo . '" style="width: 250px; height: auto;"/>
+                </div>';
+} else {
+    $logo   =   '';
+}
+
+if ( get_option('wc_settings_pohoda_export_pdf_background') == 'yes' ) {
+    $background_url = TICKETAPOH_PATH . 'includes/document-types/pdf-invoice/dimension.png';
+} else {
+    $background_url = '';
+}
+
 // HTML //
 
 $html  = '<body>
             <header class="clearfix">
-                <h1 style="background: url('. TICKETAPOH_PATH . 'includes/document-types/pdf-invoice/dimension.png)">' . $document_title . $invoice_number . '</h1>
+                ' . $logo . '
+                <h1 style="background: url('. $background_url . ')">' . $document_title . $invoice_number . '</h1>
 
                 <div id="info">
                     <table>
@@ -89,12 +111,6 @@ $html  = '<body>
                 </div>
 
                 <div id="qrcode">' . $qr_code . '</div>';
-
-if ( file_exists( $company_logo ) && $company_logo == 'tedhoradsivypneme' ) {
-    $html .=   '<div id="logo">
-                    <img src="' . $company_logo . '"/>
-                </div>';
-}
 
 $html .=   '</header>
 
