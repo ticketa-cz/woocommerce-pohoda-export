@@ -7,11 +7,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 //// load the xml file ////
 
-function load_my_xml( $xml_name, $ico ) {
+/**
+ * Load XML template file and replace ICO placeholder
+ * 
+ * @param string $xml_name Name of XML template file (without .xml extension)
+ * @param string|null $ico Company ICO number to replace placeholder
+ * @return string|false XML content or false on failure
+ */
+function load_my_xml( string $xml_name, ?string $ico = null ) {
 	
 	$xml_call = file_get_contents( TICKETAPOH_PATH . "/includes/calls/" . $xml_name . ".xml" );
 	
 	if (isset($ico)) {
+		// Replace placeholder ICO number (12345678) with actual company ICO
 		$xml_call = str_replace('12345678', $ico, $xml_call);	
 	}
 	
@@ -25,9 +33,19 @@ function load_my_xml( $xml_name, $ico ) {
 
 function pohoda_mserver_connect() {
 	
-	$host = $_POST['host'];
-	$login = $_POST['login'];
-	$pass = $_POST['pass'];
+	// TODO: Add nonce verification for AJAX security
+	// This function connects to mServer - ensure proper authentication and authorization
+	if ( ! current_user_can( 'manage_woocommerce' ) ) {
+		wp_die( esc_html__( 'Insufficient permissions', 'tckpoh' ) );
+	}
+	
+	$host = isset($_POST['host']) ? sanitize_text_field( wp_unslash( $_POST['host'] ) ) : '';
+	$login = isset($_POST['login']) ? sanitize_text_field( wp_unslash( $_POST['login'] ) ) : '';
+	$pass = isset($_POST['pass']) ? sanitize_text_field( wp_unslash( $_POST['pass'] ) ) : '';
+
+	if ( empty( $host ) || empty( $login ) || empty( $pass ) ) {
+		wp_die( esc_html__( 'Missing required connection parameters', 'tckpoh' ) );
+	}
 
 	tckpoh_logs( __( 'Connecting to mServer from settings page ...', 'tckpoh' ) );
 	
@@ -42,10 +60,10 @@ function pohoda_mserver_connect() {
 		$response = $xml->children($ns['rsp']);
 		$accounting_list = $response->children($ns['acu'])->listAccountingUnit;
 		
-		$return = array( 
+		$return = [ 
 			'error' => false,
-			'units' => array()
-		);
+			'units' => []
+		];
 		
 		foreach ( $accounting_list->children($ns['acu'])->itemAccountingUnit as $unit ) {
 
@@ -55,7 +73,7 @@ function pohoda_mserver_connect() {
 			$unit_id = $unit_name. ' - ' .$unit_year;
 		
 			if ($unit_year == date('Y')) { // Jen tento ucetni rok
-				$return['units'][$unit_id] = array($unit_key);
+				$return['units'][$unit_id] = [$unit_key];
 			}
 		}
 
@@ -63,7 +81,7 @@ function pohoda_mserver_connect() {
 		
 		// if not xml, the response is a code or wp error //
 		tckpoh_logs( __( 'Got communication error: ', 'tckpoh' ) . $answer );
-		$return = array( 'error' => true );
+		$return = [ 'error' => true ];
 			
 	}
 	
@@ -79,10 +97,20 @@ add_action('wp_ajax_pohoda_mserver_connect', 'pohoda_mserver_connect');
 
 function pohoda_load_billing_info() {
 	
-	$host = $_POST['host'];
-	$login = $_POST['login'];
-	$pass = $_POST['pass'];
-	$accounting_key = $_POST['accounting_key'];
+	// TODO: Add nonce verification for AJAX security
+	// This function loads billing info from mServer - ensure proper authorization
+	if ( ! current_user_can( 'manage_woocommerce' ) ) {
+		wp_die( esc_html__( 'Insufficient permissions', 'tckpoh' ) );
+	}
+	
+	$host = isset($_POST['host']) ? sanitize_text_field( wp_unslash( $_POST['host'] ) ) : '';
+	$login = isset($_POST['login']) ? sanitize_text_field( wp_unslash( $_POST['login'] ) ) : '';
+	$pass = isset($_POST['pass']) ? sanitize_text_field( wp_unslash( $_POST['pass'] ) ) : '';
+	$accounting_key = isset($_POST['accounting_key']) ? sanitize_text_field( wp_unslash( $_POST['accounting_key'] ) ) : '';
+
+	if ( empty( $host ) || empty( $login ) || empty( $pass ) || empty( $accounting_key ) ) {
+		wp_die( esc_html__( 'Missing required parameters', 'tckpoh' ) );
+	}
 
 	tckpoh_logs( __( 'Loading billing info on settings page ...', 'tckpoh' ) );
 
@@ -96,7 +124,7 @@ function pohoda_load_billing_info() {
 		$response = $xml->children($ns['rsp']);
 		$accounting_list = $response->children($ns['acu'])->listAccountingUnit;
 		
-		$return = array('error' => false, 'units' => array());
+		$return = ['error' => false, 'units' => []];
 		
 		foreach ($accounting_list->children($ns['acu'])->itemAccountingUnit as $unit) {
 
@@ -115,7 +143,7 @@ function pohoda_load_billing_info() {
 					->children($ns['typ'])
 					->company;
 				$label = $company . ' - ' . $unit_year;
-				$unit_details = array();
+				$unit_details = [];
 
 				// adresa a detaily //
 
@@ -145,10 +173,10 @@ function pohoda_load_billing_info() {
 
 				// vysledky //
 
-				$return['units'][$label] = array(
+				$return['units'][$label] = [
 					'unit_key' => $unit_key,
 					'unit_details' => $unit_details
-				);
+				];
 			}
 		}
 
@@ -156,7 +184,7 @@ function pohoda_load_billing_info() {
 		
 		// if not xml, the response is a code or wp error //
 		tckpoh_logs( __( 'Got communication error: ', 'tckpoh' ) . $answer );
-		$return = array( 'error' => true );
+		$return = [ 'error' => true ];
 		
 	}
 	
@@ -584,7 +612,7 @@ function pohoda_export_xml_file() {
 			}
 
 			// count orders added to xml //
-			if ( $xml_file == NULL || $xml_output == NULL ) {
+			if ( $xml_file == null || $xml_output == null ) {
 				$order_count--;
 			} else {
 				$xml_count++;

@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 //// create the document and send it ////
 	
-function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $document_type = 'invoice' ) {
+function create_invoice( $order_id, $export_type = 'to_mserver', $xml = null, $document_type = 'invoice' ) {
 
 	//// check if plugin activated ////
 		
@@ -19,9 +19,10 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 	//// check if order id ////
 		
 	if ( !$order_id ) {
-		return NULL;
+		return null;
 	}
 
+	// TODO: Document the OBJ prefix system - what does OBJ vs FA prefixes mean?
 	// if the document from export queue is an order //
 
 	if( strpos( $order_id, 'OBJ' ) !== false ) {
@@ -32,6 +33,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 
 	} else {
 
+		// FA prefix appears to be for invoices (Faktura?)
 		$order_name = "FA" . $order_id;
 
 	}
@@ -46,9 +48,10 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 		if ( $export_type == 'to_xml_first' || $export_type == "to_xml" ) {
 			return $xml;
 		} else if ( $export_type == 'to_xml_last' || $export_type == 'to_xml_first_and_last' ) {
+			// TODO: Consider refactoring goto to use function return or structured flow
 			goto xml_ending;
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 
@@ -56,7 +59,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 
 	$frequency = get_option('wc_settings_pohoda_export_invoice_export_type');
 	if ( $frequency == 'order_only' && ( $document_type != 'order' && $document_type != 'pdf' ) ) {
-		return NULL;
+		return null;
 	}
 
 	// set output directory //
@@ -313,7 +316,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			// quantity //
 
 			$quantity = $item->get_quantity();
-			if ( empty($quantity) || $quantity == NULL || $quantity == '' ) { $quantity = 1; } 
+			if ( empty($quantity) || $quantity == null || $quantity == '' ) { $quantity = 1; } 
 			$item_values['item_quantity'] = number_format( $quantity, 2, '.', '' );
 
 			// get item prices //

@@ -139,7 +139,7 @@ $currency_symbol = ' ' . get_woocommerce_currency_symbol($order_currency);
 foreach ( $items_array as $item_id => $item ) {
 
     $item_prices = $item['item_prices'];
-    $invoice_prices = array();
+    $invoice_prices = [];
 
     foreach ( $item_prices as $price_key => $item_price ) {
         if ( is_numeric( $item_price ) ) {

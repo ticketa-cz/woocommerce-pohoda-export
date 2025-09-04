@@ -36,7 +36,7 @@ class WC_Pohoda_Export_Tab {
 		// find payment methods //
 		
 		$gateways = WC()->payment_gateways->get_available_payment_gateways();
-		$payment_methods = array('not_specified' => '');
+		$payment_methods = ['not_specified' => ''];
 		
 		if( $gateways ) {
 			foreach( $gateways as $gateway_id => $gateway ) {
@@ -49,9 +49,9 @@ class WC_Pohoda_Export_Tab {
 		// setup statuses for pdf emails //
 
 		$all_statuses = wc_get_order_statuses();
-		$limited_statuses = array();
+		$limited_statuses = [];
 		foreach ( $all_statuses as $status_key => $status ) {
-			if ( in_array( $status_key, array( 'wc-processing', 'wc-on-hold', 'wc-completed' ) ) ) {
+			if ( in_array( $status_key, [ 'wc-processing', 'wc-on-hold', 'wc-completed' ] ) ) {
 				$limited_statuses[$status_key] = $status;
 			}
 		}

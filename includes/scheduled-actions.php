@@ -152,7 +152,7 @@ function tckpoh_create_order( $order_id ) {
 	
 	if ( $export_orders == 'yes' ) {
 
-		create_invoice( $order_id, 'to_mserver', NULL, 'order' );
+		create_invoice( $order_id, 'to_mserver', null, 'order' );
 
 	} else {
 		return;
