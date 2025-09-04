@@ -22,6 +22,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = null, $d
 		return null;
 	}
 
+	// TODO: Document the OBJ prefix system - what does OBJ vs FA prefixes mean?
 	// if the document from export queue is an order //
 
 	if( strpos( $order_id, 'OBJ' ) !== false ) {
@@ -32,6 +33,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = null, $d
 
 	} else {
 
+		// FA prefix appears to be for invoices (Faktura?)
 		$order_name = "FA" . $order_id;
 
 	}
@@ -46,6 +48,7 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = null, $d
 		if ( $export_type == 'to_xml_first' || $export_type == "to_xml" ) {
 			return $xml;
 		} else if ( $export_type == 'to_xml_last' || $export_type == 'to_xml_first_and_last' ) {
+			// TODO: Consider refactoring goto to use function return or structured flow
 			goto xml_ending;
 		} else {
 			return null;

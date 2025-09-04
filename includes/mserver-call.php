@@ -4,7 +4,16 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-function make_the_call( $data_in, $host_filled, $login_filled, $pass_filled ) {
+/**
+ * Make an HTTP call to the mServer with XML data
+ * 
+ * @param string $data_in XML data to send
+ * @param string|null $host_filled Optional host override
+ * @param string|null $login_filled Optional login override  
+ * @param string|null $pass_filled Optional password override
+ * @return string Response from mServer or error message
+ */
+function make_the_call( string $data_in, ?string $host_filled = null, ?string $login_filled = null, ?string $pass_filled = null ): string {
 	
 	// load login info //
 	

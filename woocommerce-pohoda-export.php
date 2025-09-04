@@ -226,9 +226,16 @@ function tckpoh_localisation() {
 
 //// check woo version ////
 
-function woo_version_check() {
+/**
+ * Check if WooCommerce version meets minimum requirements
+ * 
+ * @return bool True if WooCommerce version is 4.0 or higher
+ * @deprecated This function checks for very old WooCommerce version - consider updating minimum requirement
+ */
+function woo_version_check(): bool {
 	$version = '4.0';
 	if ( class_exists( 'WooCommerce' ) ) {
+		// TODO: Consider using WC()->version instead of global $woocommerce for modern WC
 		global $woocommerce;
 		if ( version_compare( $woocommerce->version, $version, ">=" ) ) {
 			return true;
@@ -241,18 +248,41 @@ function woo_version_check() {
 
 /// export logging ////
 
-function tckpoh_logs( $message ) {
+/**
+ * Log messages to the export log file with timestamp
+ * 
+ * @param string|array $message Message to log - arrays will be JSON encoded
+ * @return void
+ */
+function tckpoh_logs( $message ): void {
 
     if( is_array( $message ) ) { 
         $message = json_encode( $message ); 
     }
 
+	// Use WordPress timezone setting instead of hardcoded Prague timezone
 	$dt = new DateTime();
-	$dt->setTimezone(new DateTimeZone('Europe/Prague'));
+	$timezone_string = get_option('timezone_string');
+	if ( $timezone_string ) {
+		$dt->setTimezone(new DateTimeZone($timezone_string));
+	} else {
+		// Fallback to Prague timezone if WordPress timezone not set
+		$dt->setTimezone(new DateTimeZone('Europe/Prague'));
+	}
 
-    $logfile = fopen( TICKETAPOH_PATH ."log/export.log", "a" );
-    fwrite( $logfile, "\n" . $dt->format('d.m Y h:i:s') . " :: " . $message ); 
-    fclose( $logfile );
+	$log_file_path = TICKETAPOH_PATH . "log/export.log";
+	
+	// Ensure log directory exists
+	$log_dir = dirname( $log_file_path );
+	if ( ! is_dir( $log_dir ) ) {
+		wp_mkdir_p( $log_dir );
+	}
+
+    $logfile = fopen( $log_file_path, "a" );
+    if ( $logfile ) {
+        fwrite( $logfile, "\n" . $dt->format('d.m Y h:i:s') . " :: " . $message ); 
+        fclose( $logfile );
+    }
 }
 
 

@@ -54,8 +54,9 @@ function submit_export_error( $order_id, $response_state, $response, $document_t
 					}
 					
 					if ( $state == 'error' ) {
+						// TODO: Document what error code 109 means in Pohoda system
 						if ( $errno == '109' ) {
-							
+							// Error 109 appears to be a duplicate invoice error - remove from queue
 							$remove_from_unexported = 1;
 			
 						} else {
@@ -95,7 +96,14 @@ function submit_export_error( $order_id, $response_state, $response, $document_t
 
 //// send error to admin ////
 
-function send_error_to_admin( $error_log, $recepient ) {
+/**
+ * Send error log to administrator via email
+ * 
+ * @param string $error_log Error message to send
+ * @param string|null $recepient Email recipient, defaults to admin email
+ * @return bool True if email was sent successfully, false otherwise  
+ */
+function send_error_to_admin( string $error_log, ?string $recepient = null ): bool {
 
 	if ( !isset($recepient) || $recepient == '' ) {
 		$recepient = get_bloginfo('admin_email');

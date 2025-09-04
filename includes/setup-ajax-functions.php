@@ -7,11 +7,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 //// load the xml file ////
 
-function load_my_xml( $xml_name, $ico ) {
+/**
+ * Load XML template file and replace ICO placeholder
+ * 
+ * @param string $xml_name Name of XML template file (without .xml extension)
+ * @param string|null $ico Company ICO number to replace placeholder
+ * @return string|false XML content or false on failure
+ */
+function load_my_xml( string $xml_name, ?string $ico = null ) {
 	
 	$xml_call = file_get_contents( TICKETAPOH_PATH . "/includes/calls/" . $xml_name . ".xml" );
 	
 	if (isset($ico)) {
+		// Replace placeholder ICO number (12345678) with actual company ICO
 		$xml_call = str_replace('12345678', $ico, $xml_call);	
 	}
 	
