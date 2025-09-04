@@ -29,9 +29,12 @@ main, header, footer {
   border: 1px solid #C1CED9;
 }
 
-header {
-  padding: 0px 0px 20px 0px;
+main, header, footer {
+  padding: 0px;
   margin-bottom: 15px;
+}
+header {
+  padding-bottom: 10px;
 }
 
 #logo {
@@ -75,6 +78,7 @@ h1 {
 
 #icebreaker {
   width: 100%;
+  display: block;
   clear: both;
   height: 10px;
   border-top: 1px solid #C1CED9;
@@ -115,7 +119,7 @@ h1 {
   text-align: left;
 }
 
-#prices {
+#prices, #czkvat {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
@@ -141,6 +145,7 @@ h1 {
   border-top: 1px solid #C1CED9;
 }
 
+
 #notices {
   text-align: center;
   padding: 20px 0px;
@@ -163,8 +168,16 @@ h1 {
 
 #prices td.unit,
 #prices td.qty,
-#prices td.total {
+#prices td.total,
+#czkvat td {
   font-size: 0.8em;
+}
+
+#czkvat td {
+  width: 20%;
+  text-align: center;
+  padding: 7px 0px;
+  color: #5D6975;
 }
 
 #prices td.grand {
@@ -176,6 +189,7 @@ h1 {
   font-size: 0.8em;
 }
 
+/*
 footer {
   color: #5D6975;
   width: 100%;
@@ -185,6 +199,7 @@ footer {
   padding: 8px 0;
   text-align: center;
 }
+*/
 
 div {
   padding: 3px;

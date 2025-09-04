@@ -1,13 +1,26 @@
 <?php
 
 $xml->startElementNS('dat', 'dataPackItem', null);
-$xml->writeAttribute('id', 'AD002');
+$xml->writeAttribute('id', $order_name);
 $xml->writeAttribute('version', '2.0');
 // <dat:dataPackItem id="AD002" version="2.0"> 
     
     $xml->startElementNS('inv', 'invoice', null);
     $xml->writeAttribute('version', '2.0');
     // <inv:invoice version="2.0">
+
+        // connection to order //
+        $export_orders = get_option('wc_settings_pohoda_export_invoice_export_orders');
+        if ( $export_orders == 'yes' ) {
+            $xml->startElementNS('inv', 'links', null);
+                $xml->startElementNS('typ', 'link', null);
+                    $xml->writeElementNS('typ', 'sourceAgenda', null, 'receivedOrder');
+                    $xml->startElementNS('typ', 'sourceDocument', null);
+                        $xml->writeElementNS('typ', 'number', null, $order_number);
+                    $xml->endElement();
+                $xml->endElement();
+            $xml->endElement();
+        }
         
         $xml->startElementNS('inv', 'invoiceHeader', null);
         // <inv:invoiceHeader>
@@ -23,10 +36,10 @@ $xml->writeAttribute('version', '2.0');
             $xml->writeElementNS('inv', 'dateAccounting', null, $order_date_tax);
             $xml->writeElementNS('inv', 'dateDue', null, $order_date_due);
             $xml->startElementNS('inv', 'accounting', null);
-                $xml->writeElementNS('typ', 'ids', null, get_option('wc_settings_pohoda_export_invoice_classification_type'));
+                $xml->writeElementNS('typ', 'ids', null, get_option('wc_settings_pohoda_export_invoice_classification_type') );
             $xml->endElement();
             $xml->startElementNS('inv', 'classificationVAT', null);
-                $xml->writeElementNS('typ', 'ids', null, $vat_classification);
+                $xml->writeElementNS('typ', 'classificationVATType', null, 'inland');
             $xml->endElement();
             $xml->writeElementNS('inv', 'text', null, $invoice_heading);
             $xml->startElementNS('inv', 'partnerIdentity', null);
@@ -93,24 +106,42 @@ $xml->writeAttribute('version', '2.0');
             
             foreach ( $items_array as $item_id => $item ) {
 
-                $item_prices = $item['item_prices'];
+                $item_vals = $item['item_prices'];
                     
                 $xml->startElementNS('inv', 'invoiceItem', null);
                     
                     $xml->writeElementNS('inv', 'text', null, $item['name']);
                     $xml->writeElementNS('inv', 'quantity', null, $item['item_quantity']);
-                    $xml->writeElementNS('inv', 'rateVAT', null, $item_prices['item_vat_rate'] );
-                    $xml->writeElementNS('inv', 'payVAT', null, 'true');
-                    $xml->writeElementNS('inv', 'discountPercentage', null, $item_prices['item_discount'] );
+                    $xml->writeElementNS('inv', 'rateVAT', null, $item_vals['item_vat_rate'] );
+                    /*if ( $item_vals['item_vat_rate'] == 'historyHigh' ) {
+                        $xml->writeElementNS('inv', 'percentVAT', null, $item_vals['item_tax_rate'] );
+                    }*/
+                    $xml->writeElementNS('inv', 'payVAT', null, 'false' );
+                    $xml->writeElementNS('inv', 'discountPercentage', null, $item_vals['item_discount'] );
 
                     //tckpoh_logs( 'WC-currency ' . $order->get_currency() );
             
                     $xml->startElementNS('inv', $currency_format, null);
-                        $xml->writeElementNS('typ', 'unitPrice', null, number_format( $item_prices['item_unit_with_vat'], 2, '.', '' ) );
-                        $xml->writeElementNS('typ', 'price', null, number_format( $item_prices['item_total_without_vat'], 2, '.', '' ) );
-                        $xml->writeElementNS('typ', 'priceVAT', null, number_format( $item_prices['item_total_vat'], 2, '.', '' ) );
-                        $xml->writeElementNS('typ', 'priceSum', null, number_format( $item_prices['item_total'], 2, '.', '' ) );
+                        $xml->writeElementNS('typ', 'unitPrice', null, number_format( $item_vals['item_unit_without_vat'], 2, '.', '' ) );
+                        $xml->writeElementNS('typ', 'price', null, number_format( $item_vals['item_total_without_vat'], 2, '.', '' ) ); // nepovinne
+                        $xml->writeElementNS('typ', 'priceVAT', null, number_format( $item_vals['item_total_vat'], 2, '.', '' ) ); // nepovinne
+                        $xml->writeElementNS('typ', 'priceSum', null, number_format( $item_vals['item_total'], 2, '.', '' ) ); // nepovinne
                     $xml->endElement();
+
+                    if ( isset( $item_vals['accounting'] ) ) {
+                        $xml->startElementNS('inv', 'accounting', null );
+                            $xml->writeElementNS('typ', 'ids', null, $item_vals['accounting'] );
+                        $xml->endElement();
+                    }
+
+                    // stock item //
+                    if ( isset( $item_vals['stock_id'] ) && $item_vals['stock_id'] !== 'x' ) {
+                        $xml->startElementNS('inv', 'stockItem', null );
+                            $xml->startElementNS('typ', 'stockItem', null );
+                                $xml->writeElementNS('typ', 'ids', null, $item_vals['stock_id'] );
+                            $xml->endElement();
+                        $xml->endElement();
+                    }
                     
                 $xml->endElement();
 
@@ -126,7 +157,7 @@ $xml->writeAttribute('version', '2.0');
 
                     if ( $currency_format == 'foreignCurrency' ) {
 
-                        $conversion_rate = get_conversion_rate( $order_currency, 'CZK', '1' );
+                        $conversion_rate = get_post_meta( $order_id, 'pohoda_conversion_rate', true );
 
                         $xml->startElementNS('typ', 'currency', null);
                             $xml->writeElementNS('typ', 'ids', null, $order_currency);
@@ -150,10 +181,10 @@ $xml->writeAttribute('version', '2.0');
         // end invoiceSummary //
         $xml->endElement();
         
-        $xml->startElementNS('inv', 'EET', null);
+        /*$xml->startElementNS('inv', 'EET', null);
         // EET //
             $xml->writeElementNS('typ', 'stateEET', null, $eet_option);			
-        $xml->endElement();
+        $xml->endElement();*/
     
     // end invoice //
     $xml->endElement();

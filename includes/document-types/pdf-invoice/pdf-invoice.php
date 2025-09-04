@@ -23,10 +23,10 @@ if ( $customer_info['zip'] ) {
 
 $customer_icodic = '';
 if ( $customer_ico != '' ) {
-    $customer_icodic = '<tr><td>' . $customer_ico . '</td><td><span>' . __( 'ICO', 'tckpoh' ) . '</span></td></tr>';
+    $customer_icodic .= '<tr><td>' . $customer_ico . '</td><td><span>' . __( 'ICO', 'tckpoh' ) . '</span></td></tr>';
 }
 if ( $customer_dic != '' ) {
-    $customer_icodic = '<tr><td>' . $customer_dic . '</td><td><span>' . __( 'DIC', 'tckpoh' ) . '</span></td></tr>';
+    $customer_icodic .= '<tr><td>' . $customer_dic . '</td><td><span>' . __( 'DIC', 'tckpoh' ) . '</span></td></tr>';
 }
 
 // dates //
@@ -39,6 +39,9 @@ $date_due_format = date('d.m. Y', strtotime($order_date. ' + '. $date_due .' day
 
 $company_logo = get_option('wc_settings_pohoda_export_pdf_logo');
 function UR_exists( $url ) {
+    if ( empty( $url )) {
+        return false;
+    }
     $headers = get_headers( $url );
     return stripos( $headers[0],"200 OK" ) ? true : false;
 }
@@ -131,6 +134,8 @@ $html .=   '</header>
 
 $currency_symbol = ' ' . get_woocommerce_currency_symbol($order_currency);
 
+//// items ////
+
 foreach ( $items_array as $item_id => $item ) {
 
     $item_prices = $item['item_prices'];
@@ -153,12 +158,17 @@ foreach ( $items_array as $item_id => $item ) {
                         <td class="item_quantity">'. $item['item_quantity'] . '</td>
                         <td class="item_discount">'. $item_discount . '</td>
                         <td class="price_without_vat">'. $invoice_prices['item_total_without_vat'] . $currency_symbol . '</td>
-                        <td class="price_vat_percent">'. number_format( $invoice_prices['tax_rate'], 0 ) . '%</td>
-                        <td class="price_vat">'. $invoice_prices['item_total_vat'] . $currency_symbol . '</td>
+                        <td class="price_vat_percent">'; if ( $invoice_prices['tax_rate'] > 0 ) { $html .= number_format( $invoice_prices['tax_rate'], 0 ) . '%'; } $html .= '</td>
+                        <td class="price_vat">'; if ( $invoice_prices['item_total_vat'] > 0 ) { $html .= $invoice_prices['item_total_vat'] . $currency_symbol; } $html .= '</td>
                         <td class="price_total">'. $invoice_prices['item_total'] . $currency_symbol . '</td>
                     </tr>';
 }
-                
+if ( intval( $total_discount ) > 0 ) {
+    $html .=        '<tr>
+                        <td colspan="5" class="prices_total">' . __( 'DISCOUNT', 'tckpoh' ) . '</td>
+                        <td colspan="2"><strong>-' . number_format( $total_discount, 2 ) . $currency_symbol . '</strong></td>
+                    </tr>';
+}                
     $html .=        '<tr>
                         <td colspan="5" class="prices_total subtotal">' . __( 'SUBTOTAL', 'tckpoh' ) . '</td>
                         <td colspan="2" class="subtotal"><strong>' . number_format( $total_without_vat, 2 ) . $currency_symbol .  '</strong></td>
@@ -169,14 +179,31 @@ foreach ( $items_array as $item_id => $item ) {
                     </tr>
                     <tr>
                         <td colspan="5" class="prices_total">' . __( 'GRAND TOTAL', 'tckpoh' ) . '</td>
-                        <td colspan="2"><strong>' . number_format( $total, 2 ) . $currency_symbol .  '</strong></td>
+                        <td colspan="2"><strong>' . number_format( $order_price_round, 2 ) . $currency_symbol .  '</strong></td>
                     </tr>
                 </tbody>
                 </table>
+            </main>
+            
+            <footer>';
 
-                <div id="notices">
+            if ( get_option('wc_settings_pohoda_export_export_pdf_dph_rozpocet') !== 'no' ) {
+
+                $html.='<table id="czkvat">
+                            <tr><td>' . __( 'VAT RECAP', 'tckpoh' ) . '</td><td>' . __( 'VAT BASE', 'tckpoh' ) . '</td><td>' . __( 'VAT RATE', 'tckpoh' ) . '</td><td>' . __( 'VAT AMOUNT', 'tckpoh' ) . '</td><td>' . __( 'TOTAL WITH VAT', 'tckpoh' ) . '</td></tr>';
+                            foreach ( $vat_rate as $rate ) {
+                                if ( $rate['total'] > 0 ) {
+                                    $html .= '<tr><td></td><td>' . round( $rate['total_without_vat_czk'] ) . ',- Kč</td><td>' . intval( ( 100 * $rate['coeficient'] ) - 100 ) . '%</td><td>' . round( $rate['total_vat_czk'] ) . ',- Kč</td><td>' . round( $rate['total_czk'] ) . ',- Kč</td></tr>';
+                                }
+                            }
+                $html .='</table>';
+
+            }
+
+        $html.='<div id="notices">
                     <div class="notice">' . get_option('wc_settings_pohoda_export_pdf_notice') . '</div>
-                </div>';
+                </div>
+            </footer>';
 
-$html .= '</main>
+$html .= '
     </body>';

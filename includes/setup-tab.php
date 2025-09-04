@@ -325,19 +325,6 @@ class WC_Pohoda_Export_Tab {
 				'desc'     => '',
 				'id'       => 'wc_settings_pohoda_export_invoice_data'
 			),
-			'invoice_data_vat_rate' => array(
-				'name' => __( 'Rate of VAT', 'tckpoh' ),
-				'type' => 'select',
-				'class' => 'obligatorytofill',
-				'default' => 'high',
-				'options' => array(
-					'high' => __( '21%', 'tckpoh' ),
-					'low' => __( '15%', 'tckpoh' ),
-					'third' => __( '10%', 'tckpoh' ),
-					'none' => __( '0%', 'tckpoh' ),
-				),
-				'id'   => 'wc_settings_pohoda_export_invoice_data_vat_rate',
-			),
 			'invoice_data_rounding' => array(
 				'name' => __( 'Rounding', 'tckpoh' ),
 				'type' => 'select',
@@ -354,24 +341,20 @@ class WC_Pohoda_Export_Tab {
 				),
 				'id'   => 'wc_settings_pohoda_export_invoice_data_rounding',
 			),
-			/*
-			'invoice_foreign_currency' => array(
-				'name' => __( 'CZK as main currency', 'tckpoh' ),
+			'invoice_home_currency' => array(
+				'name' => __( 'Main currency', 'tckpoh' ),
 				'type' => 'radio',
-				'default' => 'yes',
+				'default' => 'CZK',
 				'options' => array(
-					'yes' => __( 'Yes', 'tckpoh' ),
-					'no' => __( 'No', 'tckpoh' ),
+					'CZK' => __( 'CZK', 'tckpoh' ),
+					'EUR' => __( 'EUR', 'tckpoh' ),
 				),
-				'desc' => __( 'If using multiple currencies, should CZK be default and other currencies counted by rate?', 'tckpoh' ),
-				'desc_tip' =>  true,
-				'id'   => 'wc_settings_pohoda_export_invoice_foreign_currency',
-			),*/
+				'id'   => 'wc_settings_pohoda_export_home_currency',
+			),
 			'invoice_foreign_currency_converter_api_key' => array(
 				'name' => __( 'Converter API key', 'tckpoh' ),
 				'type' => 'text',
 				'desc' => __( 'If using different currency than CZK, you have to use converter API. Get your key here: https://rapidapi.com/fyhao/api/currency-exchange', 'tckpoh' ),
-				'desc_tip' =>  true,
 				'id'   => 'wc_settings_pohoda_export_converter_api_key',
 			),			
 			// classification type //
@@ -483,6 +466,32 @@ class WC_Pohoda_Export_Tab {
 				'default' => __( 'We are billing you for goods...', 'tckpoh' ),
 				'desc' => __( '', 'tckpoh' ),
 				'id'   => 'wc_settings_pohoda_export_invoice_text_custom'
+			),
+			// predkontace //
+			'invoice_predkontace_line_item' => array(
+				'name' => __( 'Predkontace pro produkt', 'tckpoh' ),
+				'type' => 'select',
+				'options' => array(
+					'' => __( 'Choose one...', 'tckpoh' ),
+				),
+				'id'   => 'wc_settings_pohoda_export_invoice_predkontace_line_item'
+			),
+			'invoice_predkontace_shipping' => array(
+				'name' => __( 'Predkontace pro dopravu', 'tckpoh' ),
+				'type' => 'select',
+				'options' => array(
+					'' => __( 'Choose one...', 'tckpoh' ),
+				),
+				'id'   => 'wc_settings_pohoda_export_invoice_predkontace_shipping'
+			),
+			'invoice_predkontace_fee' => array(
+				'name' => __( 'Predkontace pro poplatek', 'tckpoh' ),
+				'type' => 'select',
+				'options' => array(
+					'' => __( 'Choose one...', 'tckpoh' ),
+				),
+				'class' => 'separated_field',
+				'id'   => 'wc_settings_pohoda_export_invoice_predkontace_fee'
 			),
 			// center //
 			'invoice_center_type' => array(
@@ -779,6 +788,16 @@ class WC_Pohoda_Export_Tab {
 					'no' => __( 'No', 'tckpoh' ),
 				),
 				'id'   => 'wc_settings_pohoda_export_pdf_emails',
+			),
+			'export_pdf_dph_rozpocet' => array(
+				'name' => __( 'Show VAT summary on PDF invoice?', 'tckpoh' ),
+				'type' => 'radio',
+				'default' => 'yes',
+				'options' => array(
+					'yes' => __( 'Yes', 'tckpoh' ),
+					'no' => __( 'No', 'tckpoh' ),
+				),
+				'id'   => 'wc_settings_pohoda_export_export_pdf_dph_rozpocet',
 			),
 			'export_pdf_status' => array(
 				'name' => __( 'At which status to send the PDF invoice?', 'tckpoh' ),

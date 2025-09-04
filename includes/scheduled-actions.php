@@ -29,6 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	 
 */
 
+
 //// add status actions ////
 
 add_action( 'woocommerce_order_status_changed', 'create_invoice_or_add_to_unexported', 10, 3 );
@@ -121,7 +122,7 @@ function create_invoice_or_add_to_unexported( $order_id, $old_status, $new_statu
 		return;
 	}
 	
-	if ($frequency == 'order') {
+	if ( $frequency == 'order' ) {
 		
 		create_invoice( $order_id );
 		
@@ -135,7 +136,7 @@ function create_invoice_or_add_to_unexported( $order_id, $old_status, $new_statu
 
 //// create order export ////
 
-function  tckpoh_create_order( $order_id ) {
+function tckpoh_create_order( $order_id ) {
 	
 	//// check if plugin activated ////
 		
@@ -149,13 +150,13 @@ function  tckpoh_create_order( $order_id ) {
 
 	$export_orders = get_option('wc_settings_pohoda_export_invoice_export_orders');
 	
-	if ( $export_orders == 'no' ) {
+	if ( $export_orders == 'yes' ) {
+
+		create_invoice( $order_id, 'to_mserver', NULL, 'order' );
+
+	} else {
 		return;
-	}
-	
-	//// do the action ////
-		
-	create_invoice( $order_id, 'to_mserver', NULL, 'order' );
+	}		
 		
 }
 

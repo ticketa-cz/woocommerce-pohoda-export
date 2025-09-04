@@ -1,7 +1,7 @@
 <?php
 
 $xml->startElementNS('dat', 'dataPackItem', null);
-$xml->writeAttribute('id', 'OBJ001');
+$xml->writeAttribute('id', $order_name);
 $xml->writeAttribute('version', '2.0');
 // <dat:dataPackItem id="OBJ001" version="2.0"> 
     
@@ -72,38 +72,35 @@ $xml->writeAttribute('version', '2.0');
         // <inv:orderDetail>
 
             // order items //
-
-            $order_items = $order->get_items();
-            $order_shipping = $order->get_items( apply_filters( 'woocommerce_purchase_order_item_types', 'shipping' ));
-            $order_fees = $order->get_items( apply_filters( 'woocommerce_purchase_order_item_types', 'fee' ));
-            $order_items_array = array_merge( $order_items, $order_shipping, $order_fees );
             
-            foreach ( $order_items_array as $item_id => $item ) {
-                    
-                $xml->startElementNS('ord', 'orderItem', null);
-                
-                    $item_name = $item->get_name();
-                    $item_total = $item->get_total();
-                    $quantity = $item->get_quantity();
-                    if ( empty($quantity) || $quantity == NULL || $quantity == '' ) { $quantity = 1; } 
-                    $item_quantity = number_format( $quantity, 0, '.', '' );
+            foreach ( $items_array as $item_id => $item ) {
 
-                    $item_prices = get_item_prices( $item, $item_total, $item_quantity, $coeficient, $vat_rate, $order );									
+                $item_vals = $item['item_prices'];
                     
-                    $xml->writeElementNS('ord', 'text', null, $item_name);
-                    $xml->writeElementNS('ord', 'quantity', null, $item_quantity);
+                $xml->startElementNS('ord', 'orderItem', null);									
+                    
+                    $xml->writeElementNS('ord', 'text', null, $item['name']);
+                    $xml->writeElementNS('ord', 'quantity', null, $item['item_quantity']);
                     $xml->writeElementNS('ord', 'delivered', null, 0);
                     $xml->writeElementNS('ord', 'payVAT', null, 'false');
-                    $xml->writeElementNS('ord', 'rateVAT', null, $item_prices['item_vat_rate'] );
-                    $xml->writeElementNS('ord', 'discountPercentage', null, $item_prices['item_discount'] );
-
+                    $xml->writeElementNS('ord', 'rateVAT', null, $item_vals['item_vat_rate'] );
+                    $xml->writeElementNS('ord', 'discountPercentage', null, $item_vals['item_discount'] );
             
                     $xml->startElementNS('ord', $currency_format, null);
-                        $xml->writeElementNS('typ', 'unitPrice', null, number_format( $item_prices['item_unit_with_vat'], 2, '.', '' ) );
-                        $xml->writeElementNS('typ', 'price', null, number_format( $item_prices['item_total_without_vat'], 2, '.', '' ) );
-                        $xml->writeElementNS('typ', 'priceVAT', null, number_format( $item_prices['item_total_vat'], 2, '.', '' ) );
-                        $xml->writeElementNS('typ', 'priceSum', null, number_format( $item_prices['item_total'], 2, '.', '' ) );
+                        $xml->writeElementNS('typ', 'unitPrice', null, number_format( $item_vals['item_unit_without_vat'], 2, '.', '' ) );
+                        $xml->writeElementNS('typ', 'price', null, number_format( $item_vals['item_total_without_vat'], 2, '.', '' ) );
+                        $xml->writeElementNS('typ', 'priceVAT', null, number_format( $item_vals['item_total_vat'], 2, '.', '' ) );
+                        $xml->writeElementNS('typ', 'priceSum', null, number_format( $item_vals['item_total'], 2, '.', '' ) );
                     $xml->endElement();
+
+                    // stock item //
+                    if ( isset( $item_vals['stock_id'] ) && $item_vals['stock_id'] !== 'x' ) {
+                        $xml->startElementNS('ord', 'stockItem', null );
+                            $xml->startElementNS('typ', 'stockItem', null );
+                                $xml->writeElementNS('typ', 'ids', null, $item_vals['stock_id'] );
+                            $xml->endElement();
+                        $xml->endElement();
+                    }
                     
                 $xml->endElement();
 
@@ -119,7 +116,7 @@ $xml->writeAttribute('version', '2.0');
 
                     if ( $currency_format == 'foreignCurrency' ) {
 
-                        $conversion_rate = get_conversion_rate( $order_currency, 'CZK', '1' );
+                        $conversion_rate = get_post_meta( $order_id, 'pohoda_conversion_rate', true );
 
                         $xml->startElementNS('typ', 'currency', null);
                             $xml->writeElementNS('typ', 'ids', null, $order_currency);

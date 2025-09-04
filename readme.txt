@@ -16,5 +16,4 @@ https://www.ticketa.cz/woocommerce-pohoda-export-plugin/wpe-manual/
 
 == Changelog ==
 
-- opravena chyba v zaseknutém exportu xml souboru
-- přidané okno s frontou pro export
+- opravena chyba v DPH pro jine nez CZ a SK zeme

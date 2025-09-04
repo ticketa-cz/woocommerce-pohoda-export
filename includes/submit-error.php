@@ -124,6 +124,11 @@ function add_to_unexported( $order_id, $document_type = 'invoice' ) {
 
 	// if order, add OBJ //
 
+	$frequency = get_option('wc_settings_pohoda_export_invoice_export_type');
+	if ( $frequency == 'order_only' ) {
+		$document_type = 'order';
+	}
+
 	if ( $document_type == 'order' ) {
 		$order_id = 'OBJ' . $order_id;
 	}

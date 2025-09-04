@@ -19,15 +19,20 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 	//// check if order id ////
 		
 	if ( !$order_id ) {
-		return;
+		return NULL;
 	}
 
-	// if the document is an order //
+	// if the document from export queue is an order //
 
 	if( strpos( $order_id, 'OBJ' ) !== false ) {
 
+		$order_name = $order_id;
 		$order_id = str_replace( "OBJ", "", $order_id );
 		$document_type = 'order';
+
+	} else {
+
+		$order_name = "FA" . $order_id;
 
 	}
 
@@ -35,21 +40,35 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 		
 	if ( is_null( get_post( $order_id ) )){
 
+		tckpoh_logs( __( 'Order doesn\'t exist anymore - #', 'tckpoh' ) .$order_id );
 		remove_from_unexported( $order_id, $document_type );
+
 		if ( $export_type == 'to_xml_first' || $export_type == "to_xml" ) {
 			return $xml;
-		} else if ( $export_type == 'to_mserver' || $export_type == 'to_xml_last' || $export_type == 'to_xml_first_and_last' ) {
+		} else if ( $export_type == 'to_xml_last' || $export_type == 'to_xml_first_and_last' ) {
 			goto xml_ending;
 		} else {
-			return;
+			return NULL;
 		}
 	}
 
 	// quit if is not order and exporting only orders //
 
 	$frequency = get_option('wc_settings_pohoda_export_invoice_export_type');
-	if ( $frequency == 'order_only' && $document_type != 'order' ) {
-		return;
+	if ( $frequency == 'order_only' && ( $document_type != 'order' && $document_type != 'pdf' ) ) {
+		return NULL;
+	}
+
+	// set output directory //
+
+	$wp_upload_dir = wp_upload_dir();
+	$dir = $wp_upload_dir['basedir'] . "/faktury/";
+	$url_dir = $wp_upload_dir['baseurl'] . "/faktury/";
+
+	// create document directory //
+
+	if( is_dir( $dir ) === false ) {
+		wp_mkdir_p( $dir );
 	}
 	
 	//// log and load order ////
@@ -162,7 +181,6 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 				
 		$customer_info = array(
 			'company'	=> $order->get_billing_company(),
-			'name'		=> $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
 			'city' 		=> $order->get_billing_city(),
 			'street' 	=> $billing_address,
 			'zip'		=> $order->get_billing_postcode(),
@@ -172,6 +190,11 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			'phone'		=> $order->get_billing_phone(),
 			'email'		=> $order->get_billing_email(),
 		);
+		if ( !empty( $order->get_billing_company() ) ) {
+			$customer_info['name'] = $order->get_billing_company() . ', ' . $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
+		} else {
+			$customer_info['name'] = $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
+		}
 		$customer_shipping = array(
 			'company' 	=> $order->get_shipping_company(),
 			'name'		=> $order->get_shipping_first_name() . ' ' . $order->get_shipping_last_name(),
@@ -200,9 +223,12 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 		// currency setting //
 
 		$order_currency = $order->get_currency();
-		//$use_czk_as_main = get_option('wc_settings_pohoda_export_invoice_foreign_currency');
+		$home_currency = get_option( 'wc_settings_pohoda_export_home_currency' );
+		if ( !isset( $home_currency ) || empty( $home_currency ) ) {
+			$home_currency = 'CZK';
+		}
 		
-		if ( $order_currency !== 'CZK' /* && $use_czk_as_main == 'yes'*/ ) {
+		if ( $order_currency !== $home_currency ) {
 			$currency_format = 'foreignCurrency';
 		} else {
 			$currency_format = 'homeCurrency';
@@ -210,15 +236,6 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 		
 
 		// vat classification //
-		
-		// mozna se UD / UDA4 / UDA5 nastavi samo v pohode podle ceny //
-		$plugin_set_vat_rate = get_option('wc_settings_pohoda_export_invoice_data_vat_rate');
-		switch ( $plugin_set_vat_rate ) {
-  			case "high":	$plugin_set_coeficient = 1.21;		$coeficient_old = 0.1736;	$vat_classification = 'UD';		break;
-  			case "low":		$plugin_set_coeficient = 1.15;		$coeficient_old = 0.1304;	$vat_classification = 'UD'; 	break;
-  			case "third":	$plugin_set_coeficient = 1.10;		$coeficient_old = 0.0909;	$vat_classification = 'UD';		break;
-  			case "none":	$plugin_set_coeficient = 1;			$coeficient_old = 0;		$vat_classification = 'UN';		break;
-		}
 
 		$vat_rate = array();
 		$vat_rate['high'] = array(
@@ -227,6 +244,9 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			'total_without_vat' => 0,
 			'total_vat' => 0,
 			'total' => 0,
+			'total_without_vat_czk' => 0,
+			'total_vat_czk' => 0,
+			'total_czk' => 0,
 			'name' => 'High',
 		);
 		$vat_rate['low'] = array(
@@ -235,6 +255,9 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			'total_without_vat' => 0,
 			'total_vat' => 0,
 			'total' => 0,
+			'total_without_vat_czk' => 0,
+			'total_vat_czk' => 0,
+			'total_czk' => 0,
 			'name' => 'Low',
 		);
 		$vat_rate['third'] = array(
@@ -243,6 +266,9 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			'total_without_vat' => 0,
 			'total_vat' => 0,
 			'total' => 0,
+			'total_without_vat_czk' => 0,
+			'total_vat_czk' => 0,
+			'total_czk' => 0,
 			'name' => '3',
 		);
 		$vat_rate['none'] = array(
@@ -251,30 +277,48 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			'total_without_vat' => 0,
 			'total_vat' => 0,
 			'total' => 0,
+			'total_without_vat_czk' => 0,
+			'total_vat_czk' => 0,
+			'total_czk' => 0,
 			'name' => 'None',
 		);
+		/*
+		$vat_rate['historyHigh'] = array(
+			'coeficient' => 1,
+			'vat_classification' => 'UD',
+			'total_without_vat' => 0,
+			'total_vat' => 0,
+			'total' => 0,
+			'total_without_vat_czk' => 0,
+			'total_vat_czk' => 0,
+			'total_czk' => 0,
+			'name' => 'HistoryHigh',
+		);*/
 
 
-		// items //
+		//// ==== get items ==== ////
 
 		$order_items = $order->get_items();
 		$order_shipping = $order->get_items( apply_filters( 'woocommerce_purchase_order_item_types', 'shipping' ));
 		$order_fees = $order->get_items( apply_filters( 'woocommerce_purchase_order_item_types', 'fee' ));
 		$order_items_array = array_merge( $order_items, $order_shipping, $order_fees );
 		$items_array = array();
+		$total_discount = 0;
 
 		foreach ( $order_items_array as $item_id => $item ) {
 
 			$item_values = array();
 			$item_values['name'] = $item->get_name();
-			$item_values['item_total'] = $item->get_total();
-				$quantity = $item->get_quantity();
-				if ( empty($quantity) || $quantity == NULL || $quantity == '' ) { $quantity = 1; } 
+
+			// quantity //
+
+			$quantity = $item->get_quantity();
+			if ( empty($quantity) || $quantity == NULL || $quantity == '' ) { $quantity = 1; } 
 			$item_values['item_quantity'] = number_format( $quantity, 2, '.', '' );
 
 			// get item prices //
 
-			$item_prices = get_item_prices( $item, $item_values['item_total'], $item_values['item_quantity'], $plugin_set_coeficient, $plugin_set_vat_rate, $order );
+			$item_prices = get_item_prices( $item, $item_values['item_quantity'], $order );
 			$item_values['item_prices'] = $item_prices;
 
 			// add to vat rates //
@@ -283,12 +327,33 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 			$vat_rate[ $item_prices["item_vat_rate"] ]['total_vat']			+= $item_prices['item_total_vat'];
 			$vat_rate[ $item_prices["item_vat_rate"] ]['total']				+= $item_prices['item_total'];
 
-			$items_array[$item_id] = $item_values;
+			// add to vat rates in CZK //
+
+			$vat_rate[ $item_prices["item_vat_rate"] ]['total_without_vat_czk']	+= floatval( $item_prices['item_total_without_vat'] / $item_prices['rate'] );
+			$vat_rate[ $item_prices["item_vat_rate"] ]['total_vat_czk']			+= floatval( $item_prices['item_total_vat'] / $item_prices['rate'] );
+			$vat_rate[ $item_prices["item_vat_rate"] ]['total_czk']				+= floatval( $item_prices['item_total'] / $item_prices['rate'] );
+
+			// count total discount //
+
+			if ( isset( $item_prices['discount'] ) ) {
+				$total_discount += $item_prices['discount'];
+			}
+
+			$items_array[ $item_id ] = $item_values;
 		
+		}
+		
+
+		// == vat setting == //
+
+		if ( wc_tax_enabled() ) {
+			$vat_included = 'true';
+		} else {
+			$vat_included = 'false';
 		}
 
 		
-		// total prices //
+		// == total prices == //
 		
 		$total = 0;
 		$total_without_vat = 0;
@@ -316,8 +381,9 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 		
 		$rounding = get_option('wc_settings_pohoda_export_invoice_data_rounding');
 		if ( empty( $rounding ) ) { $rounding == 'math2one'; }
+
 		
-		// payment type & liquidation && EET //
+		// == payment type && EET == //
 		
 		$payment_method = $order->get_payment_method();
 		$payment_types = array('card', 'cash', 'cod', 'transfer', 'special');
@@ -332,32 +398,31 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 				$payment_type_text = get_option('wc_settings_pohoda_export_payment_methods_'.$paytype.'_text');
 				
 				if ( $paytype == 'card' ) {
-					//$liquidation = '0.00';
 					$eet_option = $eet_sending;
 				}
 			}
 		}
 
-		
 
-		/////////////////////////////			create PDF			//////////////////////////////////
+		///////////////////		===========   	create PDF	   ===========    	//////////////////
 
 		if ( $document_type == 'pdf' ) {
 
 			// setup MPDF //
 
-			require_once TICKETAPOH_PATH . '/includes/mpdf/mpdf.php';
-			$mpdf = new mPDF();
+            require_once TICKETAPOH_PATH . '/includes/mpdf8/vendor/autoload.php';
+
+			$mpdf_config_class = new \Mpdf\Config\ConfigVariables();
+			$defaultConfig = $mpdf_config_class->getDefaults();
+			$fontDirs = $defaultConfig['fontDir'];
+
+			$mpdf_font_config_class = new \Mpdf\Config\FontVariables();
+			$defaultFontConfig = $mpdf_font_config_class->getDefaults();
+
+			$fontData = $defaultFontConfig['fontdata'];
+			$font_dir = TICKETAPOH_PATH . '/assets/fonts';
+			$mpdf = new \Mpdf\Mpdf();
 			$mpdf->autoLangToFont = true;
-
-			// create document directory //
-
-			$wp_upload_dir = wp_upload_dir();
-			$dir = $wp_upload_dir['basedir'] . '/faktury';
-
-			if( is_dir( $dir ) === false ) {
-				wp_mkdir_p( $dir );
-			}
 
 			// QR CODE //
 
@@ -367,13 +432,13 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 
 				$qr_link = 'SPD*1.0*ACC:' . $iban . '*AM:' . number_format( $total, 2 ) . '*CC:' . $order_currency . '*X-VS:' . $variable_symbol;
 
-				require_once TICKETAPOH_PATH . '/includes/mpdf/qrcode/src/QrCode.php';
-				require_once TICKETAPOH_PATH . '/includes/mpdf/qrcode/src/Output/Html.php';
-				require_once TICKETAPOH_PATH . '/includes/mpdf/qrcode/src/Output/Mpdf.php';
+				require_once TICKETAPOH_PATH . 'includes/mpdf8/qrcode/src/QrCode.php';
+				require_once TICKETAPOH_PATH . 'includes/mpdf8/qrcode/src/Output/Svg.php';
 
-				$codeit = new Mpdf\QrCode\QrCode($qr_link);
-				$code_output = new Mpdf\QrCode\Output\Html();
-				$qr_code = $code_output->output($codeit);
+				$codeit = new Mpdf\QrCode\QrCode( $qr_link );
+				$code_output = new Mpdf\QrCode\Output\Svg();
+				$qr_code = $code_output->output( $codeit, 200, 'white', 'black' );
+				$qr_code = str_replace( '<?xml version="1.0"?>', '', $qr_code );
 
 				//$qr_code = '<barcode code="'.$qr_link.'" size="1" type="QR" error="M" class="barcode" />';
 			} else {
@@ -409,73 +474,82 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 		}
 
 		
-		///////////////////////////// 		create xml content		 /////////////////////////////////
+		///////////////// 	===========	   create XML content	===========    ////////////////////
 
-	if ( $export_type == 'to_mserver' || $export_type == "to_xml_first" || $export_type == 'to_xml_first_and_last' ) {
-	
-		$xml = new XMLWriter();
-		$xml->openMemory();
-		$xml->setIndent(true);
-		$xml->setIndentString("\t");
-		$xml->startDocument('1.0', 'windows-1250');
-		// <xml version="1.0" encoding="windows-1250">
-	
-		$xml->startElementNS('dat', 'dataPack', "http://www.stormware.cz/schema/version_2/data.xsd");
-		$xml->writeAttributeNs("xmlns","inv", null, "http://www.stormware.cz/schema/version_2/invoice.xsd");
-		$xml->writeAttributeNs("xmlns","typ", null, "http://www.stormware.cz/schema/version_2/type.xsd");
-		$xml->writeAttributeNs("xmlns","ord", null, "http://www.stormware.cz/schema/version_2/order.xsd");
-		$xml->writeAttribute('id', 'fa001');
-		$xml->writeAttribute('ico', get_option('wc_settings_pohoda_export_billing_ico'));
-		$xml->writeAttribute('key', get_option('wc_settings_pohoda_export_accounting_key'));
-		$xml->writeAttribute('application', 'Ticketa Pohoda Export');
-		$xml->writeAttribute('version', '2.0');
-		$xml->writeAttribute('note', 'Import faktur a objednávek');
-		// <dat:dataPack id="fa001" ico="12345678" application="StwTest" version="2.0" note="Import FA" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd" xmlns:inv="http://www.stormware.cz/schema/version_2/invoice.xsd" xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
-			
-	}
-
-			//// create dataPackItem by document type ////
-	
-			include( TICKETAPOH_PATH . 'includes/document-types/' . $document_type . '.php' );
-			
-			//// ==================================== ////
-			
-	// end dataPack if single invoice //
-	if ( $export_type == 'to_mserver' || $export_type == 'to_xml_last' || $export_type == 'to_xml_first_and_last' ) {
-
-		xml_ending:
-
-		$xml->endElement();
-		$xml->endDocument();
-
-		$xml_output = $xml->outputMemory();
-
-	}
-	
-	//// send xml to another round if export to xml ////
-
-	if ( $export_type == 'to_xml_first' || $export_type == "to_xml" ) {
-		return $xml;
-	}
+		if ( $export_type == 'to_mserver' || $export_type == "to_xml_first" || $export_type == 'to_xml_first_and_last' ) {
 		
-		//// save the xml if manually exported ////
-		
-		if ( $export_type == 'to_xml_last' || $export_type == 'to_xml_first_and_last' ) {
+			$xml = new XMLWriter();
 
-			$wp_upload_dir = wp_upload_dir();
-			$dir = $wp_upload_dir['basedir'] . "/faktury/";
-			$url_dir = $wp_upload_dir['baseurl'] . "/faktury/";
-			if ( !is_dir( $dir ) ) {
-				mkdir(  $dir , 0777, true );
+			if ( $export_type == "to_mserver" ) {
+				$xml->openMemory();
+			} else {
+				//$xml->openMemory();
+				$xml->openURI( $dir. "export-" . date("Y-m-d") . ".xml" );
 			}
-			file_put_contents( $dir. "export-" . date("Y-m-d") . ".xml", $xml_output );
+			$xml->setIndent(true);
+			$xml->setIndentString("\t");
 
-			return $url_dir. "export-" . date("Y-m-d") . ".xml";
-
+			$xml->startDocument('1.0', 'Windows-1250');
+			// <xml version="1.0" encoding="windows-1250">
+		
+			$xml->startElementNS('dat', 'dataPack', "http://www.stormware.cz/schema/version_2/data.xsd");
+			$xml->writeAttributeNs("xmlns","inv", null, "http://www.stormware.cz/schema/version_2/invoice.xsd");
+			$xml->writeAttributeNs("xmlns","typ", null, "http://www.stormware.cz/schema/version_2/type.xsd");
+			$xml->writeAttributeNs("xmlns","ord", null, "http://www.stormware.cz/schema/version_2/order.xsd");
+			$xml->writeAttribute('id', $order_name);
+			$xml->writeAttribute('ico', get_option('wc_settings_pohoda_export_billing_ico'));
+			$xml->writeAttribute('key', get_option('wc_settings_pohoda_export_accounting_key'));
+			$xml->writeAttribute('application', 'Ticketa Pohoda Export');
+			$xml->writeAttribute('version', '2.0');
+			$xml->writeAttribute('note', 'Import faktur a objednávek');
+			// <dat:dataPack id="fa001" ico="12345678" application="StwTest" version="2.0" note="Import FA" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd" xmlns:inv="http://www.stormware.cz/schema/version_2/invoice.xsd" xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				
 		}
 
 
-		////------------------ send the xml --------------------////
+				//// create dataPackItem by document type ////
+		
+				include( TICKETAPOH_PATH . 'includes/document-types/' . $document_type . '.php' );
+				
+				//// ==================================== ////
+				
+
+
+		//// send xml to another round if export to xml ////
+
+		if ( $export_type == 'to_xml_first' || $export_type == "to_xml" ) {
+			return $xml;
+		}
+
+		//// otherwise end it ////
+
+		if ( $export_type == 'to_mserver' || $export_type == 'to_xml_last' || $export_type == 'to_xml_first_and_last' ) {
+
+			// end dataPack if single invoice or xml ending //
+
+			xml_ending:
+			$xml->endElement();
+			$xml->endDocument();
+
+			if ( $export_type == 'to_mserver' ) {
+
+				// pass data on to the call //
+				$xml_output = $xml->outputMemory();
+
+			} else {
+
+				// save the xml if manually exported //
+				$xml->flush();
+				//$xml_output = $xml->outputMemory();
+				//file_put_contents( $dir. "export-" . date("Y-m-d") . ".xml", $xml_output );
+				return $url_dir. "export-" . date("Y-m-d") . ".xml";
+
+			}
+
+		}		
+		
+
+		//// >>>> ------------------ send the xml -------------------- <<<< ////
 		
 		$export_response = make_the_call( $xml_output, '', '', '' );
 
@@ -483,16 +557,13 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 		//// check for errors ////
 		
 		if ( substr($export_response, 0, 5) == "<?xml" ) {
-			
-			
+						
+			/*
 			// save the response //
-			$wp_upload_dir = wp_upload_dir();
-			$dir = $wp_upload_dir['basedir'] . "/faktury/";
-			$filePath = $dir.'/re-'.$order_id.'.xml';	
-			file_put_contents($filePath, $export_response);
+			file_put_contents($dir.'/re-'.$order_id.'.xml', $export_response);
 			// save the call //
-			$callfilePath = $dir.'/'.$order_id.'.xml';	
-			file_put_contents($callfilePath, $xml_output);
+			file_put_contents($dir.'/'.$order_id.'.xml', $xml_output);
+			*/
 								
 			// if response is XML //
 						
@@ -554,13 +625,17 @@ function create_invoice( $order_id, $export_type = 'to_mserver', $xml = NULL, $d
 
 //// get item prices === price counting ////
 
-function get_item_prices( $item, $item_total, $item_quantity, $coeficient, $item_vat_rate, $order ) {	
+function get_item_prices( $item, $item_quantity, $order ) {	
 
 	$return = array();
 	$discount_percentage = 0;
 	$rate = 1;
+	$item_vat_rate = 'none';
 
-	// tax rate //
+	$item_total = $item->get_total();
+
+
+	// == get tax rate == //
 
 	$tax_obj = new WC_Tax();
 	// Get the tax data from customer location and product tax class
@@ -571,179 +646,223 @@ function get_item_prices( $item, $item_total, $item_quantity, $coeficient, $item
 		'postcode'  => $order->get_shipping_city() ? $order->get_shipping_city() : $order->get_billing_city(),
 		'tax_class' => $item->get_tax_class()
 	) );
-	if( ! empty( $tax_rates_data ) ) {
+
+	if ( $item->is_type('line_item') ) {
+		$line_tax_total = floatval( $item->get_subtotal_tax() );
+	}
+
+	if ( !empty( $tax_rates_data ) ) {
+
 		$tax_rate = reset( $tax_rates_data )['rate'];
+
+	} else if ( !empty( $line_tax_total ) ) {
+
+		$item_percent = floatval( $item_total / 100 );
+		$tax_rate = round( $line_tax_total / $item_percent );
+
 	} else {
 		$tax_rate = 0;
 	}
 
-
-	// actual price //
-
-	if ( $item->is_type('fee') || $item->is_type('shipping') ) {
-		$item_total_tax = $item->get_total_tax();
-		$item_actual_price = ( $item_total + $item_total_tax ) / $item_quantity;
-	} else {
-		$item_total_tax = ( $item_total / 100 ) * $tax_rate;
-		$item_actual_price = ( round($item_total,2) + round($item_total_tax,2) ) / $item_quantity;
+	switch( $tax_rate ) {
+		case 21:	$item_vat_rate = "high";	break;
+		case 20:	$item_vat_rate = "high";	break;
+		case 15:	$item_vat_rate = "low";		break;
+		case 12:	$item_vat_rate = "low";		break;
+		case 10:	$item_vat_rate = "third";	break;
+		case 0:		$item_vat_rate = "none";	break;
 	}
+
+	// other countries than CZ and SK //
+	/*
+	$country = $order->get_shipping_country();
+	if ( $country !== 'CZ' && $country !== 'SK' ) {
+		$item_vat_rate = "historyHigh";
+	}*/
+	
+
+	// == actual price == //
+	
+	if ( $item->is_type('fee') || $item->is_type('shipping') ) {
+
+		// lisi se hodnota ulozene dane podle typu //
+
+		$item_total_tax = $item->get_total_tax();
+		$item_actual_price = ( $item_total ) / $item_quantity;
+
+	} else {
+
+		$item_total_tax = ( $item_total / 100 ) * $tax_rate;
+		
+		if ( wc_prices_include_tax() || !wc_tax_enabled() ) {
+			$item_actual_price = ( $item_total ) / $item_quantity;
+		}
+		else {
+			$item_actual_price = ( round($item_total,2) ) / $item_quantity;
+		}
+	}
+
+	//$item_total_tax = $item->get_total_tax();
 	$item_unit_tax = $item_total_tax / $item_quantity;
 	$item_unit_price = $item_total / $item_quantity;
 
+	//$item_actual_price = floatval( $item_unit_price );
 
-	// regular price //
+
+	// == regular price == //
 
 	if ( $item->is_type('line_item') ) {
-		
+
 		if ( $item->get_variation_id() > 0 ) {
-			$variation_id = $item->get_variation_id();
-			$product_variation = new WC_Product_Variation( $variation_id );
-            $item_saved_price = $product_variation->get_price();
-			//error_log('order #' . $item->get_order_id() . ' - order item #' . $item->get_id() . ' - item variation: ' . $variation_id . ' / price: ' . $item_saved_price );
+			$item_product = new WC_Product_Variation( $item->get_variation_id() );
+			$item_regular_price = floatval( $item_product->get_price() );
 		} else {
 			$item_product = $item->get_product();
 			if ( $item_product ) { 
-				$item_saved_price = $item_product->get_regular_price();
+				$item_regular_price = floatval( $item_product->get_regular_price() );
 			}
-			//error_log('order #' . $item->get_order_id() . ' - order item #' . $item->get_id()  . ' - no variation / price: ' . $item_saved_price );
 		}
-	}
-
-	if ( wc_prices_include_tax() || !wc_tax_enabled() ) {
-
-		if ( $item->is_type('fee') || $item->is_type('shipping') ) {
-			$item_saved_price = $item_actual_price;
-			//error_log('order #' . $item->get_order_id() . ' - order item #' . $item->get_id()  . ' - shipping or fee / price: ' . $item_saved_price );
-		}
-		if ( !$item_saved_price ) {
-			$item_saved_price = $item_actual_price;
-		}
-		$item_regular_price = $item_saved_price;
-		$item_regular_tax = $item_regular_price - ( ( $item_regular_price / ( 100 + $tax_rate ) ) * 100 ); // >> happens to be non numeric
-		$item_regular_notax = $item_regular_price - $item_regular_tax; // >> happens to be non numeric
 
 	} else {
-
-		if ( $item->is_type('fee') || $item->is_type('shipping') ) {
-			$item_saved_price = $item_unit_price;
+		$item_regular_price = $item_unit_price;
+	}
+	if ( !isset($item_regular_price) ) {
+		//$item_regular_price = $order->get_item_subtotal( $item, false );
+		$item_regular_price = floatval( $item->get_subtotal() / $item_quantity );
+	}
+	if ( $item->is_type('line_item') ) {
+		if ( wc_prices_include_tax() || !wc_tax_enabled() ) {
+			$item_regular_tax = ( $item_regular_price / ( 100 + $tax_rate ) ) * $tax_rate;
+			$item_regular_price = $item_regular_price - $item_regular_tax;
 		}
-		if ( !$item_saved_price ) {
-			$item_saved_price = $item_actual_price;
-		}
-		$item_regular_notax = $item_saved_price;
-		$item_regular_tax = ( $item_regular_notax * ( 1 + ( $tax_rate / 100 ) ) ) - $item_regular_notax ;
-		$item_regular_price = $item_regular_notax + $item_regular_tax;
 	}
 
-	// if regular was not CZK //
+
+	// == foreign currencies == //
 
 	$currency = $order->get_currency();
-
-	if ( $currency !== 'CZK' ) {
-		$multicurrency_info = get_post_meta( $item->get_order_id(), 'wmc_order_info', true );
-		if ( $multicurrency_info ) {
-			$rate = $multicurrency_info[$currency]['rate'];
-		} else {
-			$rate = get_conversion_rate( 'CZK', $currency, 1 );
-		}
-
-		$item_regular_notax = $item_regular_notax * $rate;
-		$item_regular_tax = $item_regular_tax * $rate;
-		$item_regular_price = $item_regular_price * $rate;
+	$home_currency = get_option( 'wc_settings_pohoda_export_home_currency' );
+	if ( !isset( $home_currency ) || empty( $home_currency ) ) {
+		$home_currency = 'CZK';
 	}
 
-	// sleva //
+	if ( $currency !== $home_currency ) {
+
+		// CURCY plugin //
+		$currency_plugin_curcy = get_post_meta( $item->get_order_id(), 'wmc_order_info', true );
+		// WCML multicurrency plugin //
+		$currency_plugin_wcml = get_option( '_wcml_settings' );
+
+		if ( $currency_plugin_curcy ) {
+
+			$rate = $currency_plugin_curcy[$currency]['rate'];
+
+		} else if ( $currency_plugin_wcml ) {
+
+			$rate = $currency_plugin_wcml['currency_options'][$currency]['rate'];
+
+		} else {
+			$rate = tckpoh_get_conversion_rate( $home_currency, $currency, 1 );
+		}
+
+		update_post_meta( $item->get_order_id(), 'pohoda_conversion_rate', $rate );
+
+	}
+
+
+	// == sleva == //
 
 	if ( round( $item_regular_price ) !== round( $item_actual_price ) && round( $item_regular_price ) > round( $item_actual_price ) ) {
 		
-		$one_percent = floatval( $item_regular_notax / 100 );
+		$one_percent = floatval( $item_regular_price / 100 );
 		$price_percent = floatval( $item_unit_price / $one_percent ); // >> happens to be 0
 		$discount_percentage = floatval( 100 - $price_percent );
-	} 
-	
-	//error_log('tax rate: ' . $tax_rate . '% --- item_regular_price: ' . $item_regular_price . ' // item_regular_notax: ' . $item_regular_notax . ' // item_regular_tax: ' . $item_regular_tax );
-	//error_log('total : ' . $item_total . ' --- total tax : ' . $item_total_tax . ' /// regular : '.  $item_regular_price . ' --- actual : ' .  $item_actual_price . ' /// discount: ' . $discount_percentage );
-	
 
-	
-	//////// +++++++ COUPONS ++++++++ ////////
-
-
-	//// VYPOCTY ////
-
-	// pokud jsou dane povolene ve Woo //
-
-	if ( wc_tax_enabled() ) {
-
-		// tax rate //
-
-		switch( $tax_rate ) {
-			case 21:	$item_vat_rate = "high";	break;
-			case 15:	$item_vat_rate = "low";		break;
-			case 10:	$item_vat_rate = "third";	break;
-			case 0:		$item_vat_rate = "none";	break;
-		}
-
-		// total //
-
-		$return['item_total_vat'] = floatval( $item_total_tax );
-		$return['item_total_without_vat'] = floatval( $item_total );
-		$return['item_total'] = floatval( $item_total + $item_total_tax );
-
-		// unit //
-
-		$return['item_unit_vat'] = floatval( $item_unit_tax );
-		$return['item_unit_price'] = floatval( $item_unit_price );
-		if ( $discount_percentage > 0 ) {
-			$return['item_unit_with_vat'] = floatval( $item_regular_price );
+		$discount = ( floatval( $item_regular_price ) - floatval( $item_actual_price ) ) * $item_quantity;
+		if ( wc_prices_include_tax() ) {
+			$return['discount'] = $discount * ( 1 + ( $tax_rate / 100 ) );
 		} else {
-			$return['item_unit_with_vat'] = floatval( $item_actual_price );
+			$return['discount'] = $discount;
 		}
-
-	// pokud nejsou povolene ve Woo, pocitat je z nastaveni pluginu //
 
 	} else {
+		$return['discount'] = 0;
+	}
 
-		switch( $item_vat_rate ) {
-			case "high":	$tax_rate = 21;		break;
-			case "low": 	$tax_rate = 15; 	break;
-			case "third":	$tax_rate = 10; 	break;
-			case "none":	$tax_rate = 0;		break;
-		}
+	// accounting //
 
-		// total //
+	$item_type = $item->get_type();
+	$return['accounting'] = get_option('wc_settings_pohoda_export_invoice_predkontace_' . $item_type );
 
-		$item_total_with_vat = floatval( $item_actual_price * $item_quantity );
-		$item_total_without_vat = floatval( $item_total_with_vat / $coeficient );
-		$return['item_total_without_vat'] = floatval( $item_total_without_vat );
-		$return['item_total_vat'] = floatval( $item_total_with_vat - $item_total_without_vat );
-		$return['item_total'] = floatval( $item_total_with_vat );
+	// total //
 
-		// unit //
+	$return['item_total_vat'] = floatval( $item_total_tax );
+	$return['item_total_without_vat'] = floatval( $item_total );
+	$return['item_total'] = floatval( $item_total + $item_total_tax );
 
-		$return['item_unit_price'] = floatval( $item_unit_price );
-		if ( $discount_percentage > 0 ) {
-			$return['item_unit_with_vat'] = floatval( $item_regular_price );
-		} else {
-			$return['item_unit_with_vat'] = floatval( $item_actual_price );
-		}
-		$item_unit_without_vat = floatval( $item_unit_price / $coeficient );
-		$return['item_unit_vat'] = floatval( $item_unit_price - $item_unit_without_vat );
+	// unit //
 
+	$item_unit_with_vat = round( ( $item_unit_price + $item_unit_tax ), 2 );
+
+	$return['item_unit_vat'] = floatval( $item_unit_tax );
+	$return['item_unit_price'] = floatval( $item_unit_price );
+	$return['item_unit_with_vat'] = floatval( $item_unit_with_vat );
+	if ( $discount_percentage > 0 ) {
+		$return['item_unit_without_vat'] = floatval( $item_regular_price );
+	} else {
+		$return['item_unit_without_vat'] = floatval( $item_actual_price );
+	}
+
+	// other //
+	if ( $item->is_type('line_item')  ) {
+		$return['stock_id'] = $item_product->get_sku();
+	} else {
+		$return['stock_id'] = 'x';
 	}
 
 	$return['item_vat_rate'] = $item_vat_rate;
-	$return['tax_rate'] = $tax_rate;
+	$return['item_tax_rate'] = $tax_rate;
+	$return['rate'] = $rate;
 	$return['item_discount'] = $discount_percentage;
 
+	//error_log('total : ' . $item_total . ' --- total tax : ' . $item_total_tax . ' /// unit : ' . $item_unit_price . ' --- unit tax : ' . $item_unit_tax . ' // unit with tax: ' . $item_unit_with_vat . ' /// regular : '.  $item_regular_price . ' --- actual : ' .  $item_actual_price . ' /// discount: ' . $return['discount'] . ' / percentage: ' . $return['item_discount'] );
+
 	return $return;
+
+
+	//////// +++++++ COUPONS ++++++++ ////////
+	/*
+	foreach( $order->get_used_coupons() as $coupon_code ){
+
+		$coupon_post_obj = get_page_by_title( $coupon_code, OBJECT, 'shop_coupon' );
+		$coupon_id       = $coupon_post_obj->ID;
+		$coupon			 = new WC_Coupon( $coupon_id );
+	
+		if( $coupon->get_discount_type() == 'percent' ){
+			
+			$coupon_amount = $coupon->get_amount();
+		}
+		if( $coupon->is_type( 'fixed_cart' ) ) {
+
+			$coupon_amount = $coupon->get_amount();
+		}
+		if( $coupon->is_type( 'fixed_product' ) ){
+ 
+			$coupon_amount = $coupon->get_amount();
+		}
+		$cp_free_shipping = get_post_meta( $coupon_id, 'free_shipping', true ); 
+		//error_log( $coupon->get_discount_type() . ' -- ' . $coupon->get_amount() );
+	}
+	*/
+	
 
 }
 
 
 
 
-//// create invoice numbering ////
+
+//// ------ create invoice numbering ------ ////
 
 function create_invoice_number( $order_id ) {
 			
@@ -872,7 +991,7 @@ function create_date_format( $set_format ) {
 
 //// get conversion rate ////
 
-function get_conversion_rate( $from, $to, $amount ) {
+function tckpoh_get_conversion_rate( $from, $to, $amount ) {
 
 	$currency_converter_api_key = get_option('wc_settings_pohoda_export_converter_api_key');
 

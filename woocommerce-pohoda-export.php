@@ -4,7 +4,7 @@
 * Plugin Name: Woocommerce Pohoda Export
 * Plugin URI: https://www.ticketa.cz/woocommerce-pohoda-export-plugin/
 * Description: Export faktur z Woocommerce do účetního systému Pohoda
-* Version: 2.1.4
+* Version: 2.2.5
 * Author: Ticketa
 * Author URI: https://www.ticketa.cz/
 * Developer: Ticketa
@@ -111,7 +111,7 @@ function initiate_tckpoh() {
 
 function tckpoh_styles_and_scripts($hook) {
 		
-	if ( is_admin() && $_GET['page'] == 'wc-settings' && $_GET['tab'] == 'pohoda_export_tab' ) {
+	if ( is_admin() && isset($_GET['page']) && $_GET['page'] == 'wc-settings' && isset($_GET['tab']) && $_GET['tab'] == 'pohoda_export_tab' ) {
 		
 		$lastmodtimejs = filemtime(TICKETAPOH_PATH . 'assets/setup-tab.js');
 		wp_enqueue_script('tckpoh_js', TICKETAPOH_URL . 'assets/setup-tab.js', array( 'jquery', 'wp-util' ), $lastmodtimejs);
@@ -157,6 +157,9 @@ function tckpoh_styles_and_scripts($hook) {
 			'centre' => get_option('wc_settings_pohoda_export_invoice_center_select'),
 			'activity' => get_option('wc_settings_pohoda_export_invoice_activity_select'),
 			'classification_type' => get_option('wc_settings_pohoda_export_invoice_classification_type'),
+			'predkontace_line_item' => get_option('wc_settings_pohoda_export_invoice_predkontace_line_item'),
+			'predkontace_shipping' => get_option('wc_settings_pohoda_export_invoice_predkontace_shipping'),
+			'predkontace_fee' => get_option('wc_settings_pohoda_export_invoice_predkontace_fee'),
 			'export_type' => get_option('wc_settings_pohoda_export_invoice_export_type'),
 			'export_status' => get_option('wc_settings_pohoda_export_invoice_export_status'),
 			'center_type' => get_option('wc_settings_pohoda_export_invoice_center_type'),
@@ -192,10 +195,12 @@ function tckpoh_styles_and_scripts($hook) {
 			'billing_website' => site_url(),
 			'exporting_xml' => __( 'Creating the XML file.', 'tckpoh' ),
 			'xml_could_not_be_created' => __( 'The XML file could not be created because of an error.', 'tckpoh' ),
+			'xml_zero_added' => __( 'There were no orders or invoices to add to the XML file.', 'tckpoh' ),
 			'logo_upload' => __( 'Choose', 'tckpoh' ),
 			'logo_upload_url' => get_option('wc_settings_pohoda_export_pdf_logo'),
 			'vybrataoriznout' => __( 'Choose and crop', 'tckpoh' ),
 			'choose_currency' => __( 'Filter by currency: enter the currency international code. Or leave blank to search all currencies.', 'tckpoh' ),
+			'add_all_orders' => __( 'Add all to export', 'tckpoh' ),
 			'admin_url' => admin_url(),
 		));
 		
@@ -241,7 +246,7 @@ function tckpoh_logs( $message ) {
 	$dt = new DateTime();
 	$dt->setTimezone(new DateTimeZone('Europe/Prague'));
 
-    $logfile = fopen( TICKETAPOH_PATH ."log/export.log", "a" ); 
+    $logfile = fopen( TICKETAPOH_PATH ."log/export.log", "a" );
     fwrite( $logfile, "\n" . $dt->format('d.m Y h:i:s') . " :: " . $message ); 
     fclose( $logfile );
 }
@@ -282,7 +287,7 @@ function custom_orders_list_column_content( $column, $post_id ) {
 
 			$pdf_create_link = admin_url('admin.php?page=pohoda-export-pdf&order_id=').$post_id;
 
-            echo '<a class="tckpoh_export_pdf" ' . $pdf_sent_style. ' href="'. $pdf_create_link .'" target="_blank"><i class="fa fa-file-pdf-o" style="font-size: 18px;"></i></a>';
+            echo '<a class="tckpoh_export_pdf" ' . $pdf_sent_style. ' href="'. $pdf_create_link .'" target="_blank"><i class="dashicons-before dashicons-pdf" style="font-size: 18px;"></i></a>';
 
         break;
     }
@@ -341,6 +346,15 @@ function tckpoh_create_pdf_invoice() {
 	create_invoice( $order_id, 'pdf_to_screen', NULL, 'pdf' );
 }
 
+//// create xml for testing purposes ////
+
+function tckpoh_create_xml_invoice() {
+
+	$order_id = $_GET['order_id'];
+	$xml = create_invoice( $order_id, 'to_xml_preview', NULL, 'invoice' );
+	//echo $xml->flush();
+}
+
 
 //// save currency rate at new order ////
 /// add_action( 'woocommerce_new_order', 'add_order_currency_info' );
@@ -353,6 +367,8 @@ function tckpoh_admin_menu() {
 
     add_menu_page( __( 'Pohoda Export', 'tckpoh' ), __( 'Pohoda Export', 'tckpoh' ), 'edit_posts', 'woocommerce-pohoda-export', 'tckpoh_plugin_page', 'dashicons-carrot', 67 );
 	add_submenu_page( NULL, __( 'Pohoda Export PDF', 'tckpoh' ), __( 'Pohoda Export PDF', 'tckpoh' ), 'edit_posts', 'pohoda-export-pdf', 'tckpoh_create_pdf_invoice');
+	add_submenu_page( NULL, __( 'Pohoda Export XML', 'tckpoh' ), __( 'Pohoda Export XML', 'tckpoh' ), 'edit_posts', 'pohoda-export-xml', 'tckpoh_create_xml_invoice');
+
 }
 add_action( 'admin_menu', 'tckpoh_admin_menu' );
 
@@ -417,6 +433,19 @@ function tckpoh_upgrader_process_complete( $upgrader_object, $options ) {
     
 }
 add_action( 'upgrader_process_complete', 'tckpoh_upgrader_process_complete', 10, 2 );
+
+
+//// remove wp-emojis that freeze the page ////
+
+function disable_emojis_admin() {
+	
+	if ( is_admin() && isset($_GET['page']) && $_GET['page'] == 'wc-settings' && isset($_GET['tab']) && $_GET['tab'] == 'pohoda_export_tab' ) {
+
+         remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+         remove_action( 'admin_print_styles', 'print_emoji_styles' );
+	}
+}
+add_action( 'admin_init', 'disable_emojis_admin' );
 
 
 ?>

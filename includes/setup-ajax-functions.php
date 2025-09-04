@@ -48,16 +48,15 @@ function pohoda_mserver_connect() {
 		);
 		
 		foreach ( $accounting_list->children($ns['acu'])->itemAccountingUnit as $unit ) {
-			
-			// pokud patri do tohoto ucetniho roku //
-			
-			$unit_name = $unit->children($ns['acu'])->accountingUnitIdentity->children($ns['typ'])->address->children($ns['typ'])->company;
-			$unit_year = $unit->children($ns['acu'])->year;
-			$unit_key = $unit->children($ns['acu'])->key;
+
+			$unit_name = (string)$unit->children($ns['acu'])->accountingUnitIdentity->children($ns['typ'])->address->children($ns['typ'])->company;
+			$unit_year = (string)$unit->children($ns['acu'])->year;
+			$unit_key = (string)$unit->children($ns['acu'])->key;
 			$unit_id = $unit_name. ' - ' .$unit_year;
-						
-			$return['units'][$unit_id] = $unit_key;
-			
+		
+			if ($unit_year == date('Y')) { // Jen tento ucetni rok
+				$return['units'][$unit_id] = array($unit_key);
+			}
 		}
 
 	} else {
@@ -93,47 +92,64 @@ function pohoda_load_billing_info() {
 		
 	if ( $xml ) {
 	
-		$ns = $xml->getDocNamespaces(); 
+		$ns = $xml->getDocNamespaces(true); 
 		$response = $xml->children($ns['rsp']);
 		$accounting_list = $response->children($ns['acu'])->listAccountingUnit;
 		
-		$return = array( 'error' => false );
+		$return = array('error' => false, 'units' => array());
 		
-		foreach ( $accounting_list->children($ns['acu'])->itemAccountingUnit as $unit ) {
-			
-			// pokud klic odpovida nasemu klici //
-			
-			$unit_key = $unit->children($ns['acu'])->key;
-			
-			if ($unit_key == $accounting_key) {
-				
-				$return['unitType'] = $unit->children($ns['acu'])->unitType;
+		foreach ($accounting_list->children($ns['acu'])->itemAccountingUnit as $unit) {
+
+			$unit_key = (string) $unit->children($ns['acu'])->key;
+			$unit_year = (string) $unit->children($ns['acu'])->year;
+			$unit_type = (string) $unit->children($ns['acu'])->unitType;
+
+			if ($unit_key === $accounting_key && $unit_year === date('Y')) {
+
+				// nazev a klic //
+
+				$company = (string)$unit->children($ns['acu'])
+					->accountingUnitIdentity
+					->children($ns['typ'])
+					->address
+					->children($ns['typ'])
+					->company;
+				$label = $company . ' - ' . $unit_year;
+				$unit_details = array();
+
+				// adresa a detaily //
 
 				foreach ( $unit->children($ns['acu'])->accountingUnitIdentity->children($ns['typ'])->address->children($ns['typ']) as $unit_info ) {
-					$return[$unit_info->getName()] = $unit_info;
+					$unit_details[$unit_info->getName()] = $unit_info;
 				}
-			}
-			
-		}
-		
-		if (isset($return['ico'])) {
-			$ico = $return['ico'];
-			
-			if (isset($return['unitType'])) {
-				if ($return['unitType'] == 'doubleEntry') {
-					$return['predkontace'] = get_minor_data('predkontace_podvojne', $ico, $host, $login, $pass);
-				} else {
-					$return['predkontace'] = get_minor_data('predkontace_evidence', $ico, $host, $login, $pass);					
+
+				if (isset($unit_details['ico'])) {
+					$ico = $unit_details['ico'];
+					
+					if ($unit_type) {
+						if ($unit_type == 'doubleEntry') {
+							$return['predkontace'] = get_minor_data('predkontace_podvojne', $ico, $host, $login, $pass);
+						} else {
+							$return['predkontace'] = get_minor_data('predkontace_evidence', $ico, $host, $login, $pass);					
+						}
+					}
+								
+					$return['bankovni_ucty'] = get_minor_data('bankovni_ucty', $ico, $host, $login, $pass);
+					$return['cinnosti'] = get_minor_data('cinnosti', $ico, $host, $login, $pass);
+					$return['strediska'] = get_minor_data('strediska', $ico, $host, $login, $pass);
+					$return['provozovny'] = get_minor_data('provozovny', $ico, $host, $login, $pass);
+					$return['prefixy'] = get_minor_data('prefixy', $ico, $host, $login, $pass);
+					$return['formy_uhrad'] = get_minor_data('formy_uhrad', $ico, $host, $login, $pass);
+					
 				}
+
+				// vysledky //
+
+				$return['units'][$label] = array(
+					'unit_key' => $unit_key,
+					'unit_details' => $unit_details
+				);
 			}
-						
-			$return['bankovni_ucty'] = get_minor_data('bankovni_ucty', $ico, $host, $login, $pass);
-			$return['cinnosti'] = get_minor_data('cinnosti', $ico, $host, $login, $pass);
-			$return['strediska'] = get_minor_data('strediska', $ico, $host, $login, $pass);
-			$return['provozovny'] = get_minor_data('provozovny', $ico, $host, $login, $pass);
-			$return['prefixy'] = get_minor_data('prefixy', $ico, $host, $login, $pass);
-			$return['formy_uhrad'] = get_minor_data('formy_uhrad', $ico, $host, $login, $pass);
-			
 		}
 
 	} else {
@@ -319,8 +335,16 @@ function pohoda_check_this_year() {
 	
 	$dates_chosen = $_POST['dates_chosen'];
 	$currency_chosen = $_POST['currency_chosen'];
+	$which_orders = $_POST['which_orders'];
 
-	$this_years_orders = get_this_years_orders( 'selected', $dates_chosen );
+	// kdyz se exportujou objednavky, tak vyhledat all namisto selected vvvv
+	$frequency = get_option('wc_settings_pohoda_export_invoice_export_type');
+	$export_orders = get_option('wc_settings_pohoda_export_invoice_export_orders');
+	if ( $frequency == 'order_only' ) {
+		$this_years_orders = get_this_years_orders( 'all', $dates_chosen );
+	} else {
+		$this_years_orders = get_this_years_orders( 'selected', $dates_chosen );
+	}
 		
 	if ( $this_years_orders ) {
 
@@ -341,15 +365,24 @@ function pohoda_check_this_year() {
 			} else {
 				$check_currency = false;
 			}
+
+			if ( ( $check_currency == true && $currency_chosen == $order_currency ) || $check_currency == false ) {
 			
-			if ( !$exported_invoice_number ) {
+				// kdyz hledam jen nevyexportovane //
+				if ( $which_orders == 'not_exported' ) {
+					if ( !$exported_invoice_number ) {
 
-				error_log('chosen: ' . $currency_chosen . ' - order: ' . $order_currency);
+						add_to_unexported( $order_id );
+						$i++;
 
-				if ( ( $check_currency == true && $currency_chosen == $order_currency ) || $check_currency == false ) {
-					
-					add_to_unexported( $order_id );
-					$i++;
+					}
+				}
+
+				// kdyz hledam vsechny //
+				if ( $which_orders == 'all' ) {
+
+						add_to_unexported( $order_id );
+						$i++;
 
 				}
 				
@@ -460,7 +493,7 @@ function get_this_years_orders( $status, $dates_chosen = null ) {
 		if ( $status_set == 'wc-processing' ) {
 			$order_args['post_status'] = array( 'wc-completed','wc-processing' );
 		} else {
-			$order_args['post_status'] = array( 'wc-completed' );
+			$order_args['post_status'] = array( $status_set );
 		}
 	}
 	
@@ -520,6 +553,8 @@ function pohoda_export_xml_file() {
 	$unexported_order_exports = get_option('wc_settings_pohoda_export_failed_order_exports');
 	$unexported_order_array = explode(',', $unexported_order_exports);
 	$xml_file = 'no_file';
+	$xml_output = 'no_output';
+	$xml_count = 0;
 
 	tckpoh_logs( __( 'Creating the XML file.', 'tckpoh' ) );
 
@@ -548,8 +583,19 @@ function pohoda_export_xml_file() {
 				$xml_output = create_invoice( $unexported_export_order_id, 'to_xml', $xml_output );
 			}
 
-			$export_number++;
+			// count orders added to xml //
+			if ( $xml_file == NULL || $xml_output == NULL ) {
+				$order_count--;
+			} else {
+				$xml_count++;
+				$export_number++;
+			}
+			
 		}
+	}
+
+	if ( $xml_count == 0 ) {
+		$xml_file = 'zero';
 	}
 
 	// vratit odkaz //
@@ -573,6 +619,7 @@ function erase_action_log() {
 add_action('wp_ajax_erase_action_log', 'erase_action_log');
 
 
+
 //// nahrat frontu pro export ////
 
 function load_export_queue() {
@@ -584,17 +631,20 @@ function load_export_queue() {
 	if ( $export_queue ) {
 
 		foreach ( $export_array as $key => $value ) {
-			$order_date = get_the_date( 'Y-m-d', $value );
+			$order_id = preg_replace("/[^0-9]/", "", $value );
+			$order_date = get_the_date( 'Y-m-d', $order_id );
 			$queue_array[$value] = $order_date;
 		}
 
 		asort( $queue_array );
 
 		foreach ( $queue_array as $key => $value ) {
-			$order = wc_get_order( $key );
+			$order_idd = preg_replace("/[^0-9]/", "", $key );
+			$order = wc_get_order( $order_idd );
 			$queue_array[$key] = array(
 				'date' => date( 'd.m.Y', strtotime( $value ) ),
 				'name' => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
+				'inv' => get_post_meta( $order_idd, 'pohoda_invoice_number', true )
 			);
 		}
 	}

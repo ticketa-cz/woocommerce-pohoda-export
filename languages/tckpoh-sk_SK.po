@@ -1,0 +1,1244 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Ticketa Pohoda export\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-03 19:49+0000\n"
+"PO-Revision-Date: 2023-12-27 13:03+0000\n"
+"Last-Translator: \n"
+"Language-Team: Slovak\n"
+"Language: sk_SK\n"
+"Plural-Forms: nplurals=3; plural=( n == 1 ) ? 0 : ( n >= 2 && n <= 4 ) ? 1 : "
+"2;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.5.0; wp-6.2.2\n"
+"X-Domain: tckpoh"
+
+#: includes/submit-error.php:53
+msgid " -- value produced: "
+msgstr " -- vytvořena hodnota: "
+
+#: includes/submit-error.php:169
+msgid " from unexported."
+msgstr " z nevyexportovaných."
+
+#: includes/setup-ajax-functions.php:515
+msgid " is sending you their error log."
+msgstr " vám zasílá jejich záznam událostí."
+
+#: woocommerce-pohoda-export.php:149
+msgid ""
+" orders are now in waiting list for export. Will be exported as soon as you "
+"turn the plugin ON or save the settings."
+msgstr ""
+"objednávek bylo přiřazeno do fronty na export. Faktury budou vyexportovány "
+"jakmile plugin zapnete nebo uložíte nastavení."
+
+#: includes/submit-error.php:145
+msgid " to unexported."
+msgstr " do nevyexportovaných."
+
+#: includes/submit-error.php:50
+msgid " | value requested: "
+msgstr " | požadovaná hodnota: "
+
+#: includes/setup-tab.php:216
+msgid "Account ID"
+msgstr "ID účtu"
+
+#: includes/setup-tab.php:204
+msgid "Account number"
+msgstr "Číslo účtu"
+
+#: includes/setup-tab.php:101
+msgid "Accounting key"
+msgstr "Klíč účetní jednotky"
+
+#: includes/setup-tab.php:835
+msgid "Action log"
+msgstr "Záznam událostí"
+
+#: includes/setup-ajax-functions.php:599
+msgid "Action log erased"
+msgstr "Záznam událostí vymazán"
+
+#: includes/setup-tab.php:852
+msgid "Actions"
+msgstr "Akce"
+
+#: includes/setup-tab.php:508
+msgid "Activity selection"
+msgstr "Výběr aktivity"
+
+#: woocommerce-pohoda-export.php:197
+msgid "Add all to export"
+msgstr "Najít všechny objednávky"
+
+#: includes/setup-tab.php:805
+msgid "Add QR code to invoice?"
+msgstr "Přiložit do faktury QR kód?"
+
+#: includes/submit-error.php:147
+msgid "Added to unexported"
+msgstr "Přidáno do nevyexportovaných"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:91
+#: includes/document-types/pdf-invoice/pdf-invoice.php:108
+msgid "ADDRESS"
+msgstr "ADRESA"
+
+#: includes/setup-tab.php:165
+msgid "Address city"
+msgstr "Město"
+
+#: includes/setup-tab.php:171
+msgid "Address post code"
+msgstr "PSČ"
+
+#: includes/setup-tab.php:153
+msgid "Address street"
+msgstr "Ulice"
+
+#: includes/setup-tab.php:159
+msgid "Address street number"
+msgstr "Číslo budovy"
+
+#: includes/setup-tab.php:539
+msgid "After each order"
+msgstr "Po každé objednávce"
+
+#: includes/setup-tab.php:656
+msgid "And assign it to a payment type from Pohoda."
+msgstr "A přiřaďte jej k platební metodě z Pohody."
+
+#: includes/setup-tab.php:550
+msgid "At which status to export invoice?"
+msgstr "Při jakém stavu objednávky fakturu exportovat?"
+
+#: includes/setup-tab.php:777
+msgid "At which status to send the PDF invoice?"
+msgstr "Při jakém statusu automaticky odeslat fakturu?"
+
+#: includes/setup-tab.php:757
+msgid "Automatically send invoice on a preset order status?"
+msgstr "Automaticky odeslat fakturu zákazníkovi na přednastaveném statusu?"
+
+#: includes/setup-tab.php:747
+msgid ""
+"Automatically send invoice on new order when bank transfer payment method "
+"used?"
+msgstr ""
+"Automaticky odeslat fakturu zákazníkovi při nové objednávce, pokud je způsob "
+"platby převodem?"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:94
+msgid "BANK ACCOUNT"
+msgstr "BANKOVNÍ ÚČET"
+
+#: includes/setup-tab.php:210
+msgid "Bank code"
+msgstr "Kód banky"
+
+#: includes/setup-tab.php:677
+msgid "Bank transfer"
+msgstr "Bankovní převod"
+
+#: includes/setup-tab.php:113
+msgid "Billing info"
+msgstr "Fakturační údaje"
+
+#: includes/setup-tab.php:639
+msgid "Card"
+msgstr "Karta"
+
+#: includes/setup-tab.php:660
+msgid "Cash in shop"
+msgstr "Hotově"
+
+#: includes/setup-tab.php:694
+msgid "Cash on delivery"
+msgstr "Dobírkou"
+
+#: includes/setup-tab.php:482
+msgid "Center selection"
+msgstr "Výběr střediska"
+
+#: includes/setup-tab.php:553
+#| msgid ""
+#| "Change this only if you are using a different status for payment. Usually "
+#| "the order goes to Proccessing status when a payment is made. If a "
+#| "different payment method is chosen, than the invoice is made when you "
+#| "change the status to Proccessing manually."
+msgid ""
+"Change this only if you are using a different status for payment. Usually "
+"the order goes to Processing status when a payment is made. If a different "
+"payment method is chosen, than the invoice is made when you change the "
+"status to Processing manually."
+msgstr ""
+"Toto neměňte, pokud nepoužíváte jiný status při zaplacení platební bránou. "
+"Obyčejně objednávka skočí na status \"Zpracovává se\" ve chvíli, kdy "
+"proběhne platba. Pokud byl zákazníkem vybraný jiný způsob platby, pak bude "
+"faktura vytvořena ve chvíli, kdy objednávku uložíte do statusu \"Zpracovává "
+"se\" manuálně."
+
+#: includes/scheduled-actions.php:168
+msgid "Checked unexported orders."
+msgstr "Zkontrolována fronta pro export."
+
+#: woocommerce-pohoda-export.php:152
+msgid "Checking unexported orders"
+msgstr "Kontroluji nevyexportované objednávky"
+
+#: woocommerce-pohoda-export.php:193
+msgid "Choose"
+msgstr "Vybrat"
+
+#: includes/setup-tab.php:644
+msgid "Choose a payment type from those turned on in Woocommerce."
+msgstr "Vyberte způsob platby ze způsobů, které máte nastavené ve WooCommerce."
+
+#: includes/setup-tab.php:196
+msgid "Choose account"
+msgstr "Vyberte bankovní účet"
+
+#: includes/setup-tab.php:92
+msgid "Choose accounting"
+msgstr "Účetní jednotka"
+
+#: woocommerce-pohoda-export.php:195
+msgid "Choose and crop"
+msgstr "Vybrat a oříznout"
+
+#: includes/setup-tab.php:501
+msgid "Choose from Pohoda activities"
+msgstr "Vyberte z přednastavených aktivit"
+
+#: includes/setup-tab.php:475
+msgid "Choose from Pohoda centers"
+msgstr "Vyberte z přednastavených středisek"
+
+#: woocommerce-pohoda-export.php:119 includes/setup-tab.php:96
+#: includes/setup-tab.php:199 includes/setup-tab.php:266
+#: includes/setup-tab.php:366
+msgid "Choose one..."
+msgstr "Vyberte jednu možnost..."
+
+#: includes/setup-tab.php:362
+msgid "Classification type"
+msgstr "Klasifikace účtování"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:105
+msgid "CLIENT"
+msgstr "ODBĚRATEL"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:88
+msgid "COMPANY"
+msgstr "DODAVATEL"
+
+#: includes/setup-tab.php:118
+msgid "Company name"
+msgstr "Jméno společnosti"
+
+#: includes/setup-tab.php:123
+msgid "Company title"
+msgstr "Typ společnosti"
+
+#: woocommerce-pohoda-export.php:120
+msgid "Connect and load accountings"
+msgstr "Připojit a nahrát účetní jednotky"
+
+#: woocommerce-pohoda-export.php:137
+msgid "Connecting to mServer"
+msgstr "Připojuji se k mServeru"
+
+#: includes/setup-ajax-functions.php:32
+msgid "Connecting to mServer from settings page ..."
+msgstr "Připojuji se k mServeru ze stránky nastavení."
+
+#: includes/setup-tab.php:355
+msgid "Converter API key"
+msgstr "API klíč pro konverzi měn"
+
+#: woocommerce-pohoda-export.php:187
+msgid "Could not send error log because of an error."
+msgstr "Nebylo možné odeslat záznam událostí, protože došlo k neznámé chybě."
+
+#: woocommerce-pohoda-export.php:188
+msgid "Could not switch the plugin because of an error."
+msgstr "Nepodařilo se zapnout plugin kvůli neznámé chybě..."
+
+#: woocommerce-pohoda-export.php:190 includes/setup-ajax-functions.php:543
+msgid "Creating the XML file."
+msgstr "Vytvářím XML soubor"
+
+#: includes/setup-tab.php:423 includes/setup-tab.php:456
+#: includes/setup-tab.php:477 includes/setup-tab.php:503
+msgid "Custom"
+msgstr "Vlastní"
+
+#: includes/setup-tab.php:516
+msgid "Custom activity text"
+msgstr "Vlastní text aktivity"
+
+#: includes/setup-tab.php:490
+msgid "Custom center text"
+msgstr "Vlastní text střediska"
+
+#: includes/setup-tab.php:257 includes/setup-tab.php:303
+msgid "Custom date"
+msgstr "Vlastní datum"
+
+#: includes/setup-tab.php:244
+msgid "Custom field value"
+msgstr "Název vlastního pole"
+
+#: includes/setup-tab.php:463
+msgid "Custom heading text"
+msgstr "Vlastní nadpis"
+
+#: includes/setup-tab.php:428
+msgid "Custom specific symbol"
+msgstr "Vlastní specifický symbol"
+
+#: includes/setup-tab.php:443
+msgid "Customer DIC field"
+msgstr "Vlastní pole pro DIČ zákazníka"
+
+#: includes/setup-tab.php:436
+msgid "Customer ICO field"
+msgstr "Vlastní pole pro IČO zákazníka"
+
+#: includes/setup-tab.php:349
+msgid "CZK"
+msgstr ""
+
+#: includes/setup-tab.php:540
+msgid "Daily"
+msgstr "Denně"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:78
+msgid "DATE"
+msgstr "DATUM VYSTAVENÍ"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:79
+msgid "DATE DUE"
+msgstr "DATUM SPLATNOSTI"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:80
+msgid "DATE TAX"
+msgstr "DATUM ZD. PLNĚNÍ"
+
+#: includes/setup-tab.php:371
+msgid "Date type"
+msgstr "Datum faktury"
+
+#: includes/setup-tab.php:581
+msgid "Day of month"
+msgstr "Den v měsíci"
+
+#: includes/setup-tab.php:566
+msgid "Day of week"
+msgstr "Den v týdnu"
+
+#: includes/setup-tab.php:146
+#: includes/document-types/pdf-invoice/pdf-invoice.php:29
+#: includes/document-types/pdf-invoice/pdf-invoice.php:96
+msgid "DIC"
+msgstr "DIČ"
+
+#: woocommerce-pohoda-export.php:150
+msgid "Did not find any unexported orders or an error happened."
+msgstr "Žádné nevyexportované objednávky nebyly nalezeny nebo došlo k chybě."
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:126
+#: includes/document-types/pdf-invoice/pdf-invoice.php:166
+msgid "DISCOUNT"
+msgstr "SLEVA"
+
+#: includes/setup-tab.php:702
+msgid "Dobírkou"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:71
+msgid "DOCUMENT INFO"
+msgstr "FAKTURAČNÍ ÚDAJE"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:73
+msgid "DOCUMENT NUMBER"
+msgstr "ČÍSLO FAKTURY"
+
+#: includes/setup-tab.php:596
+msgid "Dont send to EET from Pohoda"
+msgstr "Neodesílat do EET z Pohody"
+
+#: includes/setup-tab.php:339
+msgid "Down to one"
+msgstr "Dolů na celé"
+
+#: includes/setup-tab.php:340
+msgid "Down to tenth"
+msgstr "Dolů na desetiny"
+
+#: includes/setup-tab.php:74
+msgid "e.g. http://46.234.119.70:4444/xml"
+msgstr "např. http://45.67.89.10:444/xml"
+
+#: includes/setup-tab.php:598
+msgid "EET doesnt apply to my products"
+msgstr "EET se na můj prodej nevztahuje"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:93
+#: includes/document-types/pdf-invoice/pdf-invoice.php:109
+msgid "EMAIL"
+msgstr "EMAIL"
+
+#: includes/setup-tab.php:183
+msgid "Email"
+msgstr "Email"
+
+#: includes/setup-tab.php:737
+msgid "Enable PDF invoices"
+msgstr "Povolit PDF faktury?"
+
+#: includes/setup-tab.php:446
+msgid "Enter the custom field name under which the DIC number is saved."
+msgstr "Vložte název vlastního pole, pod kterým je DIČ uložené."
+
+#: includes/setup-tab.php:438
+msgid "Enter the custom field name under which the ICO number is saved."
+msgstr "Vložte název vlastního pole, pod kterým je IČO uložené."
+
+#: includes/setup-tab.php:247
+msgid ""
+"Enter the custom field name under which the invoice number is saved by the "
+"plugin."
+msgstr "Vložte název vlastního pole, do kterého plugin ukládá číslo faktury."
+
+#: woocommerce-pohoda-export.php:182
+msgid "Erase action log"
+msgstr "Vymazat záznam událostí"
+
+#: woocommerce-pohoda-export.php:129
+msgid "Erase all invoice numbers"
+msgstr "Vymazat všechna čísla faktur"
+
+#: includes/setup-ajax-functions.php:415
+msgid "Erased invoice numbers attached to all the orders."
+msgstr "Čísla faktur přiřazená ke všem objednávkám byla vymazána."
+
+#: includes/setup-ajax-functions.php:500
+msgid "Erased the export queue."
+msgstr "Fronta pro export byla promazána."
+
+#: woocommerce-pohoda-export.php:184
+msgid "Erasing action log"
+msgstr "Mažu záznam událostí"
+
+#: includes/setup-tab.php:350
+msgid "EUR"
+msgstr ""
+
+#. Description of the plugin
+msgid "Export faktur z Woocommerce do účetního systému Pohoda"
+msgstr "Export faktur z Woocommerce do účetního systému Pohoda"
+
+#: includes/setup-tab.php:605
+msgid "Export orders?"
+msgstr "Exportovat objednávky?"
+
+#: woocommerce-pohoda-export.php:186
+msgid "Export queue"
+msgstr "Fronta pro export"
+
+#: includes/setup-tab.php:529
+msgid "Export setting"
+msgstr "Nastavení exportů"
+
+#: woocommerce-pohoda-export.php:146
+msgid "Export XML file"
+msgstr "Exportovat XML"
+
+#: woocommerce-pohoda-export.php:196
+msgid ""
+"Filter by currency: enter the currency international code. Or leave blank to "
+"search all currencies."
+msgstr ""
+"Filtr dle měny: zadejte mezinárodní kód měny (např. CZK), dle které chcete "
+"objednávky vyfiltrovat. Nebo zanechte prázdné pro vyhledání objednávek ve "
+"všech měnách."
+
+#: woocommerce-pohoda-export.php:148
+msgid "Find unexported orders"
+msgstr "Najít nevyexportované objednávky"
+
+#: includes/setup-tab.php:129
+msgid "First name"
+msgstr "Jméno"
+
+#: includes/setup-tab.php:458
+msgid "First product category name"
+msgstr "Název kategorie prvního produktu"
+
+#: includes/setup-tab.php:457
+msgid "First product name"
+msgstr "Název prvního produktu"
+
+#: includes/setup-tab.php:535
+msgid "Frequency of invoice export"
+msgstr "Frekvence exportů faktur"
+
+#: includes/setup-tab.php:574
+msgid "Friday"
+msgstr "Pátek"
+
+#: includes/create-invoice.php:603
+msgid "Got communication error"
+msgstr "Chyba v připojení"
+
+#: includes/setup-ajax-functions.php:66 includes/setup-ajax-functions.php:142
+msgid "Got communication error: "
+msgstr "Chyba v připojení: "
+
+#: includes/create-invoice.php:582
+msgid "Got import minor error"
+msgstr "Vedlejší chyba v importu."
+
+#: includes/create-invoice.php:596
+msgid "Got package error"
+msgstr "Chyba v balíčku."
+
+#: includes/create-invoice.php:589
+msgid "Got validation error"
+msgstr "Chyba ve validaci."
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:179
+msgid "GRAND TOTAL"
+msgstr "CELKEM K ÚHRADĚ"
+
+#: includes/setup-tab.php:793
+msgid "Header background"
+msgstr "Pozadí nadpisu"
+
+#: includes/setup-tab.php:668
+msgid "Hotově"
+msgstr ""
+
+#: includes/setup-tab.php:389
+msgid "How many days is the payment due date from the order date?"
+msgstr "Kolik dní od data objednávky má být nastavena splatnost?"
+
+#: includes/setup-tab.php:398
+msgid "How many days is the taxable supply date from the order date?"
+msgstr "Kolik dní od data objednávky má být nastaveno zdanitelné plnění?"
+
+#: includes/setup-tab.php:284
+msgid "How many digits should the core number have?"
+msgstr "Z kolika číslic by mělo být základní číslo postaveno?"
+
+#. Author URI of the plugin
+msgid "https://www.ticketa.cz/"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://www.ticketa.cz/woocommerce-pohoda-export-plugin/"
+msgstr ""
+
+#: includes/setup-tab.php:597
+msgid "I will send to EET externally"
+msgstr "EET odešlu externě"
+
+#: includes/setup-tab.php:815
+msgid "IBAN"
+msgstr "IBAN"
+
+#: includes/setup-tab.php:141
+#: includes/document-types/pdf-invoice/pdf-invoice.php:26
+#: includes/document-types/pdf-invoice/pdf-invoice.php:95
+msgid "ICO"
+msgstr "IČO"
+
+#: includes/setup-tab.php:380
+msgid ""
+"If there is no order paid or completed date, order creation date will be "
+"used."
+msgstr ""
+"Pokud neexistuje datum zaplacení nebo dokončení objednávky, bude použito "
+"datum vytvoření."
+
+#: includes/setup-tab.php:357
+msgid ""
+"If using different currency than CZK, you have to use converter API. Get "
+"your key here: https://rapidapi.com/fyhao/api/currency-exchange"
+msgstr ""
+"V tuto chvíli plugin spolupracuje pouze s těmito pluginy pro konverzi cizích "
+"měn: CURCY multicurrency for WooCommerce, WCML multicurrency. Pokud "
+"potřebujete využít jiného pluginu, kontaktujte nás. Případně můžete pro "
+"konverzi měn použít API, ovšem nezaručujeme shodu kurzů. Klíč k API můžete "
+"obdržet zde: https://rapidapi.com/exchangerateapi/api/exchangerate-api/"
+
+#: includes/setup-tab.php:275 includes/setup-tab.php:312
+msgid ""
+"If you have selected \"Custom date\", set the format using Y, M and D "
+"symbols. For example YYMM, or YYYYMMDD..."
+msgstr ""
+"Pokud jste zvolili \"Vlastní datum\", nastavte formát datumu za použití "
+"písmen Y, M a D (rok, měsíc, den). Například YYMM.. nebo YYYYMMDD apod."
+
+#: includes/setup-tab.php:816
+msgid "If you want to use QR code, you must specify your IBAN code."
+msgstr "Pokud chcete použít QR kód, musíte zadat IBAN vašeho účtu."
+
+#: includes/setup-tab.php:788
+msgid "Insert the link to the uploaded file."
+msgstr ""
+"Vyberte nebo nahrajte soubor v doporučeném rozlišení 250 px na šířku a 250 "
+"px nebo méně na výšku."
+
+#: includes/setup-tab.php:712
+msgid "Insert the WooCommerce shortcut of your own payment method."
+msgstr ""
+"Vložte zkratku vlastní platební metody z WooCommerce. Tuto zkratku naleznete "
+"v řádku adresy prohlížeče, když otevřete platební metodu v nastavení "
+"WooCommerce = zkratka bude na konci adresy za \"section=\"."
+
+#: includes/create-invoice.php:438
+msgid "Invoice - tax document #"
+msgstr "Faktura - daňový doklad č. "
+
+#: includes/setup-tab.php:498
+msgid "Invoice activity type"
+msgstr "Typ aktivity"
+
+#: includes/setup-tab.php:472
+msgid "Invoice center type"
+msgstr "Typ střediska"
+
+#: includes/setup-tab.php:622
+msgid "Invoice core number"
+msgstr "Základ čísla faktury"
+
+#: includes/setup-tab.php:323
+msgid "Invoice data"
+msgstr "Data na faktuře"
+
+#: includes/setup-tab.php:452
+msgid "Invoice heading text"
+msgstr "Nadpis faktury"
+
+#: includes/setup-tab.php:410 includes/setup-tab.php:422
+msgid "Invoice inner number"
+msgstr "Základ čísla faktury"
+
+#: includes/setup-tab.php:786
+msgid "Invoice logo"
+msgstr "Logo"
+
+#: includes/setup-tab.php:409 includes/setup-tab.php:421
+#: includes/setup-tab.php:621
+msgid "Invoice number"
+msgstr "Číslo faktury"
+
+#: woocommerce-pohoda-export.php:123
+msgid "Invoice number example: "
+msgstr "Příklad čísla faktury:"
+
+#: includes/setup-tab.php:228
+msgid "Invoice numbering"
+msgstr "Číslování faktur"
+
+#: includes/setup-tab.php:271
+msgid "Invoice prefix"
+msgstr "Prefix"
+
+#: includes/setup-tab.php:309
+msgid "Invoice suffix"
+msgstr "Sufix"
+
+#: includes/setup-tab.php:584
+msgid "Last day"
+msgstr "Poslední den"
+
+#: woocommerce-pohoda-export.php:153
+msgid "Last invoice number: "
+msgstr "Číslo poslední faktury: "
+
+#: includes/setup-tab.php:135
+msgid "Last name"
+msgstr "Příjmení"
+
+#: includes/setup-ajax-functions.php:88
+msgid "Loading billing info on settings page ..."
+msgstr "Nahrávám fakturační údaje na stránce nastavení ..."
+
+#: woocommerce-pohoda-export.php:138
+msgid "Loading Pohoda defaults"
+msgstr "Nahrávám nastavení Pohody"
+
+#: includes/setup-tab.php:345
+msgid "Main currency"
+msgstr "Hlavní měna"
+
+#: includes/setup-tab.php:289
+msgid "Main numbering starting at"
+msgstr "Počátek základního čísla"
+
+#: includes/setup-tab.php:543
+msgid "Manually"
+msgstr "Manuálně"
+
+#: includes/setup-tab.php:336
+msgid "Math to half"
+msgstr "Výpočtem na půlku"
+
+#: includes/setup-tab.php:334
+msgid "Math to one"
+msgstr "Výpočtem na celou"
+
+#: includes/setup-tab.php:335
+msgid "Math to tenth"
+msgstr "Výpočtem na desetinu"
+
+#: includes/setup-tab.php:570
+msgid "Monday"
+msgstr "Pondělí"
+
+#: includes/setup-tab.php:542
+msgid "Monthly"
+msgstr "Měsíčně"
+
+#: includes/setup-tab.php:71
+msgid "mServer address"
+msgstr "Adresa mServeru"
+
+#: includes/setup-tab.php:78
+msgid "mServer login name"
+msgstr "Uživatelské jméno"
+
+#: includes/setup-tab.php:85
+msgid "mServer password"
+msgstr "Heslo"
+
+#: includes/setup-tab.php:65
+msgid "mServer setting"
+msgstr "mServer"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:90
+#: includes/document-types/pdf-invoice/pdf-invoice.php:107
+msgid "NAME"
+msgstr "JMÉNO"
+
+#: includes/create-invoice.php:157
+msgid "New eshop order #"
+msgstr "Nová objednávka č. "
+
+#: includes/setup-tab.php:239 includes/setup-tab.php:610
+#: includes/setup-tab.php:742 includes/setup-tab.php:752
+#: includes/setup-tab.php:762 includes/setup-tab.php:772
+#: includes/setup-tab.php:798 includes/setup-tab.php:810
+msgid "No"
+msgstr "Ne"
+
+#: includes/setup-tab.php:301 includes/setup-tab.php:333
+msgid "None"
+msgstr "Žádný"
+
+#: woocommerce-pohoda-export.php:126
+msgid ""
+"Note, that if the system finds a duplicate invoice number associated with a "
+"woocommerce order, it will delete it and use it with the new order. So "
+"beware not to use same numbering twice or not to start with the same number."
+msgstr ""
+"Pokud systém najde duplicitní číslo faktury spojené s nějakou objednávkou, "
+"faktura nebude vytvořena. Dbejte prosím tedy na to, abyste nepoužívali "
+"stejné číslování nebo nezačínali dvakrát od stejného základu čísla."
+
+#: woocommerce-pohoda-export.php:135
+msgid ""
+"Note, you have to associate each payment type with a payment gateway enabled "
+"in woocommerce shown within the dropdowns. Unassociated payment types will "
+"be overriden by the default in Pohoda."
+msgstr ""
+"Každý způsob platby, který chcete používat, je nutné přiřadit k formě úhrady "
+"v Pohodě. Nepřiřazené zapnuté způsoby platby budou přepsány defaultní formou "
+"úhrady nastavené v Pohodě."
+
+#: includes/setup-tab.php:823
+msgid "Notice at the bottom of invoice:"
+msgstr "Poznámka vespod faktury"
+
+#: includes/setup-tab.php:280
+msgid "Number of digits of main numbering"
+msgstr "Počet číslic základního čísla"
+
+#: includes/setup-tab.php:378
+msgid "Order completed date"
+msgstr "Datum dokončení objednávky"
+
+#: includes/setup-tab.php:375
+msgid "Order date"
+msgstr "Datum vytvoření objednávky"
+
+#: includes/create-invoice.php:43
+msgid "Order doesn't exist anymore - #"
+msgstr "Objednávka již neexistuje - #"
+
+#: includes/setup-tab.php:376
+msgid "Order last modified date"
+msgstr "Datum poslední úpravy objednávky"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:76
+msgid "ORDER NUMBER"
+msgstr "ČÍSLO OBJEDNÁVKY"
+
+#: includes/setup-tab.php:620
+msgid "Order number"
+msgstr "Číslo objednávky"
+
+#: includes/setup-tab.php:615
+msgid "Order number type"
+msgstr "Typ číslování objednávky"
+
+#: includes/setup-tab.php:544
+msgid "Order only"
+msgstr "Pouze objednávky"
+
+#: includes/setup-tab.php:377
+msgid "Order paid date"
+msgstr "Datum zaplacení objednávky"
+
+#: includes/setup-tab.php:710
+msgid "Own payment method"
+msgstr "Vlastní platební metoda"
+
+#: includes/setup-tab.php:258 includes/setup-tab.php:304
+msgid "Own text"
+msgstr "Vlastní text"
+
+#: includes/setup-tab.php:385
+msgid "Payment due date from order date"
+msgstr "Datum splatnosti od data objednávky"
+
+#: includes/setup-tab.php:633
+msgid "Payment methods"
+msgstr "Platební metody"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:81
+msgid "PAYMENT TYPE"
+msgstr "ZPŮSOB ÚHRADY"
+
+#: includes/setup-tab.php:731
+msgid "PDF"
+msgstr "PDF"
+
+#: woocommerce-pohoda-export.php:258
+msgid "PDF invoice"
+msgstr "PDF faktura"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:92
+#: includes/document-types/pdf-invoice/pdf-invoice.php:110
+msgid "PHONE"
+msgstr "TELEFON"
+
+#: includes/setup-tab.php:177
+msgid "Phone"
+msgstr "Telefon"
+
+#: includes/setup-tab.php:649
+msgid "Plat.kartou"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:401 woocommerce-pohoda-export.php:420
+#, php-format
+msgid ""
+"Please help us improve %2$s! If you opt-in, some data about your usage of "
+"%2$s will be sent to %5$s. If you skip this, that's okay! %2$s will still "
+"work just fine."
+msgstr ""
+"Prosíme pomožte nám vylepšit %2$s! Pokud toto zaškrtnete, budou některá data "
+"o vašem využívání %2$s odesílána %5$s. Pokud toto přeskočíte, nic se neděje! "
+"%2$s bude nadále fungovat bez problémů."
+
+#: woocommerce-pohoda-export.php:179
+msgid "Plugin switch"
+msgstr "Zapnutí pluginu"
+
+#: woocommerce-pohoda-export.php:364 woocommerce-pohoda-export.php:365
+msgid "Pohoda Export"
+msgstr ""
+
+#: includes/submit-error.php:17
+msgid "Pohoda export error, could not connect to mserver. Note: "
+msgstr "Chyba při exportu, nepodařilo se připojit k mServeru. Poznámka: "
+
+#: includes/submit-error.php:169
+msgid "Pohoda export error, could not remove order #"
+msgstr "Chyba při úpravě fronty pro export, nepodařio se smazat objednávku #"
+
+#: includes/submit-error.php:145
+msgid "Pohoda export error, could not save order #"
+msgstr "Chyba při úpravě fronty pro export, nepodařio se přidat objednávku #"
+
+#: woocommerce-pohoda-export.php:374 woocommerce-pohoda-export.php:375
+msgid "Pohoda Export PDF"
+msgstr ""
+
+#: includes/setup-tab.php:18
+msgid "Pohoda Export Settings"
+msgstr "Pohoda Export"
+
+#: includes/setup-tab.php:263
+msgid "Pohoda predefined prefix"
+msgstr "Výběr prefixu z Pohody"
+
+#: includes/setup-tab.php:256
+msgid "Pohoda prefix"
+msgstr "Prefixy Pohody"
+
+#: includes/create-invoice.php:573
+msgid "Pohoda response: "
+msgstr "Odpověď Pohody: "
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:130
+msgid "PRICE TOTAL"
+msgstr "CELKEM"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:127
+msgid "PRICE WITHOUT VAT"
+msgstr "CELKEM BEZ DANĚ"
+
+#: includes/setup-tab.php:685
+msgid "Příkazem"
+msgstr ""
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:125
+msgid "QUANTITY"
+msgstr "MNOŽSTVÍ"
+
+#: woocommerce-pohoda-export.php:183
+msgid "Reload action log"
+msgstr "Obnovit záznam"
+
+#: includes/submit-error.php:171
+msgid "Removed from unexported"
+msgstr "Smazáno z nevyexportovaných"
+
+#: woocommerce-pohoda-export.php:128
+msgid "Reset export queue"
+msgstr "Resetovat frontu pro export"
+
+#: woocommerce-pohoda-export.php:127
+msgid "Reset number"
+msgstr "Vynulovat číslo"
+
+#: woocommerce-pohoda-export.php:133
+msgid "Reseting"
+msgstr "Anuluji"
+
+#: includes/setup-tab.php:329
+msgid "Rounding"
+msgstr "Zaokrouhlování"
+
+#: includes/setup-tab.php:575
+msgid "Saturday"
+msgstr "Sobota"
+
+#: woocommerce-pohoda-export.php:121
+msgid "Save settings"
+msgstr "Uložit nastavení"
+
+#: woocommerce-pohoda-export.php:122
+msgid "Saving your settings"
+msgstr "Ukládám nastavení"
+
+#: includes/setup-ajax-functions.php:335
+msgid "Searching for all unexported orders of this year."
+msgstr ""
+"Vyhledávám všechny objednávky s nevyexportovanými fakturami v tomto roce."
+
+#: woocommerce-pohoda-export.php:181
+msgid "Send error log to support"
+msgstr "Odeslat záznam na podporu"
+
+#: woocommerce-pohoda-export.php:185
+msgid "Sending error log to support..."
+msgstr "Odesílám záznam událostí na podporu..."
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:124
+msgid "SERVICE"
+msgstr "NÁZEV POLOŽKY"
+
+#: includes/setup-tab.php:588
+msgid "Should Pohoda send invoice to EET after import?"
+msgstr "Má Pohoda odeslat potvrzení k EET po importu faktury?"
+
+#: includes/setup-tab.php:800
+msgid "Should the header background be used?"
+msgstr "Měl by být použitý obrázek v pozadí nadpisu?"
+
+#: includes/setup-tab.php:767
+msgid "Show VAT summary on PDF invoice?"
+msgstr "Zobrazit rozpočet DPH na PDF faktuře?"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:75
+msgid "SPECIFIC SYMBOL"
+msgstr "SPECIFICKÝ SYMBOL"
+
+#: includes/setup-tab.php:416
+msgid "Specific symbol"
+msgstr "Specifický symbol"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:171
+msgid "SUBTOTAL"
+msgstr "MEZISOUČET"
+
+#: includes/setup-tab.php:576
+msgid "Sunday"
+msgstr "Neděle"
+
+#: woocommerce-pohoda-export.php:180
+msgid "Switching the plugin..."
+msgstr "Přepínám plugin"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:175
+msgid "TAX"
+msgstr "DPH"
+
+#: includes/setup-tab.php:394
+msgid "Taxable supply date from order date"
+msgstr "Zdanitelné plnění ode dne objednávky"
+
+#: includes/setup-tab.php:781
+msgid ""
+"The PDF invoice will be sent to the customer automatically when the order "
+"status is changed to this one."
+msgstr ""
+"PDF faktura bude odeslána zákazníkovi automaticky ve chvíli kdy se stav "
+"objednávky změní na tento."
+
+#: woocommerce-pohoda-export.php:134
+msgid "The queue was erased."
+msgstr "Fronta pro export byla vyresetována."
+
+#: woocommerce-pohoda-export.php:191
+msgid "The XML file could not be created because of an error."
+msgstr "XML soubor se nepodařilo vytvořit."
+
+#: woocommerce-pohoda-export.php:192
+msgid "There were no orders or invoices to add to the XML file."
+msgstr "Žádné objednávky nebo faktury nebyly přidány do XML souboru."
+
+#: woocommerce-pohoda-export.php:151
+msgid ""
+"This action will find all orders made from the beginning of this year and "
+"add it to the waiting list for export to Pohoda. Only orders with Processing "
+"or Completed status will be added. \\n If you want to specify a date range, "
+"fill the input with dates exactly in this format YYYY-MM-DD==YYYY-MM-DD"
+msgstr ""
+"Tato akce vyhledá všechny objednávky vytvořené od začátku tohoto roku a "
+"přidá je do fronty pro export. Budou vybrány pouze objednávky ve stavu "
+"Dokončeno - nebo ve stavu Dokončeno a Zpracovává se, podle vašeho nastavení "
+"exportu. Pokud chcete objednávky v rozmezí specifických datumů, vyplňte je "
+"zde ve formátu přesně takto: RRRR-MM-DD==RRRR-MM-DD"
+
+#: includes/setup-tab.php:592
+msgid "This only applies to payments made by card."
+msgstr ""
+"Aby tato možnost fungovala, musíte mít nastavené a zapnuté EET v Pohodě. "
+"Toto platí pouze pro platby kartou, ostatní k EET odesílány nebudou."
+
+#: woocommerce-pohoda-export.php:147
+msgid ""
+"This will export the waiting list into an XML file which you can download. "
+"You have to empty the waiting list later."
+msgstr ""
+"Tato akce vytvoří XML soubor pro manuální import faktur do Pohody z "
+"objednávek ve frontě pro export. Frontu musíte po zdárném importu manuálně "
+"vymazat."
+
+#: includes/setup-tab.php:573
+msgid "Thursday"
+msgstr "Čtvrtek"
+
+#. Author of the plugin
+msgid "Ticketa"
+msgstr ""
+
+#: includes/setup-tab.php:558
+msgid "Time to export invoices"
+msgstr "Čas exportu faktur"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:191
+msgid "TOTAL WITH VAT"
+msgstr "Celkem včetně DPH"
+
+#: includes/create-invoice.php:77
+msgid "Tried to create invoice for order #"
+msgstr "Vytvářím fakturu pro objednávku #"
+
+#: includes/create-invoice.php:78
+msgid "Tried to create order #"
+msgstr "Vytvářím objednávku #"
+
+#: includes/setup-ajax-functions.php:497
+msgid "Tried, but unable to erase the export queue."
+msgstr "Zkusil jsem, ale nepodařilo se vyresetovat frontu pro export."
+
+#: includes/setup-tab.php:571
+msgid "Tuesday"
+msgstr "Úterý"
+
+#: includes/scheduled-actions.php:93
+msgid "Turned actions off."
+msgstr "Plánované akce vypnuty."
+
+#: includes/scheduled-actions.php:43
+msgid "Turned actions on."
+msgstr "Plánované akce zapnuty."
+
+#: includes/setup-tab.php:252
+msgid "Type of prefix"
+msgstr "Typ prefixu"
+
+#: includes/setup-tab.php:297
+msgid "Type of suffix"
+msgstr "Typ sufixu"
+
+#: woocommerce-pohoda-export.php:136
+msgid ""
+"Unable to connect to mserver. Check your login info and make sure mServer is "
+"running."
+msgstr ""
+"Nepodařilo se připojit k mServeru. Zkontrolujte vaše přístupové údaje a "
+"ujistěte se, že je mServer zapnutý."
+
+#: woocommerce-pohoda-export.php:124
+msgid "Unable to save options..."
+msgstr "Nepodařilo se uložit nastavení... "
+
+#: includes/setup-tab.php:337
+msgid "Up to one"
+msgstr "Nahoru na celé"
+
+#: includes/setup-tab.php:338
+msgid "Up to tenth"
+msgstr "Nahoru na desetiny"
+
+#: includes/setup-tab.php:234
+msgid "Use numbering from a different plugin?"
+msgstr "Použít číslování faktur z jiného pluginu?"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:74
+msgid "VARIABLE SYMBOL"
+msgstr "VARIABILNÍ SYMBOL"
+
+#: includes/setup-tab.php:404
+msgid "Variable symbol"
+msgstr "Variabilní symbol"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:129
+msgid "VAT"
+msgstr "DPH"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:128
+msgid "VAT %"
+msgstr "DPH %"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:191
+msgid "VAT AMOUNT"
+msgstr "DPH"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:191
+msgid "VAT BASE"
+msgstr "Základ"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:191
+msgid "VAT RATE"
+msgstr "Sazba"
+
+#: includes/document-types/pdf-invoice/pdf-invoice.php:191
+msgid "VAT RECAP"
+msgstr "Rozpočet DPH v Kč:"
+
+#: woocommerce-pohoda-export.php:131
+msgid ""
+"Warning! This will erase all orders saved in the export queue. You can add "
+"them again later by checking last year orders."
+msgstr ""
+"Pozor! Toto vymaže všechny objednávky uložené ve frontě pro export. Můžete "
+"je znovu přidat později tlačítkem Najít nevyexportované objednávky."
+
+#: woocommerce-pohoda-export.php:130
+msgid ""
+"Warning! This will reset the number of the last invoice. Continue only if "
+"you are changing the invoice numbering. Otherwise it will create duplicate "
+"invoice numbers and these invoices will not be imported."
+msgstr ""
+"Pozor! Toto vynuluje číslo poslední faktury. Pokračujte pouze v případě, že "
+"měníte číslování faktur. V jiném případě by mohly vzniknout duplikáty čísel "
+"faktur, a faktury s takovým číslem by se již nenaimportovaly do Pohody."
+
+#: woocommerce-pohoda-export.php:132
+msgid ""
+"Warning!! This will erase all invoice numbers from all orders of this year! "
+"If you would check for unexported orders later, all those orders would then "
+"appear in the export waiting list."
+msgstr ""
+"Pozor!! Toto vymaže čísla faktur přiřazená ke všem objednávkám tohoto roku! "
+"Pokud byste následovně zkusili stisknout \"Najít nevyexportované "
+"objednávky\", tyto objednávky by se vám přiřadily do fronty na export."
+
+#: includes/setup-tab.php:466
+msgid "We are billing you for goods..."
+msgstr "Fakturujeme vám za zboží..."
+
+#: includes/setup-tab.php:189
+msgid "Website"
+msgstr "Web stránka"
+
+#: includes/setup-tab.php:572
+msgid "Wednesday"
+msgstr "Středa"
+
+#: includes/setup-tab.php:541
+msgid "Weekly"
+msgstr "Jednou týdně"
+
+#: includes/setup-tab.php:302 includes/setup-tab.php:408
+#: includes/setup-tab.php:420
+msgid "Woocommerce Order number"
+msgstr "Číslo objednávky WooCommerce"
+
+#. Name of the plugin
+msgid "Woocommerce Pohoda Export"
+msgstr ""
+
+#: woocommerce-pohoda-export.php:459
+msgid "WooCommerce Pohoda Export updated to version "
+msgstr "WooCommerce Pohoda Export aktualizován na verzi  "
+
+#: includes/setup-tab.php:238 includes/setup-tab.php:609
+#: includes/setup-tab.php:741 includes/setup-tab.php:751
+#: includes/setup-tab.php:761 includes/setup-tab.php:771
+#: includes/setup-tab.php:797 includes/setup-tab.php:809
+msgid "Yes"
+msgstr "Ano"
+
+#: includes/setup-tab.php:595
+msgid "Yes, send to EET from Pohoda"
+msgstr "Ano, odeslat k EET z Pohody"
+
+#: woocommerce-pohoda-export.php:125
+msgid ""
+"You dont need to fill this info, it will be obtained from Pohoda. Fill it "
+"only if you plan on using the plugin without mServer connection."
+msgstr ""
+"Tyto údaje nemusíte vyplňovat, budou nahrány z Pohody. Vyplňte pouze v "
+"případě, pokud chcete plugin používat bez připojení k mServeru."
+
+#: woocommerce-pohoda-export.php:140
+msgid "You have to choose an accounting."
+msgstr ""
+"Nemáte vybranou účetní jednotku. Pokud si nějakou nevyberete, nebude možná "
+"komunikace s Pohodou."

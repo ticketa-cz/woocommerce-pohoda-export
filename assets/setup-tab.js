@@ -36,12 +36,14 @@ jQuery(document).ready( function ($) {
 	var mserver_connect = "<div id='mserver_connect' class='button-primary woocommerce-save-button'>" + tckpoh_lang.mserver_connect + "</div>";
 	var save_options = "<div id='save_options' class='button-primary woocommerce-save-button'>" + tckpoh_lang.save_options + "</div>";
 	var check_this_year = "<div id='check_this_year' class='button-primary woocommerce-save-button'>" + tckpoh_lang.check_this_year + "</div>";
+	var add_all_orders = "<div id='add_all_orders' class='button-primary woocommerce-save-button'>" + tckpoh_lang.add_all_orders + "</div>";
 	var export_xml = "<div id='export_xml' class='button-primary woocommerce-save-button'>" + tckpoh_lang.export_xml + "</div>";
 
 	var action_log_content = "<div id='action_log_content'></div><div id='export_queue_content'></div>";
 	var send_log_to_support = "<div id='send_log_to_support' class='button-primary woocommerce-save-button'>" + tckpoh_lang.send_log_to_support + "</div>";
 	var erase_action_log = "<div id='erase_action_log' class='button-primary woocommerce-save-button'>" + tckpoh_lang.erase_action_log + "</div>";
 	var reload_action_log = "<div id='reload_action_log' class='button-primary woocommerce-save-button'>" + tckpoh_lang.reload_action_log + "</div>";
+
 
 	var last_invoice_number = "<div class='navod'><span id='last_invoice_number'>" + tckpoh_lang.last_invoice_number + "</span><span id='reset_core_number'>" + tckpoh_lang.reset_core_number + "</span></div>";
 	var erase_invoice_numbers = "<div id='reset_core_number_erase' class='button-primary woocommerce-save-button'>" + tckpoh_lang.reset_core_number_erase + "</div>";
@@ -69,7 +71,7 @@ jQuery(document).ready( function ($) {
 	section_payments.appendTo( "#section_payments" );
 	section_log.append( action_log_content + erase_action_log + reload_action_log + send_log_to_support + reset_queue );
 	section_actions.appendTo( "#section_actions" );
-	heading_actions.after( "<div id='actions_div'>" + check_this_year + export_xml + erase_invoice_numbers + "</div>" );
+	heading_actions.after( "<div id='actions_div'>" + check_this_year + add_all_orders + export_xml + erase_invoice_numbers + "</div>" );
 	$( ".submit" ).append( save_options );
 	$( ".submit" ).before( plugin_switch );
 	$('#plugin_switch').lc_switch();
@@ -171,7 +173,7 @@ jQuery(document).ready( function ($) {
 			},
 			success : function (data) {
 				$.each(data, function(index, obj) {
-					$("#export_queue_content").append('<a href="' + tckpoh_lang.admin_url + 'post.php?post=' + index + '&action=edit">' + index + ' - ' + obj.date + '</a> - ' + obj.name + '<br/>');
+					$("#export_queue_content").append('<a href="' + tckpoh_lang.admin_url + 'post.php?post=' + index + '&action=edit">' + index + ' - ' + obj.date + '</a> - <span>' + obj.inv + '</span> - ' + obj.name + '<br/>');
 				});
 			}
 		});
@@ -248,6 +250,9 @@ jQuery(document).ready( function ($) {
 		if (tckpoh_lang.account) { $("#wc_settings_pohoda_export_billing_account").val(tckpoh_lang.account); }
 		if (tckpoh_lang.pohoda_prefix) { $("#wc_settings_pohoda_export_invoice_prefix_pohoda").val(tckpoh_lang.pohoda_prefix); }
 		if (tckpoh_lang.classification_type) { $("#wc_settings_pohoda_export_invoice_classification_type").val(tckpoh_lang.classification_type); }
+		if (tckpoh_lang.predkontace_line_item) { $("#wc_settings_pohoda_export_invoice_predkontace_line_item").val(tckpoh_lang.predkontace_line_item); }
+		if (tckpoh_lang.predkontace_shipping) { $("#wc_settings_pohoda_export_invoice_predkontace_shipping").val(tckpoh_lang.predkontace_shipping); }
+		if (tckpoh_lang.predkontace_fee) { $("#wc_settings_pohoda_export_invoice_predkontace_fee").val(tckpoh_lang.predkontace_fee); }
 		if (tckpoh_lang.centre) { $("#wc_settings_pohoda_export_invoice_center_select").val(tckpoh_lang.centre); }
 		if (tckpoh_lang.activity) { $("#wc_settings_pohoda_export_invoice_activity_select").val(tckpoh_lang.activity); }
 		if (tckpoh_lang.export_type) { $("#wc_settings_pohoda_export_invoice_export_type").val(tckpoh_lang.export_type).change(); }
@@ -295,10 +300,11 @@ jQuery(document).ready( function ($) {
 			  },
 			  success: function( data ) {
 				  if (data.error != true) {
-					  
-					  $.each(data.units, function(index, obj) {
-						  $("#wc_settings_pohoda_export_mserver_accounting").append(new Option(index, obj[0])).focus();
-					  });
+
+						$("#wc_settings_pohoda_export_mserver_accounting").empty();
+						$.each(data.units, function(label, uuid) {
+							$("#wc_settings_pohoda_export_mserver_accounting").append(new Option(label, uuid));
+						});
 
 						if (tckpoh_lang.accounting_key) {
 							$("#wc_settings_pohoda_export_mserver_accounting").val(tckpoh_lang.accounting_key).change();
@@ -381,8 +387,20 @@ jQuery(document).ready( function ($) {
 						// predkontace //
 						$("#wc_settings_pohoda_export_invoice_classification_type").empty().append("<option value=''>"+ tckpoh_lang.choose_one +"</option>");
 						$.each(data.predkontace, function(index, obj) {
-						  $("#wc_settings_pohoda_export_invoice_classification_type").append(new Option(obj.predkontace_name[0] + ' - ' + obj.predkontace_code[0], obj.predkontace_code[0]));
+						  $("#wc_settings_pohoda_export_invoice_classification_type").append(new Option(obj.predkontace_name[0] + ' - ' + obj.predkontace_code[0], obj.predkontace_id[0]));
 					  	});
+						$("#wc_settings_pohoda_export_invoice_predkontace_line_item").empty().append("<option value=''>"+ tckpoh_lang.choose_one +"</option>");
+						  $.each(data.predkontace, function(index, obj) {
+							$("#wc_settings_pohoda_export_invoice_predkontace_line_item").append(new Option(obj.predkontace_name[0] + ' - ' + obj.predkontace_code[0], obj.predkontace_id[0]));
+						});
+						$("#wc_settings_pohoda_export_invoice_predkontace_shipping").empty().append("<option value=''>"+ tckpoh_lang.choose_one +"</option>");
+						$.each(data.predkontace, function(index, obj) {
+							$("#wc_settings_pohoda_export_invoice_predkontace_shipping").append(new Option(obj.predkontace_name[0] + ' - ' + obj.predkontace_code[0], obj.predkontace_id[0]));
+						});
+						$("#wc_settings_pohoda_export_invoice_predkontace_fee").empty().append("<option value=''>"+ tckpoh_lang.choose_one +"</option>");
+						$.each(data.predkontace, function(index, obj) {
+							$("#wc_settings_pohoda_export_invoice_predkontace_fee").append(new Option(obj.predkontace_name[0] + ' - ' + obj.predkontace_code[0], obj.predkontace_id[0]));
+						});
 						// prefixy //
 						$("#wc_settings_pohoda_export_invoice_prefix_pohoda").empty().append("<option value=''>"+ tckpoh_lang.choose_one +"</option>");
 						$.each(data.prefixy, function(index, obj) {
@@ -667,7 +685,7 @@ jQuery(document).ready( function ($) {
 	
 	//// zkontrolovat nevyexportovane objednavky z tohoto roku ////
 	
-	function pohoda_check_this_year() {
+	function pohoda_check_this_year(which_orders) {
 		
 		var dates_chosen = prompt(tckpoh_lang.will_check_this_year, "");
 		var currency_chosen = prompt(tckpoh_lang.choose_currency, "");
@@ -679,7 +697,8 @@ jQuery(document).ready( function ($) {
 			data: {
 				'action': 'pohoda_check_this_year',
 				'dates_chosen': dates_chosen,
-				'currency_chosen': currency_chosen.toUpperCase()
+				'currency_chosen': currency_chosen.toUpperCase(),
+				'which_orders' : which_orders
 			},
 			beforeSend: function() {
 				openloader(tckpoh_lang.checking_orders);
@@ -702,7 +721,10 @@ jQuery(document).ready( function ($) {
 		});
 	}
 	$("#check_this_year").on("click", function(){
-		pohoda_check_this_year();
+		pohoda_check_this_year('not_exported');
+	});
+	$("#add_all_orders").on("click", function(){
+		pohoda_check_this_year('all');
 	});
 	
 
@@ -832,11 +854,13 @@ jQuery(document).ready( function ($) {
 			  },
 			  success: function( data ) {
 				  
-					if ( data !== 'no_file' ) {
+					if ( data == 'no_file' ) {
+						alert(tckpoh_lang.xml_could_not_be_created);
+					} else if ( data == 'zero' ) {
+						alert(tckpoh_lang.xml_zero_added);
+					} else {
 						alert( data );
 						window.open( data, '_blank' ).focus();
-					} else {
-						alert(tckpoh_lang.xml_could_not_be_created);
 					}
 				  
 			  }

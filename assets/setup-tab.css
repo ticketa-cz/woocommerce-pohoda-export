@@ -76,7 +76,7 @@
 	display: inline-block;
     margin-left: 20px;
 }
-#check_this_year, #export_xml, #reset_core_number_erase, #reset_queue {
+#check_this_year, #export_xml, #reset_core_number_erase, #reset_queue, #add_all_orders {
     float: right;
     margin-top: 7px;
 	margin-left: 10px;
@@ -90,7 +90,7 @@
 	background: #7bbdc4;
 	border-color: #5f9797;
 }
-#check_this_year:hover, #send_log_to_support:hover, #export_xml:hover, #reset_core_number_erase:hover, #reset_queue:hover, #erase_action_log:hover, #reload_action_log:hover {
+#check_this_year:hover, #add_all_orders:hover #send_log_to_support:hover, #export_xml:hover, #reset_core_number_erase:hover, #reset_queue:hover, #erase_action_log:hover, #reload_action_log:hover {
 	background: #4d9299;
 }
 #send_log_to_support.log_sent {
@@ -129,18 +129,26 @@
 	white-space: pre-line;
 	float: left;
 }
-#action_log_content .numbers, #export_queue_content {
+#action_log_content .numbers {
 	font-weight: 800;
+}
+#export_queue_content {
+	font-weight: 500;
+	font-size: 13px;
 }
 #action_log_content {
 	width: 69%;
 	margin-right: 1%;
+	font-size: 13px;
 }
 #export_queue_content {
 	width: 30%;
 }
 #export_queue_content a {
 	text-decoration: none;
+}
+#export_queue_content span {
+	color: #906;
 }
 
 /* LC SWITCH */
