@@ -32,7 +32,7 @@ if ( ! function_exists( 'tckpoh_fs' ) ) {
             // Include Freemius SDK.
             require_once dirname(__FILE__) . '/freemius/start.php';
 
-            $tckpoh_fs = fs_dynamic_init( array(
+            $tckpoh_fs = fs_dynamic_init( [
                 'id'                  => '7714',
                 'slug'                => 'woocommerce-pohoda-export',
                 'type'                => 'plugin',
@@ -42,16 +42,16 @@ if ( ! function_exists( 'tckpoh_fs' ) ) {
                 'has_addons'          => false,
                 'has_paid_plans'      => true,
                 'is_org_compliant'    => false,
-                'menu'                => array(
+                'menu'                => [
                     'slug'           => 'woocommerce-pohoda-export',
                     'first-path'     => 'admin.php?page=wc-settings&tab=pohoda_export_tab',
                     'contact'        => false,
                     'support'        => false,
-                ),
+                ],
                 // Set the SDK to work in a sandbox mode (for development & testing).
                 // IMPORTANT: MAKE SURE TO REMOVE SECRET KEY BEFORE DEPLOYMENT.
                 'secret_key'          => 'sk_i0g6;6^?Ki[JK&sw~-ccqy0CA:A!k',
-            ) );
+            ] );
         }
 
         return $tckpoh_fs;
@@ -111,14 +111,18 @@ function initiate_tckpoh() {
 
 function tckpoh_styles_and_scripts($hook) {
 		
-	if ( is_admin() && isset($_GET['page']) && $_GET['page'] == 'wc-settings' && isset($_GET['tab']) && $_GET['tab'] == 'pohoda_export_tab' ) {
+	// TODO: Verify if additional nonce validation is needed for admin settings page
+	$page = sanitize_text_field( wp_unslash( $_GET['page'] ?? '' ) );
+	$tab = sanitize_text_field( wp_unslash( $_GET['tab'] ?? '' ) );
+	
+	if ( is_admin() && $page === 'wc-settings' && $tab === 'pohoda_export_tab' ) {
 		
 		$lastmodtimejs = filemtime(TICKETAPOH_PATH . 'assets/setup-tab.js');
-		wp_enqueue_script('tckpoh_js', TICKETAPOH_URL . 'assets/setup-tab.js', array( 'jquery', 'wp-util' ), $lastmodtimejs);
-		wp_enqueue_script('tckpoh_serialize', TICKETAPOH_URL . 'assets/serializejson.js', array( 'jquery', 'wp-util' ), $lastmodtimejs);
-		wp_enqueue_script('tckpoh_switch', TICKETAPOH_URL . 'assets/lc_switch.js', array( 'jquery', 'wp-util' ), $lastmodtimejs);
+		wp_enqueue_script('tckpoh_js', TICKETAPOH_URL . 'assets/setup-tab.js', [ 'jquery', 'wp-util' ], $lastmodtimejs);
+		wp_enqueue_script('tckpoh_serialize', TICKETAPOH_URL . 'assets/serializejson.js', [ 'jquery', 'wp-util' ], $lastmodtimejs);
+		wp_enqueue_script('tckpoh_switch', TICKETAPOH_URL . 'assets/lc_switch.js', [ 'jquery', 'wp-util' ], $lastmodtimejs);
 		
-		wp_localize_script('tckpoh_js', 'tckpoh_lang', array(
+		wp_localize_script('tckpoh_js', 'tckpoh_lang', [
 			'choose_one' => __( 'Choose one...', 'tckpoh' ),
 			'mserver_connect' => __( 'Connect and load accountings', 'tckpoh' ),
 			'save_options' => __( 'Save settings', 'tckpoh' ),
@@ -202,10 +206,10 @@ function tckpoh_styles_and_scripts($hook) {
 			'choose_currency' => __( 'Filter by currency: enter the currency international code. Or leave blank to search all currencies.', 'tckpoh' ),
 			'add_all_orders' => __( 'Add all to export', 'tckpoh' ),
 			'admin_url' => admin_url(),
-		));
+		]);
 		
 		$lastmodtimecss = filemtime(TICKETAPOH_PATH . 'assets/setup-tab.css');
-		wp_enqueue_style('tckpoh_css', TICKETAPOH_URL . 'assets/setup-tab.css', array(), $lastmodtimecss);
+		wp_enqueue_style('tckpoh_css', TICKETAPOH_URL . 'assets/setup-tab.css', [], $lastmodtimecss);
 		
 	}
 	
@@ -260,7 +264,7 @@ function tckpoh_shop_order_column( $columns ) {
 	$enable_pdf = get_option('wc_settings_pohoda_export_pdf_enable');
 	if ( $enable_pdf == 'yes' ) {
 
-		$reordered_columns = array();
+		$reordered_columns = [];
 
 		// Inserting columns to a specific location
 		foreach( $columns as $key => $column){
@@ -325,7 +329,7 @@ function tckpoh_attach_pdf_to_emails( $attachments, $email_id, $order, $email ) 
 
     if ( $email_id == 'new_order' && $send_if_banktransfer == 'yes' && $payment_method == 'bacs' || $email_id == 'customer_invoice' || $email_id == $automatic_status ) {
 
-		$invoice_url = create_invoice( $order_id, 'pdf_to_email', NULL, 'pdf' );
+		$invoice_url = create_invoice( $order_id, 'pdf_to_email', null, 'pdf' );
         $upload_dir = wp_upload_dir();
         $attachments[] = $invoice_url;
 		update_post_meta( $order_id, 'tckpoh_pdf_sent', 'yes' );
@@ -342,16 +346,31 @@ add_filter( 'woocommerce_email_attachments', 'tckpoh_attach_pdf_to_emails', 10, 
 
 function tckpoh_create_pdf_invoice() {
 
-	$order_id = $_GET['order_id'];
-	create_invoice( $order_id, 'pdf_to_screen', NULL, 'pdf' );
+	// TODO: Add proper nonce validation for security
+	// This function creates PDF invoices from order ID - ensure proper authorization
+	$order_id = isset($_GET['order_id']) ? (int) sanitize_text_field( wp_unslash( $_GET['order_id'] ) ) : 0;
+	
+	if ( ! $order_id ) {
+		wp_die( esc_html__( 'Invalid order ID', 'tckpoh' ) );
+	}
+	
+	create_invoice( $order_id, 'pdf_to_screen', null, 'pdf' );
 }
 
 //// create xml for testing purposes ////
 
 function tckpoh_create_xml_invoice() {
 
-	$order_id = $_GET['order_id'];
-	$xml = create_invoice( $order_id, 'to_xml_preview', NULL, 'invoice' );
+	// TODO: Add proper nonce validation for security
+	// This function creates XML invoices for testing - ensure proper authorization
+	$order_id = isset($_GET['order_id']) ? (int) sanitize_text_field( wp_unslash( $_GET['order_id'] ) ) : 0;
+	
+	if ( ! $order_id ) {
+		wp_die( esc_html__( 'Invalid order ID', 'tckpoh' ) );
+	}
+	
+	$xml = create_invoice( $order_id, 'to_xml_preview', null, 'invoice' );
+	// TODO: Consider if XML output needs to be displayed or handled differently
 	//echo $xml->flush();
 }
 
@@ -366,8 +385,8 @@ function tckpoh_create_xml_invoice() {
 function tckpoh_admin_menu() { 
 
     add_menu_page( __( 'Pohoda Export', 'tckpoh' ), __( 'Pohoda Export', 'tckpoh' ), 'edit_posts', 'woocommerce-pohoda-export', 'tckpoh_plugin_page', 'dashicons-carrot', 67 );
-	add_submenu_page( NULL, __( 'Pohoda Export PDF', 'tckpoh' ), __( 'Pohoda Export PDF', 'tckpoh' ), 'edit_posts', 'pohoda-export-pdf', 'tckpoh_create_pdf_invoice');
-	add_submenu_page( NULL, __( 'Pohoda Export XML', 'tckpoh' ), __( 'Pohoda Export XML', 'tckpoh' ), 'edit_posts', 'pohoda-export-xml', 'tckpoh_create_xml_invoice');
+	add_submenu_page( null, __( 'Pohoda Export PDF', 'tckpoh' ), __( 'Pohoda Export PDF', 'tckpoh' ), 'edit_posts', 'pohoda-export-pdf', 'tckpoh_create_pdf_invoice');
+	add_submenu_page( null, __( 'Pohoda Export XML', 'tckpoh' ), __( 'Pohoda Export XML', 'tckpoh' ), 'edit_posts', 'pohoda-export-xml', 'tckpoh_create_xml_invoice');
 
 }
 add_action( 'admin_menu', 'tckpoh_admin_menu' );
@@ -439,7 +458,11 @@ add_action( 'upgrader_process_complete', 'tckpoh_upgrader_process_complete', 10,
 
 function disable_emojis_admin() {
 	
-	if ( is_admin() && isset($_GET['page']) && $_GET['page'] == 'wc-settings' && isset($_GET['tab']) && $_GET['tab'] == 'pohoda_export_tab' ) {
+	// TODO: Consider if this is still necessary for modern WordPress versions
+	$page = sanitize_text_field( wp_unslash( $_GET['page'] ?? '' ) );
+	$tab = sanitize_text_field( wp_unslash( $_GET['tab'] ?? '' ) );
+	
+	if ( is_admin() && $page === 'wc-settings' && $tab === 'pohoda_export_tab' ) {
 
          remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
          remove_action( 'admin_print_styles', 'print_emoji_styles' );

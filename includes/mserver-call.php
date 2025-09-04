@@ -28,17 +28,17 @@ function make_the_call( $data_in, $host_filled, $login_filled, $pass_filled ) {
 		
 	// connect //
 	
-	$response = wp_remote_post( $address, array(
+	$response = wp_remote_post( $address, [
 		'method' => 'POST',
 		'body'    => $data_in,
 		'blocking' => true,
-		'headers' => array(
+		'headers' => [
 			'STW-Authorization' => 'Basic ' . base64_encode( $login . ':' . $pass ),
 			'Content-type' => 'text/xml; charset=Windows-1250',
-		),
+		],
 		'httpversion' => '1.0',
     	'sslverify'   => true,
-	) );
+	] );
 	
 	// reply //
 	

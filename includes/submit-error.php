@@ -101,8 +101,9 @@ function send_error_to_admin( $error_log, $recepient ) {
 		$recepient = get_bloginfo('admin_email');
 	}
 	
-	$attachment = array( TICKETAPOH_PATH . '/log/export.log' );
-	$headers = array( 'Content-Type: text/html; charset=UTF-8','From: '.get_bloginfo('name').' <no-reply@'.$_SERVER['SERVER_NAME'].'>' );
+	$attachment = [ TICKETAPOH_PATH . '/log/export.log' ];
+	// TODO: Consider if direct $_SERVER access is secure - may need sanitization
+	$headers = [ 'Content-Type: text/html; charset=UTF-8','From: '.get_bloginfo('name').' <no-reply@'.$_SERVER['SERVER_NAME'].'>' ];
 	$email_sent = wp_mail( $recepient, 'Pohoda export error', $error_log, $headers, $attachment );
 
 	return $email_sent;
